@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MICRO // microbes trading perps</title>
+<style>
+  :root{--bg:#08080b;--panel:#111114;--fg:#e8e8ea;--dim:#55555c;--mid:#8a8a92;--green:#5DCAA5;--red:#E24B4A;--purple:#7F77DD;--line:#26262b;--mono:'SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;--sans:ui-sans-serif,system-ui,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--fg);font-family:var(--mono);-webkit-font-smoothing:antialiased}
+  a{color:var(--fg);text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(8,8,11,.88);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:960px;margin:0 auto;padding:0 18px;height:46px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--dim);letter-spacing:.5px}
+  nav .logo{color:var(--fg);font-size:14px;letter-spacing:2px}
+  nav .links{display:flex;gap:16px}nav .links a:hover{color:var(--fg)}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);margin-right:6px}
+  .green{color:var(--green)}.red{color:var(--red)}nav b{color:var(--fg);font-weight:400}
+  .specbar{border-bottom:1px solid var(--line);font-size:11px;color:var(--dim)}
+  .specbar .in{max-width:960px;margin:0 auto;padding:12px 18px;display:flex;gap:30px;flex-wrap:wrap}
+  .specbar b{color:var(--fg);font-weight:400}
+  section{padding:54px 0;border-bottom:1px solid var(--line)}
+  .kick{font-size:11px;color:var(--dim);letter-spacing:2px;margin-bottom:12px}
+  h1{font-size:clamp(38px,7vw,64px);font-weight:400;letter-spacing:-1.5px;line-height:.98;margin-bottom:12px}
+  h2{font-size:26px;font-weight:400;font-family:var(--sans);letter-spacing:-.3px;margin-bottom:6px}
+  .shk{font-size:11px;color:var(--dim);letter-spacing:1px;margin-bottom:18px}
+  .lead{color:var(--mid);font-size:14px;line-height:1.7;max-width:520px;margin-bottom:24px}
+  .stage{background:linear-gradient(180deg,#0c0c14 0%,#08080b 82%);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  canvas{display:block;width:100%;image-rendering:pixelated}
+  .metrics{display:flex;gap:30px;flex-wrap:wrap;margin-top:22px}
+  .metric .l{font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:3px}.metric .v{font-size:22px}
+  .btn{display:inline-block;background:var(--panel);border:1px solid var(--line);color:var(--fg);font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:6px;cursor:pointer;margin-top:6px}
+  .btn.buy{border-color:var(--purple);color:#cfcaf6}
+  .tabs{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .tab{background:var(--panel);border:1px solid var(--line);color:var(--mid);font-family:var(--mono);font-size:12px;padding:8px 14px;border-radius:6px;cursor:pointer}
+  .tab:hover{border-color:#3a3a42;color:var(--fg)}.tab.on{border-color:var(--purple);color:var(--fg)}.tab small{color:var(--dim);margin-left:6px}
+  .lb{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+  .lbrow{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:12px}
+  .lbrow.first{border-color:var(--purple)}.lbrow .rank{width:22px;color:var(--dim)}.lbrow .sw{width:8px;height:8px;border-radius:2px}
+  .lbrow .nm{flex:1}.lbrow .nm span{color:var(--dim)}.lbrow .eq{width:70px;text-align:right}
+  .ledger{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:12px;color:var(--mid);line-height:2;margin-top:6px}.ledger .k{color:var(--dim)}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+  th{text-align:left;color:var(--dim);font-weight:400;font-size:10px;letter-spacing:1px;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid #1c1c20;color:var(--mid)}td b{color:var(--fg);font-weight:400}
+  .tokgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .card h3{font-size:13px;font-weight:400;color:var(--fg);margin-bottom:10px;font-family:var(--sans)}
+  .kv{display:flex;justify-content:space-between;font-size:12px;color:var(--mid);line-height:2}.kv .k{color:var(--dim)}
+  .util li{list-style:none;font-size:12px;color:var(--mid);line-height:1.7;padding-left:16px;position:relative;margin-bottom:7px}
+  .util li:before{content:"→";position:absolute;left:0;color:var(--purple)}.util b{color:var(--fg);font-weight:400}
+  .real li{list-style:none;font-size:13px;color:var(--mid);line-height:1.7;padding-left:16px;position:relative;margin-bottom:9px}
+  .real li:before{content:"—";position:absolute;left:0;color:var(--dim)}.real b{color:var(--fg);font-weight:400}
+  .srcgrid{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .src{display:block;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;transition:border-color .15s}
+  .src:hover{border-color:var(--purple)}
+  .src .st{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+  .src .name{font-size:13px;color:var(--fg)}
+  .src .badge{font-size:10px;color:#cfcaf6;border:1px solid #3a3560;border-radius:4px;padding:2px 8px;letter-spacing:.5px}
+  .src .cite{font-size:11px;color:var(--mid);line-height:1.6}
+  .src .doi{font-size:10px;color:var(--dim);margin-top:6px}
+  .src .doi span{color:#cfcaf6}
+  .ipgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .mono-sm{font-size:11px;color:#cfcaf6}
+  @media(max-width:720px){.ipgrid{grid-template-columns:1fr}}
+  .ecogrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .eco{display:block;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;transition:border-color .15s}
+  a.eco:hover{border-color:var(--purple)}
+  .et{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;flex-wrap:wrap;gap:6px}
+  .en{font-size:13px;color:var(--fg)}
+  .eb{font-size:10px;color:#cfcaf6;border:1px solid #3a3560;border-radius:4px;padding:2px 7px;letter-spacing:.3px}
+  .ed{font-size:11px;color:var(--mid);line-height:1.6}
+  @media(max-width:720px){.ecogrid{grid-template-columns:1fr}}
+  .soon{display:inline-block;margin-left:8px;font-size:9px;letter-spacing:.5px;padding:1px 7px;border-radius:4px;border:1px solid var(--line);color:var(--dim);vertical-align:middle}
+  .soon.live{border-color:#1D9E75;color:#5DCAA5}
+  .util li{margin-bottom:12px}
+  /* trade timeline */
+  .tl{margin-top:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .tlhead{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--panel);border-bottom:1px solid var(--line);font-size:10px;color:var(--dim);letter-spacing:1px}
+  .tltrack{position:relative;height:150px;background:#0c0c12;overflow:hidden}
+  .tlane{position:absolute;left:0;right:0;height:50px;border-bottom:1px solid #15151c}
+  .tlabel{position:absolute;left:10px;top:6px;font-size:9px;color:var(--dim);letter-spacing:1px;z-index:2}
+  .ev{position:absolute;transform:translate(-50%,-50%);width:0;height:0}
+  .evdot{position:absolute;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:2px;cursor:pointer;transition:transform .15s}
+  .evdot:hover{transform:translate(-50%,-50%) scale(1.5)}
+  .evline{position:absolute;height:2px;opacity:.42;transform:translateY(-50%)}
+  .tlaxis{display:flex;justify-content:space-between;padding:7px 14px;background:var(--panel);border-top:1px solid var(--line);font-size:9px;color:var(--dim)}
+  .tlfeed{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+  .fe{display:grid;grid-template-columns:58px 96px 60px 1fr auto;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left-width:2px;border-radius:6px;padding:8px 12px;font-size:11px}
+  .fe .ft{color:var(--dim)}
+  .fe .fo{color:var(--fg)}
+  .fe .fs{letter-spacing:.5px}
+  .fe .fd{color:var(--mid)}
+  .fe .fp{text-align:right}
+  /* trade timeline end */
+  /* stack list */
+  .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
+  .sline:last-child{border-bottom:none}
+  .sk{color:var(--dim);min-width:110px;font-size:11px;letter-spacing:.5px}
+  .sv{color:var(--mid);flex:1}
+  .sv code{background:#08080b;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:#cfcaf6;font-size:11px}
+  /* gate pipeline */
+  .gwrap{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .grow{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .ghead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;flex-wrap:wrap;gap:6px}
+  .gname{font-size:12px;color:var(--fg);letter-spacing:1px}
+  .gdepth{font-size:11px;color:var(--dim)}
+  .gbar{display:flex;gap:3px;margin-bottom:8px}
+  .gcell{flex:1;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:.5px}
+  .gpass{background:#0f2a20;border:1px solid #1D9E75;color:#5DCAA5}
+  .gfail{background:#2a0f12;border:1px solid #993C1D;color:#E24B4A}
+  .gskip{background:#111114;border:1px solid var(--line);color:#3a3a42}
+  .gmsg{font-size:11px;color:var(--mid);line-height:1.5}
+  .gmsg b{color:var(--fg);font-weight:400}
+  .glegend{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
+  .gl{font-size:10px;color:var(--dim);line-height:1.4}
+  .gl b{color:var(--mid);font-weight:400;display:block}
+  @media(max-width:720px){.glegend{grid-template-columns:1fr 1fr}}
+  /* brain orbit section */
+  .brainwrap{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-top:6px}
+  .brainstage{position:relative;background:radial-gradient(circle at 50% 45%,#121220 0%,#08080b 72%);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .brainstage canvas{width:100%;display:block;cursor:grab}
+  .brainstage canvas:active{cursor:grabbing}
+  .bhead{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;z-index:2}
+  .exe{font-size:11px;color:var(--fg);letter-spacing:2px}
+  .pausebtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:5px 10px;border-radius:4px;cursor:pointer}
+  .pausebtn:hover{border-color:#3a3a42;color:var(--fg)}
+  .orbit{position:absolute;bottom:12px;left:14px;font-size:10px;color:var(--dim);letter-spacing:1px}
+  .brainstats{display:flex;flex-direction:column;gap:8px}
+  .bstat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .bl{font-size:10px;color:var(--dim);letter-spacing:1px}
+  .bv{font-size:19px;color:var(--fg);margin-top:3px}
+  .norder{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;flex:1}
+  .ostate{font-size:17px;color:var(--green);letter-spacing:1px;margin-bottom:4px}
+  .odesc{font-size:11px;color:var(--mid);line-height:1.5;margin-bottom:10px}
+  .obar{height:4px;background:#1c1c20;border-radius:2px;overflow:hidden}
+  .ofill{height:100%;background:var(--green);transition:width .4s}
+  .odrive{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:6px}
+  .odrive span:last-child{color:var(--fg)}
+  @media(max-width:720px){.brainwrap{grid-template-columns:1fr}}
+  /* open source plugin section */
+  .pkg{background:#0d0d14;border:1px solid #2a2550;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px}
+  .pkg .pname{color:#cfcaf6;font-size:13px;margin-bottom:4px}
+  .pkg .pdesc{color:var(--mid);line-height:1.6}
+  .pkg code{background:#08080b;border:1px solid var(--line);border-radius:4px;padding:2px 6px;color:var(--fg);font-size:11px}
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .act{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px}
+  .act .an{font-size:11px;color:#cfcaf6;letter-spacing:.5px;margin-bottom:4px}
+  .act .ad{font-size:11px;color:var(--mid);line-height:1.5}
+  .honest{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--green);border-radius:6px;padding:12px 14px;margin-top:14px;font-size:12px;color:var(--mid);line-height:1.7}
+  .honest b{color:var(--fg);font-weight:400}
+  @media(max-width:720px){.acts{grid-template-columns:1fr}}
+  /* desci / bio */
+  .biobar{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#12101e 0%,#0d0d14 100%);border:1px solid #2a2550;border-radius:10px;padding:14px 16px;margin-bottom:22px}
+  .biobar .lg{width:28px;height:28px;border-radius:6px;background:#7F77DD;display:flex;align-items:center;justify-content:center;color:#0a0a10;font-size:14px;flex-shrink:0}
+  .biobar .txt{font-size:12px;color:var(--mid);line-height:1.5}
+  .biobar .txt b{color:#cfcaf6;font-weight:400}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+  .flow .step{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;font-size:11px;color:var(--mid);line-height:1.5}
+  .flow .step .n{font-size:10px;color:#cfcaf6;letter-spacing:1px;margin-bottom:6px}
+  .flow .step b{color:var(--fg);font-weight:400}
+  .hyp{background:var(--panel);border:1px solid var(--line);border-left:2px solid #7F77DD;border-radius:6px;padding:14px 16px;margin-top:8px;font-size:13px;color:var(--fg);line-height:1.6}
+  .hyp .lbl{font-size:10px;color:#cfcaf6;letter-spacing:1px;display:block;margin-bottom:6px}
+  @media(max-width:720px){.flow{grid-template-columns:1fr 1fr}}
+  footer{padding:40px 0 70px}.foot{font-size:10px;color:var(--dim);line-height:1.8}
+  @media(max-width:720px){.tokgrid{grid-template-columns:1fr}nav .links{display:none}.specbar .in{gap:16px}}
+</style>
+</head>
+<body>
+
+<nav><div class="in">
+  <span class="logo">MICRO</span>
+  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span><span class="dot"></span><span class="green">observed live</span> · HYPE <b id="px">41.82</b></span>
+</div></nav>
+
+<div class="specbar"><div class="in">
+  <span>SPECIMENS <b>3 CONNECTOMES</b></span>
+  <span>VENUE <b>Hyperliquid</b></span>
+  <span>UNIVERSE <b>все перпы</b></span>
+  <span>MODE <b>paper / live</b></span>
+  <span>STATUS <b class="green">trading</b></span>
+</div></div>
+
+<section id="top" style="border-bottom:none;padding-bottom:24px">
+  <div class="wrap">
+    <div class="kick">MICROBES TRADING PERPS · HYPERLIQUID</div>
+    <h1>three real<br>nervous systems,<br>$10,000 each.</h1>
+    <div class="lead">Три полностью картированных коннектома — 177, 302 и 966 нейронов — торгуют на Hyperliquid с демо-счётом $10 000 каждый. Им доступны <b>все перпы биржи</b>, и каждый организм сам выбирает инструмент и сторону: своя проводка, своё решение. Прибыльность не доказана.</div>
+  </div>
+  <div class="wrap"><div class="stage"><canvas id="office" width="920" height="330"></canvas></div></div>
+  <div class="wrap"><div class="metrics">
+    <div class="metric"><div class="l">НЕЙРОНОВ ВСЕГО</div><div class="v">1,445</div></div>
+    <div class="metric"><div class="l">ДЕМО-СЧЁТ</div><div class="v">3 × $10k</div></div>
+    <div class="metric"><div class="l">СДЕЛОК</div><div class="v" id="ntr">218</div></div>
+    <div class="metric"><div class="l">ЛИДЕР</div><div class="v green">PLATYNEREIS</div></div>
+  </div></div>
+</section>
+
+<section id="floor" style="padding-top:34px">
+  <div class="wrap">
+    <div class="kick">SECTION 01 · THE FLOOR</div>
+    <h2>Опенспейс микробов</h2>
+    <div class="shk">каждый за своим терминалом · плашка над головой = открытая сделка</div>
+    <div class="lead" style="margin-bottom:0">Никто не назначает организму инструмент. Он прогоняет свою сеть по каждому активному рынку и идёт туда, где его собственный моторный ридаут сильнее — биологический аналог хемотаксиса: животное не взвешивает варианты, оно движется вверх по градиенту того, что его сильнее возбуждает. Существо подпрыгивает на профите и сползает под стол на минусе.</div>
+  </div>
+</section>
+
+<section id="organism">
+  <div class="wrap">
+    <div class="kick">SECTION 02 · THE ORGANISM</div>
+    <h2>Мозг в наблюдении</h2>
+    <div class="shk">живое облако нейронов · тяните, чтобы вращать</div>
+
+    <div class="brainwrap">
+      <div class="brainstage">
+        <div class="bhead">
+          <span class="exe" id="exe">ELEGANS.EXE</span>
+          <button class="pausebtn" id="pausebtn">PAUSE MOTION</button>
+        </div>
+        <canvas id="brain" width="560" height="380"></canvas>
+        <div class="orbit">DRAG TO ORBIT +</div>
+      </div>
+      <div class="brainstats">
+        <div class="bstat"><div class="bl">NEURONS</div><div class="bv" id="b-neurons">302</div></div>
+        <div class="bstat"><div class="bl">LATEST SPIKES</div><div class="bv" id="b-spikes">128</div></div>
+        <div class="bstat"><div class="bl">MEMORY CHANGED</div><div class="bv" id="b-mem">14</div></div>
+        <div class="bstat"><div class="bl">BRAIN TIME</div><div class="bv" id="b-time">00:04:12</div></div>
+        <div class="norder">
+          <div class="bl" style="margin-bottom:8px">NEURAL ORDER</div>
+          <div class="ostate" id="b-state">LONG</div>
+          <div class="odesc" id="b-desc">Моторный ридаут 0.34 выше порога 0.25 — существо покупает.</div>
+          <div class="obar"><div class="ofill" id="b-fill" style="width:67%"></div></div>
+          <div class="odrive"><span>drive</span><span id="b-drive">+0.34</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+</section>
+
+<section id="replay">
+  <div class="wrap">
+    <div class="kick">SECTION 03 · NEURAL REPLAY</div>
+    <h2>Каждый за своей стойкой</h2>
+    <div class="shk">живой реплей спайков · блоттер сделок на мониторе</div>
+  </div>
+  <div class="wrap">
+    <div class="stage" style="background:#05050a"><canvas id="rcv" width="960" height="540"></canvas></div>
+    <div class="tabs" id="rtabs"></div>
+  </div>
+</section>
+
+<section id="race">
+  <div class="wrap">
+    <div class="kick">SECTION 03 · BRAIN RACE / 7D</div>
+    <h2>Гонка мозгов</h2>
+    <div class="shk">старт $10 000 каждому · кто впереди прямо сейчас</div>
+    <div class="stage" style="padding:14px"><svg viewBox="0 0 420 150" width="100%" height="150" id="race-svg"></svg></div>
+    <div class="lb" id="lb"></div>
+  </div>
+</section>
+
+<section id="gates">
+  <div class="wrap">
+    <div class="kick">SECTION 05 · GATE PIPELINE</div>
+    <h2>Где именно застрял организм</h2>
+    <div class="shk">восемь гейтов · останов на первом отказе · причина записывается</div>
+    <div class="lead">Бинарное «торговал / не торговал» ничего не объясняет, когда существо замолкает. Трасса гейтов показывает точку останова: суррогатная проводка, мёртвая сеть, подпороговый ридаут, риск-блок или минимум биржи.</div>
+
+    <div class="gwrap" id="gwrap"></div>
+
+    <div class="glegend">
+      <div class="gl"><b>G1 PROVENANCE</b>проводка настоящая</div>
+      <div class="gl"><b>G2 ACTIVITY</b>сеть спайкует</div>
+      <div class="gl"><b>G3 READOUT</b>ридаут прошёл порог</div>
+      <div class="gl"><b>G4 EQUITY</b>эквити выше пола</div>
+      <div class="gl"><b>G5 COOLDOWN</b>не в кулдауне</div>
+      <div class="gl"><b>G6 RISK</b>в риск-лимитах</div>
+      <div class="gl"><b>G7 EXCHANGE</b>выше минимума биржи</div>
+      <div class="gl"><b>G8 EXECUTION</b>исполнено</div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="kick">SECTION 06 · TRADE TIMELINE</div>
+    <h2>Что они делали, по времени</h2>
+    <div class="shk">три дорожки · вход, ротация, выход · наведи на точку</div>
+    <div class="lead">Каждая дорожка — один организм. Точка это событие: вход в позицию, ротация в другой инструмент, выход. Линия между входом и выходом окрашена в результат сделки — зелёная в плюс, красная в минус. Длина линии показывает, сколько позиция держалась.</div>
+
+    <div class="tl">
+      <div class="tlhead"><span>ПОСЛЕДНИЕ 12 ЧАСОВ</span><span id="tlcount">—</span></div>
+      <div class="tltrack" id="tltrack"></div>
+      <div class="tlaxis" id="tlaxis"></div>
+    </div>
+
+    <div class="tlfeed" id="tlfeed"></div>
+  </div>
+</section>
+
+<section id="ledger">
+  <div class="wrap">
+    <div class="kick">SECTION 07 · DECISION LEDGER</div>
+    <h2>Каждое решение — до сделки, не после</h2>
+    <div class="shk">открытый лог, который нельзя подделать задним числом</div>
+    <div class="ledger" id="ledger-log"></div>
+    <table>
+      <thead><tr><th>ЗАКРЫТО</th><th>СУЩЕСТВО</th><th>СТОРОНА</th><th>ВХОД</th><th>ВЫХОД</th><th>P&L</th></tr></thead>
+      <tbody>
+        <tr><td>13:40</td><td><b>platynereis</b></td><td class="green">LONG</td><td>39.80</td><td>41.13</td><td class="green">+$4.10</td></tr>
+        <tr><td>12:15</td><td><b>ciona</b></td><td class="red">SHORT</td><td>38.10</td><td>40.05</td><td class="red">−$9.40</td></tr>
+        <tr><td>11:02</td><td><b>elegans</b></td><td class="green">LONG</td><td>35.20</td><td>36.90</td><td class="green">+$3.30</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="kick">SECTION 08 · DATA PROVENANCE</div>
+    <h2>Откуда взят каждый мозг</h2>
+    <div class="shk">проводка настоящая · датасеты опубликованы · открыто проверяемо</div>
+    <div class="srcgrid">
+
+      <a class="src" href="https://openworm.org/ConnectomeToolbox/" target="_blank">
+        <div class="st"><span class="name">C. elegans · 302 нейрона</span><span class="badge">OpenWorm c302</span></div>
+        <div class="cite">Гермафродитный коннектом из White et al. 1986 и Cook et al. 2019, как он поставляется в OpenWorm c302: 448 клеток, 7 379 связей. Каждая клетка — leaky integrate-and-fire.</div>
+        <div class="doi">Cook et al., Nature 571 (2019) · <span>doi:10.1038/s41586-019-1352-7</span> · датасет: openworm/c302 (MIT)</div>
+      </a>
+
+      <a class="src" href="https://elifesciences.org/articles/16962" target="_blank">
+        <div class="st"><span class="name">Личинка асцидии Ciona intestinalis · 177 нейронов</span><span class="badge">eLife 2016</span></div>
+        <div class="cite">Полный синаптический коннектом ЦНС личинки-головастика: 177 нейронов, 6 618 синапсов, 1 772 нервно-мышечных соединения, 1 206 щелевых контактов. Второй в истории коннектом целого животного и первый у хордового.</div>
+        <div class="doi">Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · <span>doi:10.7554/eLife.16962</span> · CC-BY</div>
+      </a>
+
+      <a class="src" href="https://elifesciences.org/articles/97964" target="_blank">
+        <div class="st"><span class="name">Личинка червя Platynereis dumerilii, 3 дня · 966 нейронов</span><span class="badge">eLife 2025</span></div>
+        <div class="cite">Коннектом всего тела 72-часовой личинки: ~9 000 клеток, из них 966 нейронов, 202 типа нейронов. Единственный сегментированный организм с полным коннектомом. Код и данные — на Zenodo.</div>
+        <div class="doi">Verasztó, Jasek et al., eLife (2025), впервые bioRxiv 2020 · <span>doi:10.7554/eLife.97964</span> · данные: zenodo 11811680</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section id="plugin">
+  <div class="wrap">
+    <div class="kick">SECTION 09 · STACK</div>
+    <h2>Что под капотом</h2>
+    <div class="shk">стек целиком · ночной исследовательский проход · движок под MIT</div>
+
+    <div class="pkg">
+      <div class="pname">research/ → BioAgents-совместимый API</div>
+      <div class="pdesc">
+        Каждую ночь решения организмов и структура их коннектомов уходят в
+        исследовательского агента через его документированный интерфейс
+        <code>/api/deep-research</code> с JWT-авторизацией. Агент связывает наши
+        спайковые паттерны с опубликованными работами по этим конкретным
+        контурам и возвращает <b>проверяемую гипотезу</b>: почему организм повёл
+        себя именно так. Результаты ложатся в <code>/api/research</code>.
+      </div>
+    </div>
+
+    <div class="acts">
+      <div class="act"><div class="an">PLANNING</div><div class="ad">Строит план исследования по наблюдаемому поведению организмов.</div></div>
+      <div class="act"><div class="an">LITERATURE</div><div class="ad">Семантический поиск по публикациям с инлайн-цитатами и DOI.</div></div>
+      <div class="act"><div class="an">HYPOTHESIS</div><div class="ad">Формулирует testable-гипотезу по каждому организму.</div></div>
+      <div class="act"><div class="an">REFLECTION</div><div class="ad">Отмечает, какие гипотезы можно опровергнуть симуляцией — лезия, перемешивание весов.</div></div>
+    </div>
+
+    <div class="stack">
+      <div class="sline"><span class="sk">коннектомы</span><span class="sv">OpenWorm c302 · eLife 16962 · eLife 97964</span></div>
+      <div class="sline"><span class="sk">динамика</span><span class="sv">leaky integrate-and-fire, 60 шагов на решение</span></div>
+      <div class="sline"><span class="sk">ридаут</span><span class="sv">двухшаговая достижимость по матрице смежности</span></div>
+      <div class="sline"><span class="sk">выбор рынка</span><span class="sv">организм гоняет сеть по каждому кандидату и идёт туда, где ридаут сильнее</span></div>
+      <div class="sline"><span class="sk">биржа</span><span class="sv">Hyperliquid API · все листингованные перпы · субаккаунт на организм</span></div>
+      <div class="sline"><span class="sk">исследование</span><span class="sv">BioAgents-совместимый API · <code>/api/deep-research</code> · JWT HS256</span></div>
+      <div class="sline"><span class="sk">бэкенд</span><span class="sv">Python · FastAPI · SQLite · Vercel + Hetzner</span></div>
+    </div>
+
+    <div class="lead" style="margin:16px 0 0">
+      Мы вызываем опубликованные интерфейсы и задеплоенные контракты. Движок
+      коннектомов открыт — датасеты открыты, инструмент для работы с ними тоже
+      должен быть открыт.
+    </div>
+  </section>
+
+<section id="desci">
+  <div class="wrap">
+    <div class="kick">SECTION 10 · OPEN SCIENCE</div>
+    <h2>Открытый эксперимент, а не мем</h2>
+    <div class="shk">коннектомы открыты · логи публичны · выход проверяем</div>
+
+    <div class="biobar">
+      <span class="lg">◆</span>
+      <span class="txt">Наука должна быть открытой и проверяемой ончейн. Все три коннектома опубликованы под открытыми лицензиями, каждое решение пишется в лог до отправки ордера, движок открыт под MIT. <b>$MICRO торгуется в паре к $BIO</b> — квотовому активу DeSci-экосистемы.</span>
+    </div>
+
+    <div class="hyp">
+      <span class="lbl">HYPOTHESIS</span>
+      Может ли простая нервная система, картированная у реального животного, извлекать структуру из финансового временного ряда лучше случайности — если подать цену как сенсорный стимул и читать моторный выход? Три коннектома, один инструмент, публичный baseline. Ответ может быть «нет» — и это тоже результат.
+    </div>
+
+    <div class="flow">
+      <div class="step"><div class="n">01 DATA</div>Открытые коннектомы <b>C. elegans, Ciona, Platynereis</b> — по DOI из секции SOURCES.</div>
+      <div class="step"><div class="n">02 AGENT</div>Каждый мозг — <b>leaky integrate-and-fire</b> сеть с ончейн-кошельком на Hyperliquid.</div>
+      <div class="step"><div class="n">03 OUTPUT</div>Каждое решение <b>минтится в лог</b> до сделки: сторона, размер, слепок активности.</div>
+      <div class="step"><div class="n">04 VERIFY</div>Логи, PnL и baseline <b>публичны и воспроизводимы</b> — любой может перепроверить.</div>
+    </div>
+
+    <div class="lead" style="margin:16px 0 0">Отрицательный результат честен и публикуем — мы не обещаем, что микроб обыграет рынок. Весь код и все логи открыты, любой может перепроверить каждое решение.</div>
+  </div>
+</section>
+
+<section id="eco">
+  <div class="wrap">
+    <div class="kick">SECTION 11 · BIO ECOSYSTEM</div>
+    <h2>Где MICRO стоит в экосистеме Bio</h2>
+    <div class="shk">три слоя · что именно задействовано в каждом</div>
+    <div class="lead">Bio Protocol строит инфраструктуру децентрализованной науки: агентный слой для анализа исследований и токен-слой для их финансирования. MICRO подключён к первому и торгуется ко второму.</div>
+
+    <div class="ecogrid">
+      <a class="eco" href="https://bio.xyz" target="_blank">
+        <div class="et"><span class="en">Bio Protocol</span><span class="eb">агентный слой · задействован</span></div>
+        <div class="ed">Ночной проход отправляет решения организмов и структуру коннектомов в BioAgents-совместимый API. Агент связывает спайковые паттерны с опубликованными работами по этим контурам и возвращает проверяемую гипотезу с цитатами.</div>
+      </a>
+
+      <a class="eco" href="https://www.stonkfun.xyz" target="_blank">
+        <div class="et"><span class="en">$BIO</span><span class="eb">квотовый актив</span></div>
+        <div class="ed">$MICRO торгуется в паре к $BIO на StonkFun. Ликвидность заблокирована через Burn &amp; Earn.</div>
+      </a>
+
+      <div class="eco" style="opacity:.62">
+        <div class="et"><span class="en">PeptAI</span><span class="eb">референс архитектуры</span></div>
+        <div class="ed">Гейтовый пайплайн MICRO построен по их образцу: кандидат идёт через последовательные гейты валидации и останавливается на первом отказе, а результат публикуется для проверки. Кода мы не берём — их пайплайн про белки, наш про нейроны.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="token">
+  <div class="wrap">
+    <div class="kick">SECTION 12 · ON-CHAIN</div>
+    <h2>$MICRO</h2>
+    <div class="shk">пара MICRO / BIO на StonkFun · ликвидность заблокирована</div>
+    <div class="tokgrid">
+      <div class="card">
+        <h3>Контракт</h3>
+        <div class="kv"><span class="k">пара</span><span>MICRO / BIO</span></div>
+        <div class="kv"><span class="k">лончпад</span><span>StonkFun · Solana</span></div>
+        <div class="kv"><span class="k">supply</span><span>1,000,000,000</span></div>
+        <div class="kv"><span class="k">ликвидность</span><span>locked · Burn&Earn</span></div>
+        <div class="kv"><span class="k">CA</span><span class="k">awaiting launch</span></div>
+        <a class="btn buy" href="#">купить $MICRO →</a>
+      </div>
+      <div class="card">
+        <h3>Утилити холдера</h3>
+        <ul class="util">
+          <li><b>Дивиденды в $BIO</b><span class="soon live">live</span><br>Распределение среди холдеров $MICRO, выплата в $BIO.</li>
+          <li><b>Голосование за существ</b><span class="soon">soon</span><br>Кого добавить четвёртым, кому докинуть капитал.</li>
+          <li><b>Полный доступ к данным</b><span class="soon">soon</span><br>Логи решений, слепки нейронов, гейтовые трассы, API, бэктесты.</li>
+          <li><b>Косметика</b><span class="soon">soon</span><br>Скины рабочих мест, предметы на столах.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="real">
+  <div class="wrap">
+    <div class="kick">SECTION 13 · METHOD</div>
+    <h2>Что здесь настоящее, а что нет</h2>
+    <div class="shk">сказано прямо</div>
+    <ul class="real">
+      <li><b>Коннектомы настоящие.</b> Проводка каждого существа прослежена по электронной микроскопии реального животного и взята из опубликованных датасетов выше. Ничего не выдумано и не насэмплировано.</li>
+      <li><b>Счета демонстрационные.</b> $10 000 на организм — симулированный баланс на реальных ценах Hyperliquid и реальном списке инструментов. Живой режим включается отдельно и по умолчанию выключен.</li>
+      <li><b>Мозг — симуляция.</b> Настоящая проводка, придуманная динамика. Нейроны — leaky integrate-and-fire. Это не прогноз, это нервная система с торговым счётом.</li>
+      <li><b>Прибыльность не доказана.</b> Существа не «научились торговать». Мы подаём цену как сенсорный стимул и читаем моторный выход. Это арт-science-эксперимент.</li>
+    </ul>
+  </div>
+</section>
+
+<footer><div class="wrap"><div class="foot">
+  Данные коннектомов: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu & Meinertzhagen 2016 (Ciona) · Verasztó & Jasek et al. 2025 (Platynereis). Все — под открытыми лицензиями, ссылки в секции SOURCES.<br>
+  MICRO — независимый проект, не аффилирован с упомянутыми протоколами и не одобрен ими.<br>
+  $MICRO — арт-эксперимент, не инвестиция. Прошлые результаты микроба не предсказывают будущие. Not financial advice. · build 2026.09
+</div></div></footer>
+
+<script>
+const P4=4,P6=6;
+const SYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT'];
+const C=[
+ {key:'elegans',name:'C. ELEGANS',nn:'302 N',sym:'SOL',eq:10641,side:'LONG',sz:12.4,lev:3,pnl:641,liq:118.2,col:'#5DCAA5',dark:'#1D9E75',sw:'#5DCAA5'},
+ {key:'ciona',name:'CIONA',nn:'177 N',sym:'BTC',eq:8110,side:'SHORT',sz:0.18,lev:4,pnl:-1890,liq:79400,col:'#F0997B',dark:'#D85A30',sw:'#F0997B'},
+ {key:'platynereis',name:'PLATYNEREIS',nn:'966 N',sym:'HYPE',eq:11430,side:'LONG',sz:310,lev:5,pnl:1430,liq:32.4,col:'#9FE1CB',dark:'#5DCAA5',sw:'#9FE1CB'},
+];
+let t=0,sel=0;
+const off=document.getElementById('office'),octx=off.getContext('2d');octx.imageSmoothingEnabled=false;
+function opx(x,y,c,w=1,h=1){octx.fillStyle=c;octx.fillRect(x,y,w*P4,h*P4);}
+function oblink(){return Math.floor(t*1.5)%6===0;}
+function drawOffice(){
+  const W=off.width,H=off.height;
+  const gr=octx.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#0e0e18');gr.addColorStop(.6,'#0a0a10');gr.addColorStop(1,'#08080b');
+  octx.fillStyle=gr;octx.fillRect(0,0,W,H);
+  octx.strokeStyle='rgba(127,119,221,0.06)';
+  for(let i=-4;i<9;i++){octx.beginPath();octx.moveTo(W/2+i*80,270);octx.lineTo(W/2+i*240,H);octx.stroke();}
+  octx.strokeStyle='rgba(127,119,221,0.10)';octx.beginPath();octx.moveTo(0,270);octx.lineTo(W,270);octx.stroke();
+  opx(0,66*P4,'#15151a',W/P4,3);
+  const gap=W/3;
+  C.forEach((c,ix)=>{
+    const bx=gap*ix+gap/2-90,deskY=250;
+    const bob=c.side!=='FLAT'&&c.pnl>0?Math.sin(t*3+ix)*3:0;const sink=c.pnl<-10?6:0;const y=deskY+bob+sink;
+    const mx=bx+66,my=deskY-64;
+    opx(mx,my,'#1c1c24',20,13);
+    const scr=c.side==='LONG'?'#0f2a20':c.side==='SHORT'?'#2a0f12':'#141417';opx(mx+2*P4,my+2*P4,scr,16,8);
+    for(let i=0;i<6;i++){const up=((i+Math.floor(t))%10)>4;const h=1+((i*7+ix)%4);opx(mx+3*P4+i*2.2*P4,my+8*P4-h*P4,up?c.dark:'#993C1D',1,h);}
+    if(Math.floor(t*2)%2===0)opx(mx+3*P4,my+3*P4,'#5DCAA5',1,1);
+    opx(mx+8*P4,my+13*P4,'#1c1c24',4,3);
+    const cx=bx+36;
+    if(ix===0){const a=8;for(let s=0;s<11;s++){const yy=y-s*5;const xx=cx+Math.sin(s*.5+t*2)*a;opx(xx-2*P4,yy,s%2?c.col:c.dark,4,2);}const hx=cx+Math.sin(11*.5+t*2)*a;opx(hx-3*P4,y-11*5-2*P4,c.col,6,4);opx(hx-1*P4,y-11*5,oblink()?c.dark:'#0a0a10',1,1);opx(hx+1*P4,y-11*5,oblink()?c.dark:'#0a0a10',1,1);}
+    else if(ix===1){opx(cx-5*P4,y-38,c.col,10,9);opx(cx-2*P4,y-33,oblink()?c.dark:'#0a0a10',2,2);opx(cx+2*P4,y-33,oblink()?c.dark:'#0a0a10',2,2);for(let s=0;s<7;s++){const yy=y-18+s*5;const xx=cx-1*P4+Math.sin(s*.7+t*4)*3*P4;opx(xx,yy,c.dark,3,3);}}
+    else{for(let s=0;s<10;s++){const yy=y-s*5;const wig=Math.sin(s*.5+t*3)*2;opx(cx-4*P4+wig,yy,s%2?c.col:c.dark,8,2);opx(cx-6*P4+wig,yy,'#5DCAA5',1,1);opx(cx+5*P4+wig,yy,'#5DCAA5',1,1);}opx(cx-4*P4,y-10*5-2*P4,c.col,8,4);opx(cx-2*P4,y-10*5,oblink()?c.dark:'#0a0a10',2,1);opx(cx+2*P4,y-10*5,oblink()?c.dark:'#0a0a10',2,1);}
+    octx.fillStyle='rgba(0,0,0,.3)';octx.beginPath();octx.ellipse(cx,y+8,32,6,0,0,6.28);octx.fill();
+    const w=168,h=50,cx0=bx-4,cy0=34;
+    octx.strokeStyle='#26262b';octx.beginPath();octx.moveTo(cx0+w/2,cy0+h);octx.lineTo(cx0+w/2,y-64);octx.stroke();
+    octx.fillStyle='#111114';octx.fillRect(cx0,cy0,w,h);
+    octx.strokeStyle=c.side==='LONG'?'#1D9E75':c.side==='SHORT'?'#993C1D':'#26262b';octx.strokeRect(cx0+.5,cy0+.5,w,h);
+    octx.textBaseline='top';octx.font='11px ui-monospace,monospace';octx.fillStyle='#e8e8ea';octx.fillText(c.name,cx0+8,cy0+7);
+    octx.font='9px ui-monospace,monospace';octx.fillStyle='#55555c';octx.fillText(c.nn,cx0+8,cy0+19);
+    const sym=c.side==='LONG'?'▲':c.side==='SHORT'?'▼':'■';
+    octx.font='10px ui-monospace,monospace';octx.fillStyle=c.side==='LONG'?'#5DCAA5':c.side==='SHORT'?'#E24B4A':'#8a8a92';
+    octx.fillText(c.side==='FLAT'?'■ FLAT':`${sym} ${c.sym} ${c.sz}·${c.lev}x`,cx0+8,cy0+33);
+    const pt=c.side==='FLAT'?'$0.00':(c.pnl>=0?'+':'−')+'$'+Math.abs(Math.round(c.pnl)).toLocaleString('en-US');
+    octx.font='14px ui-monospace,monospace';octx.fillStyle=c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
+    octx.fillText(pt,cx0+w-8-octx.measureText(pt).width,cy0+17);
+    octx.font='8px ui-monospace,monospace';octx.fillStyle='#55555c';const eq='$'+Math.round(c.eq).toLocaleString('en-US');octx.fillText(eq,cx0+w-8-octx.measureText(eq).width,cy0+7);
+  });
+}
+// ---------- BRAIN POINT CLOUD (orbitable, stonkfly-style) ----------
+const brain=document.getElementById('brain'),bctx=brain.getContext('2d');
+let pts=[],rotY=0,rotX=-0.15,autoRot=0,dragging=false,lastX=0,lastY=0,paused=false,brainT=0;
+const NEURON_N={0:302,1:177,2:966};
+function buildCloud(){
+  pts=[];const c=C[sel];
+  const N = sel===0?302 : sel===1?177 : 700; // draw subset for platynereis
+  if(sel===0){ // elegans: long thin worm-like cord
+    for(let i=0;i<N;i++){const u=i/N;const y=(u-0.5)*1.7;
+      const r=0.13*(1-Math.abs(u-0.5)*0.7);const a=Math.random()*6.28;
+      pts.push({x:Math.cos(a)*r,y:y,z:Math.sin(a)*r,f:Math.random()});}
+  } else if(sel===1){ // ciona: bulb head + tail
+    for(let i=0;i<N;i++){
+      if(i<N*0.55){const u=Math.random()*6.28,v=Math.acos(2*Math.random()-1),r=0.42*Math.cbrt(Math.random());
+        pts.push({x:Math.sin(v)*Math.cos(u)*r,y:Math.cos(v)*r-0.35,z:Math.sin(v)*Math.sin(u)*r,f:Math.random()});}
+      else{const u=(i-N*0.55)/(N*0.45);const a=Math.random()*6.28;const r=0.10*(1-u*0.6);
+        pts.push({x:Math.cos(a)*r,y:0.05+u*1.0,z:Math.sin(a)*r,f:Math.random()});}}
+  } else { // platynereis: 3 segments + head
+    for(let i=0;i<N;i++){
+      const seg=Math.floor(Math.random()*4);
+      const yBase=-0.55+seg*0.38;
+      const u=Math.random()*6.28;const r=(seg===0?0.34:0.28)*Math.cbrt(Math.random());
+      pts.push({x:Math.cos(u)*r,y:yBase+(Math.random()-0.5)*0.22,z:Math.sin(u)*r*0.8,f:Math.random()});}
+  }
+}
+function drawBrain(){
+  const r=brain.getBoundingClientRect();
+  if(brain.width!==Math.round(r.width)){brain.width=Math.round(r.width);brain.height=Math.round(r.width*0.68);}
+  const W=brain.width,H=brain.height,c=C[sel];
+  bctx.clearRect(0,0,W,H);
+  const cx=W/2,cy=H/2,scale=Math.min(W,H)*0.42;
+  const ay=rotY+autoRot, ax=rotX;
+  const proj=pts.map(p=>{
+    let x=p.x*Math.cos(ay)-p.z*Math.sin(ay);
+    let z=p.x*Math.sin(ay)+p.z*Math.cos(ay);
+    let y=p.y*Math.cos(ax)-z*Math.sin(ax);
+    z=p.y*Math.sin(ax)+z*Math.cos(ax);
+    return{sx:cx+x*scale,sy:cy+y*scale,z:z,f:p.f};
+  });
+  proj.sort((m,n)=>m.z-n.z);
+  proj.forEach(p=>{
+    const d=(p.z+1)/2;
+    const spike=Math.sin(brainT*3+p.f*40)>0.82;
+    bctx.globalAlpha=0.18+d*0.72;
+    bctx.fillStyle=spike?'#e8e8ea':(d>0.55?c.col:c.dark);
+    bctx.beginPath();bctx.arc(p.sx,p.sy,spike?1.9:(0.7+d*1.3),0,6.28);bctx.fill();
+  });
+  bctx.globalAlpha=1;
+}
+brain.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;});
+window.addEventListener('pointerup',()=>dragging=false);
+window.addEventListener('pointermove',e=>{if(dragging){rotY+=(e.clientX-lastX)*0.01;rotX+=(e.clientY-lastY)*0.006;rotX=Math.max(-1.2,Math.min(1.2,rotX));lastX=e.clientX;lastY=e.clientY;}});
+document.getElementById('pausebtn').onclick=function(){paused=!paused;this.textContent=paused?'RESUME MOTION':'PAUSE MOTION';};
+
+function updateBrainStats(){
+  const c=C[sel];
+  document.getElementById('b-neurons').textContent=NEURON_N[sel].toLocaleString('en-US');
+  document.getElementById('b-spikes').textContent=Math.round(40+Math.abs(c.pnl)*6+Math.random()*30);
+  document.getElementById('b-mem').textContent=Math.round(4+Math.abs(c.pnl)*0.7);
+  const secs=Math.floor(brainT);
+  const hh=String(Math.floor(secs/3600)).padStart(2,'0'),mm=String(Math.floor(secs%3600/60)).padStart(2,'0'),ss=String(secs%60).padStart(2,'0');
+  document.getElementById('b-time').textContent=hh+':'+mm+':'+ss;
+  const drive=c.side==='LONG'?0.34+c.pnl*0.01:c.side==='SHORT'?-0.44:0.04;
+  const st=document.getElementById('b-state');
+  st.textContent=c.side==='FLAT'?'HOLD':c.side;
+  st.style.color=c.side==='LONG'?'var(--green)':c.side==='SHORT'?'var(--red)':'var(--mid)';
+  document.getElementById('b-desc').textContent=
+    c.side==='FLAT'?'Моторный ридаут ниже порога 0.25 — существо ждёт.':
+    c.side==='LONG'?'Моторный ридаут выше порога 0.25 — существо покупает.':
+    'Моторный ридаут ниже −0.25 — существо продаёт.';
+  const f=document.getElementById('b-fill');
+  f.style.width=Math.min(100,Math.abs(drive)*140)+'%';
+  f.style.background=drive>=0?'var(--green)':'var(--red)';
+  document.getElementById('b-drive').textContent=(drive>=0?'+':'')+drive.toFixed(2);
+  document.getElementById('exe').textContent=['ELEGANS','CIONA','PLATYNEREIS'][sel]+'.EXE';
+}
+function drawRace(){
+  const svg=document.getElementById('race-svg');
+  const lines=[{c:'#9FE1CB',p:'0,90 60,80 120,70 180,55 240,58 300,42 360,44 420,34'},{c:'#5DCAA5',p:'0,90 60,88 120,84 180,86 240,80 300,84 360,82 420,82'},{c:'#E24B4A',p:'0,90 60,100 120,112 180,108 240,124 300,120 360,132 420,128'}];
+  let s=`<rect x="0" y="0" width="420" height="150" fill="transparent"/><line x1="0" y1="80" x2="420" y2="80" stroke="#26262b" stroke-dasharray="3 3"/><text x="4" y="76" fill="#55555c" font-size="9" font-family="monospace">$100</text>`;
+  lines.forEach(l=>{s+=`<polyline points="${l.p}" fill="none" stroke="${l.c}" stroke-width="2"/>`;const pts=l.p.split(' ').pop().split(',');s+=`<circle cx="${pts[0]}" cy="${pts[1]}" r="3" fill="${l.c}"/>`;});
+  svg.innerHTML=s;
+}
+function drawLB(){
+  const sorted=[...C].sort((a,b)=>b.eq-a.eq),el=document.getElementById('lb');el.innerHTML='';
+  sorted.forEach((c,i)=>{const d=c.eq-10000,dc=d>0?'green':d<0?'red':'';const r=document.createElement('div');r.className='lbrow'+(i===0?' first':'');
+    r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${d>=0?'+':'−'}$${Math.abs(Math.round(d)).toLocaleString('en-US')}</span><span class="eq" style="color:var(--fg)">$${c.eq.toFixed(2)}</span>`;
+    el.appendChild(r);});
+}
+
+// ---------- GATE PIPELINE ----------
+const GATES=[['G1','PROVENANCE'],['G2','ACTIVITY'],['G3','READOUT'],['G4','EQUITY'],
+             ['G5','COOLDOWN'],['G6','RISK'],['G7','EXCHANGE'],['G8','EXECUTION']];
+const STOP_REASONS={
+  3:'|drive| ниже порога 0.25 — ридаут не дотянул',
+  5:'кулдаун между сделками ещё не истёк',
+  6:'дневной лимит убытка достигнут',
+  7:'ноционал ниже минимума биржи $10'
+};
+function drawGates(){
+  const el=document.getElementById('gwrap'); if(!el) return;
+  el.innerHTML='';
+  C.forEach((c,i)=>{
+    // depth derived from current state: FLAT stops at G3, otherwise full pass
+    let depth = c.side==='FLAT' ? 2 : 8;
+    if(c.side!=='FLAT' && c.eq<3000) depth=3;
+    const row=document.createElement('div'); row.className='grow';
+    let cells='';
+    GATES.forEach((g,idx)=>{
+      let cls='gskip';
+      if(idx<depth) cls='gpass';
+      else if(idx===depth) cls='gfail';
+      cells+=`<div class="gcell ${cls}">${g[0]}</div>`;
+    });
+    const passed = depth>=8;
+    const msg = passed
+      ? '<b>Прошёл все восемь гейтов</b> — решение исполнено.'
+      : `<b>Останов на ${GATES[depth][0]} ${GATES[depth][1]}</b> — ${STOP_REASONS[depth+1]||'условие не выполнено'}.`;
+    row.innerHTML=`
+      <div class="ghead"><span class="gname">${c.name}</span>
+        <span class="gdepth">${Math.min(depth,8)}/8 гейтов · ${c.nn}</span></div>
+      <div class="gbar">${cells}</div>
+      <div class="gmsg">${msg}</div>`;
+    el.appendChild(row);
+  });
+}
+
+
+// ---------- TRADE TIMELINE ----------
+const TL_HOURS=12;
+let TRADES=[];
+function seedTrades(){
+  TRADES=[];
+  const now=Date.now();
+  C.forEach((c,lane)=>{
+    let t=now-TL_HOURS*3600e3+Math.random()*40*60e3;
+    while(t<now-20*60e3){
+      const hold=(25+Math.random()*150)*60e3;
+      const close=Math.min(now,t+hold);
+      const sym=SYMS[Math.floor(Math.random()*SYMS.length)];
+      const side=Math.random()>0.45?'LONG':'SHORT';
+      const pnl=Math.round((Math.random()-0.46)*900);
+      const rotated=Math.random()<0.22;
+      TRADES.push({lane,org:c.name,col:c.sw,sym,side,open:t,close,pnl,rotated});
+      t=close+(10+Math.random()*70)*60e3;
+    }
+  });
+  TRADES.sort((a,b)=>a.open-b.open);
+}
+function drawTimeline(){
+  const track=document.getElementById('tltrack'); if(!track) return;
+  const now=Date.now(), span=TL_HOURS*3600e3, t0=now-span;
+  const W=track.clientWidth||600;
+  const x=ts=>((ts-t0)/span)*W;
+
+  let html='';
+  C.forEach((c,i)=>{
+    html+=`<div class="tlane" style="top:${i*50}px"></div>
+           <div class="tlabel" style="top:${i*50+6}px;color:${c.sw}">${c.name}</div>`;
+  });
+
+  TRADES.forEach((tr,idx)=>{
+    const y=tr.lane*50+30;
+    const x1=x(tr.open), x2=x(tr.close);
+    const col=tr.pnl>=0?'#1D9E75':'#993C1D';
+    const dot=tr.pnl>=0?'#5DCAA5':'#E24B4A';
+    const title=`${tr.org} · ${tr.side} ${tr.sym} · ${new Date(tr.open).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}→${new Date(tr.close).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})} · ${tr.pnl>=0?'+':'−'}$${Math.abs(tr.pnl)}`;
+    html+=`<div class="evline" style="left:${x1}px;width:${Math.max(2,x2-x1)}px;top:${y}px;background:${col}"></div>`;
+    html+=`<div class="evdot" title="${title}" style="left:${x1}px;top:${y}px;background:${dot};border-radius:${tr.rotated?'50%':'2px'}"></div>`;
+    html+=`<div class="evdot" title="${title}" style="left:${x2}px;top:${y}px;background:#111114;border:1.5px solid ${dot}"></div>`;
+  });
+  track.innerHTML=html;
+
+  const ax=document.getElementById('tlaxis');
+  let labels='';
+  for(let h=TL_HOURS;h>=0;h-=3){
+    const d=new Date(now-h*3600e3);
+    labels+=`<span>${String(d.getHours()).padStart(2,'0')}:00</span>`;
+  }
+  ax.innerHTML=labels;
+  document.getElementById('tlcount').textContent=TRADES.length+' сделок';
+
+  // recent feed
+  const feed=document.getElementById('tlfeed');
+  const recent=[...TRADES].sort((a,b)=>b.close-a.close).slice(0,6);
+  feed.innerHTML=recent.map(tr=>{
+    const dot=tr.pnl>=0?'#5DCAA5':'#E24B4A';
+    const sideCol=tr.side==='LONG'?'#5DCAA5':'#E24B4A';
+    const sym=tr.side==='LONG'?'▲':'▼';
+    const dur=Math.round((tr.close-tr.open)/60e3);
+    return `<div class="fe" style="border-left-color:${tr.col}">
+      <span class="ft">${new Date(tr.open).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span>
+      <span class="fo">${tr.org}</span>
+      <span class="fs" style="color:${sideCol}">${sym} ${tr.side}</span>
+      <span class="fd">${tr.sym} · держал ${dur} мин${tr.rotated?' · ротация':''}</span>
+      <span class="fp" style="color:${dot}">${tr.pnl>=0?'+':'−'}$${Math.abs(tr.pnl).toLocaleString('en-US')}</span>
+    </div>`;
+  }).join('');
+}
+
+function drawLog(){
+  document.getElementById('ledger-log').innerHTML=`
+   <div><span class="k">14:02:11</span> · platynereis · readout 0.71 → <span class="green">LONG 3.1 @ 41.13</span></div>
+   <div><span class="k">13:58:40</span> · ciona · readout −0.44 → <span class="red">SHORT +0.8</span></div>
+   <div><span class="k">13:55:02</span> · elegans · readout 0.33 → <span class="green">LONG 1.2 @ 36.60</span></div>`;
+}
+const tabs=document.getElementById('tabs');
+C.forEach((c,i)=>{const b=document.createElement('div');b.className='tab'+(i===0?' on':'');b.innerHTML=c.name+'<small>'+c.nn+'</small>';b.onclick=()=>{sel=i;buildCloud();updateBrainStats();[...tabs.children].forEach((x,j)=>x.className='tab'+(j===i?' on':''));};tabs.appendChild(b);});
+function loop(){t+=0.016;if(!paused){autoRot+=0.0035;brainT+=0.016;}drawOffice();drawBrain();requestAnimationFrame(loop);}
+buildCloud();updateBrainStats();loop();drawRace();drawLB();drawLog();drawGates();seedTrades();drawTimeline();
+window.addEventListener('resize',drawTimeline);
+setInterval(()=>{
+  
+  C.forEach(c=>{if(c.side!=='FLAT'){const dl=(Math.random()-0.5)*60;c.pnl+=dl;c.eq+=dl;}
+    if(Math.random()<0.1){const r=Math.random();c.side=r<0.4?'LONG':r<0.75?'SHORT':'FLAT';c.sym=SYMS[Math.floor(Math.random()*SYMS.length)];c.sz=+(0.5+Math.random()*20).toFixed(1);c.lev=1+Math.floor(Math.random()*5);c.liq=+(c.side==='LONG'?p*0.55:p*1.25).toFixed(2);}});
+  drawLB();updateBrainStats();drawGates();
+},1600);
+setInterval(()=>{if(Math.random()<0.5){seedTrades();drawTimeline();}},9000);
+
+const rcv=document.getElementById('rcv'),RX=rcv.getContext('2d');
+RX.imageSmoothingEnabled=false;
+const RW=rcv.width,RH=rcv.height;
+
+const RSYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT','TIA','INJ'];
+function mkTrades(n,seed){
+  const out=[];let ts=Date.now()-n*17*60e3;
+  for(let i=0;i<n;i++){
+    const sym=RSYMS[(seed*5+i*7)%RSYMS.length];
+    const side=((seed+i)%10)>4?'LONG':'SHORT';
+    const open=!!(i>=n-2);
+    const pnl=open?Math.round((Math.random()-0.4)*700):Math.round((Math.random()-0.47)*900);
+    out.push({ts,sym,side,size:+(0.4+((seed*3+i*11)%40)/2).toFixed(1),
+              lev:1+((seed+i)%5),pnl,open});
+    ts+=(9+((i*13)%22))*60e3;
+  }
+  return out.reverse();
+}
+const RORG=[
+ {key:'elegans',title:'C. ELEGANS',neurons:302,sym:'SOL',side:'LONG',pnl:641,
+  neon:'#5DCAA5',neon2:'#1D9E75',city:'#12323a',accent:'#9FE1CB',trades:mkTrades(9,1)},
+ {key:'ciona',title:'CIONA',neurons:177,sym:'BTC',side:'SHORT',pnl:-1890,
+  neon:'#F0997B',neon2:'#D85A30',city:'#3a1c22',accent:'#FFC2A8',trades:mkTrades(9,4)},
+ {key:'platynereis',title:'PLATYNEREIS',neurons:966,sym:'HYPE',side:'LONG',pnl:1430,
+  neon:'#AFA9EC',neon2:'#7F77DD',city:'#241f44',accent:'#CFCAF6',trades:mkTrades(9,8)},
+];
+let rsel=0,rt=0;
+let rraster=[],rspikes=685900;
+
+function initRaster(){rraster=[];for(let r=0;r<96;r++){const row=[];for(let c=0;c<64;c++)row.push(Math.random()<0.12?1:0);rraster.push(row);}}
+initRaster();
+
+// ---------- background: neon city ----------
+function city(o){
+  const g=RX.createLinearGradient(0,0,0,RH);
+  g.addColorStop(0,'#0a0618');g.addColorStop(.45,'#120a24');g.addColorStop(1,'#05050a');
+  RX.fillStyle=g;RX.fillRect(0,0,RW,RH);
+
+  // far towers
+  for(let i=0;i<26;i++){
+    const bx=(i*41+((i*i)%37))%RW;
+    const bw=26+((i*13)%30);
+    const bh=110+((i*57)%230);
+    RX.fillStyle=i%2?'#0d0a1e':'#100c24';
+    RX.fillRect(bx,RH-150-bh,bw,bh+150);
+    // windows
+    for(let wy=0;wy<bh;wy+=12){
+      for(let wx=3;wx<bw-4;wx+=9){
+        const on=((i*7+wy+wx)%11)<3;
+        if(!on)continue;
+        const flick=Math.sin(rt*2+i+wy)>0.9;
+        RX.fillStyle=flick?o.accent:(((i+wy)%3)?o.city:'#2a1f4a');
+        RX.fillRect(bx+wx,RH-150-bh+wy,3,5);
+      }
+    }
+  }
+  // vertical neon rain streaks
+  for(let i=0;i<40;i++){
+    const rx=(i*57+ (rt*22*(1+(i%3)))) % (RW+60) - 30;
+    const ry=((i*83 + rt*90*(1+(i%4))) % (RH+200)) - 100;
+    RX.fillStyle=i%4?'rgba(216,90,48,.35)':'rgba(127,119,221,.35)';
+    RX.fillRect(rx, ry, 2, 26+((i*11)%40));
+  }
+  // horizon glow
+  const hg=RX.createLinearGradient(0,RH-230,0,RH-120);
+  hg.addColorStop(0,'rgba(0,0,0,0)');hg.addColorStop(1,o.neon2+'33');
+  RX.fillStyle=hg;RX.fillRect(0,RH-230,RW,110);
+}
+
+// ---------- monitor wall ----------
+function candles(x,y,w,h,seed,up,o){
+  RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
+  const n=Math.floor(w/7);
+  for(let i=0;i<n;i++){
+    const s=(seed*13+i*29)%17;
+    const green=((seed+i)%10)>4;
+    const ch=4+(s%Math.max(4,Math.floor(h*0.55)));
+    const cy=y+h-ch-((s*3)%Math.max(3,Math.floor(h*0.3)));
+    RX.fillStyle=green?'#1D9E75':'#993C1D';
+    RX.fillRect(x+2+i*7,cy,4,ch);
+    RX.fillRect(x+3+i*7,cy-3,1,ch+6);
+  }
+  // moving cursor line
+  const cx=x+((rt*40+seed*30)%w);
+  RX.fillStyle=o.neon+'66';RX.fillRect(cx,y,1,h);
+}
+function orderbook(x,y,w,h){
+  RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
+  for(let i=0;i<Math.floor(h/5);i++){
+    const bid=i>Math.floor(h/10);
+    const len=4+((i*37+Math.floor(rt*3))%(w-8));
+    RX.fillStyle=bid?'rgba(29,158,117,.55)':'rgba(153,60,29,.55)';
+    RX.fillRect(x+2,y+2+i*5,len,3);
+  }
+}
+function heat(x,y,w,h,o){
+  RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
+  for(let r=0;r<Math.floor(h/6);r++)for(let c=0;c<Math.floor(w/6);c++){
+    const v=(Math.sin(r*0.7+c*0.5+rt*1.5)+1)/2;
+    if(v<0.45)continue;
+    RX.fillStyle=v>0.8?o.accent:o.neon2;
+    RX.globalAlpha=v*0.8;RX.fillRect(x+c*6,y+r*6,5,5);RX.globalAlpha=1;
+  }
+}
+function blotter(x,y,w,h,o){
+  RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
+  // header
+  RX.font='7px ui-monospace,monospace';RX.fillStyle='#55555c';
+  RX.fillText('TIME',x+4,y+9);RX.fillText('SYM',x+42,y+9);
+  RX.fillText('SIDE',x+82,y+9);RX.fillText('SIZE',x+120,y+9);
+  const pl='P&L';RX.fillText(pl,x+w-6-RX.measureText(pl).width,y+9);
+  RX.fillStyle='#1a2230';RX.fillRect(x+3,y+12,w-6,1);
+
+  const rows=Math.min(o.trades.length,Math.floor((h-18)/11));
+  for(let i=0;i<rows;i++){
+    const tr=o.trades[i];
+    const ry=y+22+i*11;
+    // open position gets a highlight bar
+    if(tr.open){RX.fillStyle=o.neon+'14';RX.fillRect(x+2,ry-8,w-4,10);
+      RX.fillStyle=o.neon;RX.fillRect(x+2,ry-8,1,10);}
+    RX.font='7px ui-monospace,monospace';
+    RX.fillStyle='#55555c';
+    const d=new Date(tr.ts);
+    RX.fillText(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'),x+4,ry);
+    RX.fillStyle=tr.open?'#e8e8ea':'#8a8a92';
+    RX.fillText(tr.sym,x+42,ry);
+    RX.fillStyle=tr.side==='LONG'?'#5DCAA5':'#E24B4A';
+    RX.fillText((tr.side==='LONG'?'\u25B2':'\u25BC')+tr.side.slice(0,1),x+82,ry);
+    RX.fillStyle='#8a8a92';
+    RX.fillText(tr.size+'\u00B7'+tr.lev+'x',x+120,ry);
+    RX.fillStyle=tr.pnl>=0?'#5DCAA5':'#E24B4A';
+    const pt=(tr.pnl>=0?'+':'\u2212')+Math.abs(tr.pnl);
+    RX.fillText(pt,x+w-6-RX.measureText(pt).width,ry);
+  }
+}
+
+function monitors(o){
+  const mx=470,my=70;
+  // rframe glow
+  RX.fillStyle=o.neon+'18';RX.fillRect(mx-10,my-10,430,312);
+  // main big screen
+  RX.fillStyle='#0c1018';RX.fillRect(mx,my,250,140);
+  RX.strokeStyle=o.neon2;RX.lineWidth=1;RX.strokeRect(mx+.5,my+.5,250,140);
+  candles(mx+6,my+24,238,110,rsel+1,true,o);
+  RX.fillStyle=o.accent;RX.font='9px ui-monospace,monospace';
+  RX.fillText(o.sym+'-PERP',mx+8,my+15);
+  RX.fillStyle=o.side==='LONG'?'#5DCAA5':'#E24B4A';
+  RX.fillText(o.side,mx+200,my+15);
+  // right stack
+  RX.fillStyle='#0c1018';RX.fillRect(mx+260,my,160,66);
+  RX.strokeStyle=o.neon2;RX.strokeRect(mx+260.5,my+.5,160,66);
+  orderbook(mx+264,my+4,152,58);
+  RX.fillStyle='#0c1018';RX.fillRect(mx+260,my+74,160,66);
+  RX.strokeStyle=o.neon2;RX.strokeRect(mx+260.5,my+74.5,160,66);
+  heat(mx+264,my+78,152,58,o);
+  // lower wide strip = TRADE BLOTTER
+  RX.fillStyle='#0c1018';RX.fillRect(mx,my+150,420,130);
+  RX.strokeStyle=o.neon2;RX.strokeRect(mx+.5,my+150.5,420,130);
+  RX.font='8px ui-monospace,monospace';RX.fillStyle=o.accent;
+  RX.fillText('OPEN + RECENT',mx+8,my+163);
+  RX.fillStyle='#55555c';
+  const openN=o.trades.filter(rt=>rt.open).length;
+  const lbl=openN+' OPEN / '+o.trades.length+' TODAY';
+  RX.fillText(lbl,mx+412-RX.measureText(lbl).width,my+163);
+  blotter(mx+6,my+168,408,106,o);
+}
+
+// ---------- desk ----------
+function desk(o){
+  // desk top (perspective slab)
+  RX.fillStyle='#0d0d14';
+  RX.beginPath();RX.moveTo(60,400);RX.lineTo(RW-40,360);RX.lineTo(RW-40,470);RX.lineTo(60,520);RX.closePath();RX.fill();
+  // neon edge
+  RX.strokeStyle=o.neon;RX.lineWidth=2;RX.globalAlpha=.85;
+  RX.beginPath();RX.moveTo(60,400);RX.lineTo(RW-40,360);RX.stroke();RX.globalAlpha=1;
+  RX.fillStyle=o.neon+'22';RX.fillRect(60,400,RW-100,3);
+  // keyboard
+  RX.fillStyle='#15151f';RX.fillRect(430,405,180,26);
+  for(let k=0;k<16;k++){
+    const lit=(Math.floor(rt*7)+k)%9===0;
+    RX.fillStyle=lit?o.neon:'#26262b';
+    RX.fillRect(436+k*11,410,8,6);RX.fillRect(436+k*11,420,8,6);
+  }
+  // speaker with neon rings
+  RX.fillStyle='#0f0f18';RX.fillRect(RW-130,250,90,190);
+  RX.strokeStyle=o.neon2;RX.lineWidth=2;
+  [[RW-85,300,26],[RW-85,370,20]].forEach(([cx,cy,r])=>{
+    RX.beginPath();RX.arc(cx,cy,r,0,6.28);RX.stroke();
+    RX.beginPath();RX.arc(cx,cy,r*0.45,0,6.28);RX.stroke();
+  });
+  RX.fillStyle=o.neon;RX.fillRect(RW-58,268,4,4);
+}
+
+// ---------- organisms (large, 3/4 view) ----------
+function organism(o){
+  const cx=250,cy=350,P=5;
+  const px=(x,y,c,w=1,h=1)=>{RX.fillStyle=c;RX.fillRect(x,y,w*P,h*P);};
+  const breathe=Math.sin(rt*1.6)*3;
+  const y=cy+breathe;
+
+  // ground glow
+  const gg=RX.createRadialGradient(cx,y+70,5,cx,y+70,150);
+  gg.addColorStop(0,o.neon+'33');gg.addColorStop(1,'rgba(0,0,0,0)');
+  RX.fillStyle=gg;RX.fillRect(cx-150,y-40,300,180);
+
+  if(rsel===0){ // C. ELEGANS — long sinuous body, head raised toward screens
+    for(let s=0;s<22;s++){
+      const yy=y+70-s*6;
+      const xx=cx-70+s*4+Math.sin(s*0.45+rt*2)*16;
+      const w=s<3?2:(s>18?2:3);
+      px(xx,yy,s%2?o.neon:o.neon2,w,2);
+      if(s%4===0){px(xx-P,yy,o.accent,1,1);}
+    }
+    const hx=cx-70+22*4+Math.sin(22*0.45+rt*2)*16;
+    px(hx-2*P,y-70,o.neon,6,5);
+    px(hx-1*P,y-64,Math.floor(rt*1.5)%6===0?o.neon2:'#05050a',1,2);
+    px(hx+2*P,y-64,Math.floor(rt*1.5)%6===0?o.neon2:'#05050a',1,2);
+  }
+  else if(rsel===1){ // CIONA — bulbous head, long trailing tail
+    px(cx-30,y-60,o.neon,13,12);
+    px(cx-30,y-60,o.accent,6,5);
+    px(cx-18,y-46,'#2a0f12',3,3);px(cx+2,y-46,'#2a0f12',3,3);
+    px(cx-14,y-22,o.neon2,7,2);
+    for(let s=0;s<14;s++){
+      const yy=y-4+s*6;
+      const xx=cx-24+Math.sin(s*0.6+rt*3.2)*22;
+      px(xx,yy,s%2?o.neon2:o.neon,4,3);
+    }
+  }
+  else { // PLATYNEREIS — segmented, parapodia fanning
+    for(let s=0;s<18;s++){
+      const yy=y+64-s*7;
+      const wig=Math.sin(s*0.5+rt*2.4)*9;
+      px(cx-26+wig,yy,s%2?o.neon:o.neon2,11,3);
+      const fan=Math.sin(s*0.8+rt*4)*5;
+      px(cx-34+wig+fan,yy,o.accent,2,2);
+      px(cx+30+wig-fan,yy,o.accent,2,2);
+    }
+    const hw=Math.sin(18*0.5+rt*2.4)*9;
+    px(cx-26+hw,y-64,o.neon,11,6);
+    px(cx-18+hw,y-56,'#05050a',2,2);px(cx+10+hw,y-56,'#05050a',2,2);
+    for(let a=0;a<4;a++)px(cx-24+hw+a*9,y-74,o.accent,1,2);
+  }
+}
+
+// ---------- HUD: neural replay ----------
+function hud(o){
+  const hx=24,hy=RH-118,hw=430,hh=94;
+  RX.fillStyle='rgba(6,6,14,.88)';RX.fillRect(hx,hy,hw,hh);
+  RX.strokeStyle=o.neon2;RX.lineWidth=1;RX.strokeRect(hx+.5,hy+.5,hw,hh);
+  RX.fillStyle=o.neon;RX.fillRect(hx,hy,3,hh);
+
+  RX.font='10px ui-monospace,monospace';RX.fillStyle=o.accent;
+  RX.fillText('NEURAL REPLAY',hx+14,hy+17);
+  RX.fillStyle=o.dim||'#55555c';
+  RX.fillText((0.03+Math.abs(Math.sin(rt))*0.02).toFixed(2)+' S',hx+hw-52,hy+17);
+
+  // big rspikes number
+  rspikes+=Math.round((Math.random()-0.45)*9000);
+  rspikes=Math.max(120000,Math.min(1400000,rspikes));
+  RX.font='30px ui-monospace,monospace';RX.fillStyle='#fff';
+  RX.fillText((rspikes/1000).toFixed(1)+'K',hx+14,hy+52);
+  RX.font='9px ui-monospace,monospace';RX.fillStyle='#8a8a92';
+  RX.fillText('SPIKES / S',hx+14,hy+66);
+
+  // segmented bar
+  const bx=hx+150,bw=hw-166;
+  const fill=Math.min(1,rspikes/1200000);
+  for(let i=0;i<34;i++){
+    const on=i/34<fill;
+    RX.fillStyle=on?o.neon:'#1a1a24';
+    RX.fillRect(bx+i*(bw/34),hy+34,bw/34-2,16);
+  }
+
+  // spike rraster
+  const rx=hx+150,ry=hy+58,rw=bw,rh=22;
+  RX.fillStyle='#04040a';RX.fillRect(rx,ry,rw,rh);
+  const cols=Math.floor(rw/4);
+  for(let c=0;c<cols;c++){
+    for(let r=0;r<5;r++){
+      const idx=(c+Math.floor(rt*14))%64;
+      const on=rraster[(r*13+rsel*7)%96][idx];
+      if(!on)continue;
+      RX.fillStyle=o.neon;RX.globalAlpha=.75;
+      RX.fillRect(rx+c*4,ry+2+r*4,2,3);RX.globalAlpha=1;
+    }
+  }
+  RX.font='8px ui-monospace,monospace';RX.fillStyle='#55555c';
+  RX.fillText(o.neurons+' NEURONS   96-CELL SPIKE RASTER',hx+14,hy+84);
+
+  // pnl chip right
+  const pc=o.pnl>=0?'#5DCAA5':'#E24B4A';
+  RX.font='13px ui-monospace,monospace';RX.fillStyle=pc;
+  const ptxt=(o.pnl>=0?'+$':'−$')+Math.abs(o.pnl).toLocaleString('en-US');
+  RX.fillText(ptxt,hx+hw-14-RX.measureText(ptxt).width,hy+84);
+}
+
+function title(o){
+  RX.font='19px ui-monospace,monospace';
+  RX.fillStyle='#fff';RX.fillText(o.title,30,42);
+  RX.font='9px ui-monospace,monospace';RX.fillStyle=o.accent;
+  RX.fillText('DEMO $10,000  ·  ALL PERPS  ·  AUTONOMOUS',30,58);
+}
+
+function rframe(){
+  rt+=0.016;
+  const o=RORG[rsel];
+  city(o);monitors(o);desk(o);organism(o);hud(o);title(o);
+  // scanlines
+  RX.globalAlpha=.05;RX.fillStyle='#000';
+  for(let y=0;y<RH;y+=3)RX.fillRect(0,y,RW,1);
+  RX.globalAlpha=1;
+  requestAnimationFrame(rframe);
+}
+rframe();
+
+const rtabs=document.getElementById('rtabs');
+RORG.forEach((o,i)=>{
+  const b=document.createElement('div');
+  b.className='tab'+(i===0?' on':'');
+  b.innerHTML=o.title+'<small>'+o.neurons+' N</small>';
+  b.onclick=()=>{rsel=i;initRaster();[...rtabs.children].forEach((x,j)=>x.className='tab'+(j===i?' on':''));};
+  rtabs.appendChild(b);
+});
+setInterval(()=>{
+  RORG.forEach(o=>{
+    o.pnl+=Math.round((Math.random()-0.5)*120);
+    // open positions drift; closed ones are settled and never move
+    o.trades.forEach(tr=>{if(tr.open)tr.pnl+=Math.round((Math.random()-0.48)*70);});
+    // occasionally an organism closes a position and opens a new one
+    if(Math.random()<0.16){
+      const open=o.trades.filter(rt=>rt.open);
+      if(open.length){open[open.length-1].open=false;}
+      o.trades.unshift({
+        ts:Date.now(),
+        sym:RSYMS[Math.floor(Math.random()*RSYMS.length)],
+        side:Math.random()>0.45?'LONG':'SHORT',
+        size:+(0.4+Math.random()*20).toFixed(1),
+        lev:1+Math.floor(Math.random()*5),
+        pnl:0,open:true});
+      if(o.trades.length>12)o.trades.pop();
+    }
+  });
+},2000);
+
+</script>
+</body>
+</html>
