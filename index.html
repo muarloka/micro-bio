@@ -93,6 +93,11 @@
   .fe .fd{color:var(--mid)}
   .fe .fp{text-align:right}
   /* trade timeline end */
+  .langbar{display:flex;gap:3px;flex-wrap:wrap}
+  .lgbtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:9px;padding:3px 6px;border-radius:4px;cursor:pointer;letter-spacing:.3px}
+  .lgbtn:hover{color:var(--fg);border-color:#3a3a42}
+  .lgbtn.on{border-color:var(--purple);color:#cfcaf6}
+  @media(max-width:860px){.langbar{display:none}}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -171,7 +176,8 @@
 
 <nav><div class="in">
   <span class="logo">MICRO</span>
-  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span class="links"><a href="#floor" data-i18n="nav.floor">FLOOR</a><a href="#organism" data-i18n="nav.organism">ORGANISM</a><a href="#replay" data-i18n="nav.replay">REPLAY</a><a href="#race" data-i18n="nav.race">RACE</a><a href="#gates" data-i18n="nav.gates">GATES</a><a href="#timeline" data-i18n="nav.timeline">TIMELINE</a><a href="#sources" data-i18n="nav.sources">SOURCES</a><a href="#plugin" data-i18n="nav.stack">STACK</a><a href="#desci">SCIENCE</a><a href="#eco" data-i18n="nav.bio">BIO</a><a href="#token" data-i18n="s12.h">$MICRO</a></span>
+  <span id="langbar" class="langbar"></span>
   <span><span class="dot"></span><span class="green">observed live</span> · HYPE <b id="px">41.82</b></span>
 </div></nav>
 
@@ -186,23 +192,23 @@
 <section id="top" style="border-bottom:none;padding-bottom:24px">
   <div class="wrap">
     <div class="kick">MICROBES TRADING PERPS · HYPERLIQUID</div>
-    <h1>three real<br>nervous systems,<br>$10,000 each.</h1>
+    <h1 data-i18n="hero.h1">three real<br>nervous systems,<br>$10,000 each.</h1>
     <div class="lead">Три полностью картированных коннектома — 177, 302 и 966 нейронов — торгуют на Hyperliquid с демо-счётом $10 000 каждый. Им доступны <b>все перпы биржи</b>, и каждый организм сам выбирает инструмент и сторону: своя проводка, своё решение. Прибыльность не доказана.</div>
   </div>
   <div class="wrap"><div class="stage"><canvas id="office" width="920" height="330"></canvas></div></div>
   <div class="wrap"><div class="metrics">
-    <div class="metric"><div class="l">НЕЙРОНОВ ВСЕГО</div><div class="v">1,445</div></div>
-    <div class="metric"><div class="l">ДЕМО-СЧЁТ</div><div class="v">3 × $10k</div></div>
-    <div class="metric"><div class="l">СДЕЛОК</div><div class="v" id="ntr">218</div></div>
-    <div class="metric"><div class="l">ЛИДЕР</div><div class="v green">PLATYNEREIS</div></div>
+    <div class="metric"><div class="l" data-i18n="hero.m1">НЕЙРОНОВ ВСЕГО</div><div class="v">1,445</div></div>
+    <div class="metric"><div class="l" data-i18n="hero.m2">ДЕМО-СЧЁТ</div><div class="v">3 × $10k</div></div>
+    <div class="metric"><div class="l" data-i18n="hero.m3">СДЕЛОК</div><div class="v" id="ntr">218</div></div>
+    <div class="metric"><div class="l" data-i18n="hero.m4">ЛИДЕР</div><div class="v green">PLATYNEREIS</div></div>
   </div></div>
 </section>
 
 <section id="floor" style="padding-top:34px">
   <div class="wrap">
     <div class="kick">SECTION 01 · THE FLOOR</div>
-    <h2>Опенспейс микробов</h2>
-    <div class="shk">каждый за своим терминалом · плашка над головой = открытая сделка</div>
+    <h2 data-i18n="s1.h">Опенспейс микробов</h2>
+    <div class="shk" data-i18n="s1.k">каждый за своим терминалом · плашка над головой = открытая сделка</div>
     <div class="lead" style="margin-bottom:0">Никто не назначает организму инструмент. Он прогоняет свою сеть по каждому активному рынку и идёт туда, где его собственный моторный ридаут сильнее — биологический аналог хемотаксиса: животное не взвешивает варианты, оно движется вверх по градиенту того, что его сильнее возбуждает. Существо подпрыгивает на профите и сползает под стол на минусе.</div>
   </div>
 </section>
@@ -210,8 +216,8 @@
 <section id="organism">
   <div class="wrap">
     <div class="kick">SECTION 02 · THE ORGANISM</div>
-    <h2>Мозг в наблюдении</h2>
-    <div class="shk">живое облако нейронов · тяните, чтобы вращать</div>
+    <h2 data-i18n="s2.h">Мозг в наблюдении</h2>
+    <div class="shk" data-i18n="s2.k">живое облако нейронов · тяните, чтобы вращать</div>
 
     <div class="brainwrap">
       <div class="brainstage">
@@ -243,8 +249,8 @@
 <section id="replay">
   <div class="wrap">
     <div class="kick">SECTION 03 · NEURAL REPLAY</div>
-    <h2>Каждый за своей стойкой</h2>
-    <div class="shk">живой реплей спайков · блоттер сделок на мониторе</div>
+    <h2 data-i18n="s3.h">Каждый за своей стойкой</h2>
+    <div class="shk" data-i18n="s3.k">живой реплей спайков · блоттер сделок на мониторе</div>
   </div>
   <div class="wrap">
     <div class="stage" style="background:#05050a"><canvas id="rcv" width="960" height="540"></canvas></div>
@@ -255,7 +261,7 @@
 <section id="race">
   <div class="wrap">
     <div class="kick">SECTION 03 · BRAIN RACE / 7D</div>
-    <h2>Гонка мозгов</h2>
+    <h2 data-i18n="s4.h">Гонка мозгов</h2>
     <div class="shk">старт $10 000 каждому · кто впереди прямо сейчас</div>
     <div class="stage" style="padding:14px"><svg viewBox="0 0 420 150" width="100%" height="150" id="race-svg"></svg></div>
     <div class="lb" id="lb"></div>
@@ -265,8 +271,8 @@
 <section id="gates">
   <div class="wrap">
     <div class="kick">SECTION 05 · GATE PIPELINE</div>
-    <h2>Где именно застрял организм</h2>
-    <div class="shk">восемь гейтов · останов на первом отказе · причина записывается</div>
+    <h2 data-i18n="s5.h">Где именно застрял организм</h2>
+    <div class="shk" data-i18n="s5.k">восемь гейтов · останов на первом отказе · причина записывается</div>
     <div class="lead">Бинарное «торговал / не торговал» ничего не объясняет, когда существо замолкает. Трасса гейтов показывает точку останова: суррогатная проводка, мёртвая сеть, подпороговый ридаут, риск-блок или минимум биржи.</div>
 
     <div class="gwrap" id="gwrap"></div>
@@ -287,12 +293,12 @@
 <section id="timeline">
   <div class="wrap">
     <div class="kick">SECTION 06 · TRADE TIMELINE</div>
-    <h2>Что они делали, по времени</h2>
-    <div class="shk">три дорожки · вход, ротация, выход · наведи на точку</div>
+    <h2 data-i18n="s6.h">Что они делали, по времени</h2>
+    <div class="shk" data-i18n="s6.k">три дорожки · вход, ротация, выход · наведи на точку</div>
     <div class="lead">Каждая дорожка — один организм. Точка это событие: вход в позицию, ротация в другой инструмент, выход. Линия между входом и выходом окрашена в результат сделки — зелёная в плюс, красная в минус. Длина линии показывает, сколько позиция держалась.</div>
 
     <div class="tl">
-      <div class="tlhead"><span>ПОСЛЕДНИЕ 12 ЧАСОВ</span><span id="tlcount">—</span></div>
+      <div class="tlhead"><span data-i18n="tl.head">ПОСЛЕДНИЕ 12 ЧАСОВ</span><span id="tlcount">—</span></div>
       <div class="tltrack" id="tltrack"></div>
       <div class="tlaxis" id="tlaxis"></div>
     </div>
@@ -304,8 +310,8 @@
 <section id="ledger">
   <div class="wrap">
     <div class="kick">SECTION 07 · DECISION LEDGER</div>
-    <h2>Каждое решение — до сделки, не после</h2>
-    <div class="shk">открытый лог, который нельзя подделать задним числом</div>
+    <h2 data-i18n="s7.h">Каждое решение — до сделки, не после</h2>
+    <div class="shk" data-i18n="s7.k">открытый лог, который нельзя подделать задним числом</div>
     <div class="ledger" id="ledger-log"></div>
     <table>
       <thead><tr><th>ЗАКРЫТО</th><th>СУЩЕСТВО</th><th>СТОРОНА</th><th>ВХОД</th><th>ВЫХОД</th><th>P&L</th></tr></thead>
@@ -321,8 +327,8 @@
 <section id="sources">
   <div class="wrap">
     <div class="kick">SECTION 08 · DATA PROVENANCE</div>
-    <h2>Откуда взят каждый мозг</h2>
-    <div class="shk">проводка настоящая · датасеты опубликованы · открыто проверяемо</div>
+    <h2 data-i18n="s8.h">Откуда взят каждый мозг</h2>
+    <div class="shk" data-i18n="s8.k">проводка настоящая · датасеты опубликованы · открыто проверяемо</div>
     <div class="srcgrid">
 
       <a class="src" href="https://openworm.org/ConnectomeToolbox/" target="_blank">
@@ -350,8 +356,8 @@
 <section id="plugin">
   <div class="wrap">
     <div class="kick">SECTION 09 · STACK</div>
-    <h2>Что под капотом</h2>
-    <div class="shk">стек целиком · ночной исследовательский проход · движок под MIT</div>
+    <h2 data-i18n="s9.h">Что под капотом</h2>
+    <div class="shk" data-i18n="s9.k">стек целиком · ночной исследовательский проход · движок под MIT</div>
 
     <div class="pkg">
       <div class="pname">research/ → BioAgents-совместимый API</div>
@@ -392,8 +398,8 @@
 <section id="desci">
   <div class="wrap">
     <div class="kick">SECTION 10 · OPEN SCIENCE</div>
-    <h2>Открытый эксперимент, а не мем</h2>
-    <div class="shk">коннектомы открыты · логи публичны · выход проверяем</div>
+    <h2 data-i18n="s10.h">Открытый эксперимент, а не мем</h2>
+    <div class="shk" data-i18n="s10.k">коннектомы открыты · логи публичны · выход проверяем</div>
 
     <div class="biobar">
       <span class="lg">◆</span>
@@ -419,8 +425,8 @@
 <section id="eco">
   <div class="wrap">
     <div class="kick">SECTION 11 · BIO ECOSYSTEM</div>
-    <h2>Где MICRO стоит в экосистеме Bio</h2>
-    <div class="shk">три слоя · что именно задействовано в каждом</div>
+    <h2 data-i18n="s11.h">Где MICRO стоит в экосистеме Bio</h2>
+    <div class="shk" data-i18n="s11.k">три слоя · что именно задействовано в каждом</div>
     <div class="lead">Bio Protocol строит инфраструктуру децентрализованной науки: агентный слой для анализа исследований и токен-слой для их финансирования. MICRO подключён к первому и торгуется ко второму.</div>
 
     <div class="ecogrid">
@@ -445,11 +451,11 @@
 <section id="token">
   <div class="wrap">
     <div class="kick">SECTION 12 · ON-CHAIN</div>
-    <h2>$MICRO</h2>
+    <h2 data-i18n="s12.h">$MICRO</h2>
     <div class="shk">пара MICRO / BIO на StonkFun · ликвидность заблокирована</div>
     <div class="tokgrid">
       <div class="card">
-        <h3>Контракт</h3>
+        <h3 data-i18n="c.h">Контракт</h3>
         <div class="kv"><span class="k">пара</span><span>MICRO / BIO</span></div>
         <div class="kv"><span class="k">лончпад</span><span>StonkFun · Solana</span></div>
         <div class="kv"><span class="k">supply</span><span>1,000,000,000</span></div>
@@ -458,7 +464,7 @@
         <a class="btn buy" href="#">купить $MICRO →</a>
       </div>
       <div class="card">
-        <h3>Утилити холдера</h3>
+        <h3 data-i18n="u.h">Утилити холдера</h3>
         <ul class="util">
           <li><b>Дивиденды в $BIO</b><span class="soon live">live</span><br>Распределение среди холдеров $MICRO, выплата в $BIO.</li>
           <li><b>Голосование за существ</b><span class="soon">soon</span><br>Кого добавить четвёртым, кому докинуть капитал.</li>
@@ -473,8 +479,8 @@
 <section id="real">
   <div class="wrap">
     <div class="kick">SECTION 13 · METHOD</div>
-    <h2>Что здесь настоящее, а что нет</h2>
-    <div class="shk">сказано прямо</div>
+    <h2 data-i18n="s13.h">Что здесь настоящее, а что нет</h2>
+    <div class="shk" data-i18n="s13.k">сказано прямо</div>
     <ul class="real">
       <li><b>Коннектомы настоящие.</b> Проводка каждого существа прослежена по электронной микроскопии реального животного и взята из опубликованных датасетов выше. Ничего не выдумано и не насэмплировано.</li>
       <li><b>Счета демонстрационные.</b> $10 000 на организм — симулированный баланс на реальных ценах Hyperliquid и реальном списке инструментов. Живой режим включается отдельно и по умолчанию выключен.</li>
@@ -1103,6 +1109,93 @@ setInterval(()=>{
     }
   });
 },2000);
+
+
+// ---------- i18n ----------
+const I18N={
+ en:{ "nav.floor":"FLOOR","nav.organism":"ORGANISM","nav.replay":"REPLAY","nav.race":"RACE","nav.gates":"GATES","nav.timeline":"TIMELINE","nav.sources":"SOURCES","nav.stack":"STACK","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"three real<br>nervous systems,<br>$10,000 each.","hero.m1":"TOTAL NEURONS","hero.m2":"DEMO ACCOUNT","hero.m3":"TRADES","hero.m4":"LEADER",
+  "s1.h":"Microbe open plan","s2.h":"Brain under observation","s3.h":"Each at their own rig","s4.h":"Brain race","s5.h":"Exactly where it stalled","s6.h":"What they did, over time","s7.h":"Every call logged before the fill","s8.h":"Where each brain comes from","s9.h":"Under the hood","s10.h":"An open experiment, not a meme","s11.h":"Where MICRO sits in the Bio stack","s13.h":"What's real here and what isn't",
+  "s1.k":"each at its own terminal · the card above = open position","s2.k":"live neuron cloud · drag to orbit","s3.k":"live spike replay · trade blotter on screen","s5.k":"eight gates · halts on first failure · reason recorded","s6.k":"three lanes · entry, rotation, exit · hover a dot","s7.k":"open log that cannot be faked after the fact","s8.k":"real wiring · published datasets · openly verifiable","s9.k":"full stack · nightly research pass · MIT engine","s10.k":"open connectomes · public logs · verifiable output","s11.k":"three layers · what exactly is wired in","s13.k":"said plainly",
+  "u.h":"Holder utility","u1":"Dividends in $BIO","u2":"Vote on organisms","u3":"Full data access","u4":"Cosmetics","c.h":"Contract",
+  "t.closed":"CLOSED","t.org":"ORGANISM","t.side":"SIDE","t.entry":"ENTRY","t.exit":"EXIT","tl.head":"LAST 12 HOURS"},
+
+ ru:{ "nav.floor":"ЗАЛ","nav.organism":"ОРГАНИЗМ","nav.replay":"РЕПЛЕЙ","nav.race":"ГОНКА","nav.gates":"ГЕЙТЫ","nav.timeline":"ТАЙМЛАЙН","nav.sources":"ИСТОЧНИКИ","nav.stack":"СТЕК","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"три настоящие<br>нервные системы,<br>по $10 000.","hero.m1":"НЕЙРОНОВ ВСЕГО","hero.m2":"ДЕМО-СЧЁТ","hero.m3":"СДЕЛОК","hero.m4":"ЛИДЕР",
+  "s1.h":"Опенспейс микробов","s2.h":"Мозг в наблюдении","s3.h":"Каждый за своей стойкой","s4.h":"Гонка мозгов","s5.h":"Где именно застрял организм","s6.h":"Что они делали, по времени","s7.h":"Каждое решение — до сделки, не после","s8.h":"Откуда взят каждый мозг","s9.h":"Что под капотом","s10.h":"Открытый эксперимент, а не мем","s11.h":"Где MICRO стоит в экосистеме Bio","s13.h":"Что здесь настоящее, а что нет",
+  "s1.k":"каждый за своим терминалом · плашка над головой = открытая сделка","s2.k":"живое облако нейронов · тяните, чтобы вращать","s3.k":"живой реплей спайков · блоттер сделок на мониторе","s5.k":"восемь гейтов · останов на первом отказе · причина записывается","s6.k":"три дорожки · вход, ротация, выход · наведи на точку","s7.k":"открытый лог, который нельзя подделать задним числом","s8.k":"проводка настоящая · датасеты опубликованы · открыто проверяемо","s9.k":"стек целиком · ночной исследовательский проход · движок под MIT","s10.k":"коннектомы открыты · логи публичны · выход проверяем","s11.k":"три слоя · что именно задействовано в каждом","s13.k":"сказано прямо",
+  "u.h":"Утилити холдера","u1":"Дивиденды в $BIO","u2":"Голосование за существ","u3":"Полный доступ к данным","u4":"Косметика","c.h":"Контракт",
+  "t.closed":"ЗАКРЫТО","t.org":"СУЩЕСТВО","t.side":"СТОРОНА","t.entry":"ВХОД","t.exit":"ВЫХОД","tl.head":"ПОСЛЕДНИЕ 12 ЧАСОВ"},
+
+ uk:{ "nav.floor":"ЗАЛА","nav.organism":"ОРГАНІЗМ","nav.replay":"РЕПЛЕЙ","nav.race":"ПЕРЕГОНИ","nav.gates":"ВОРОТА","nav.timeline":"ТАЙМЛАЙН","nav.sources":"ДЖЕРЕЛА","nav.stack":"СТЕК","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"три справжні<br>нервові системи,<br>по $10 000.","hero.m1":"НЕЙРОНІВ УСЬОГО","hero.m2":"ДЕМО-РАХУНОК","hero.m3":"УГОД","hero.m4":"ЛІДЕР",
+  "s1.h":"Опенспейс мікробів","s2.h":"Мозок під наглядом","s3.h":"Кожен за своєю стійкою","s4.h":"Перегони мізків","s5.h":"Де саме застряг організм","s6.h":"Що вони робили, у часі","s7.h":"Кожне рішення — до угоди, не після","s8.h":"Звідки взято кожен мозок","s9.h":"Що під капотом","s10.h":"Відкритий експеримент, а не мем","s11.h":"Де MICRO стоїть в екосистемі Bio","s13.h":"Що тут справжнє, а що ні",
+  "s1.k":"кожен за своїм терміналом · табличка згори = відкрита позиція","s2.k":"жива хмара нейронів · тягніть, щоб обертати","s3.k":"живий реплей спайків · блоттер угод на моніторі","s5.k":"вісім воріт · зупинка на першій відмові · причина фіксується","s6.k":"три доріжки · вхід, ротація, вихід · наведи на точку","s7.k":"відкритий лог, який не підробити заднім числом","s8.k":"проводка справжня · датасети опубліковані · відкрито перевірювано","s9.k":"стек цілком · нічний дослідницький прохід · рушій під MIT","s10.k":"коннектоми відкриті · логи публічні · вихід перевірюваний","s11.k":"три шари · що саме задіяно в кожному","s13.k":"сказано прямо",
+  "u.h":"Утиліті холдера","u1":"Дивіденди в $BIO","u2":"Голосування за істот","u3":"Повний доступ до даних","u4":"Косметика","c.h":"Контракт",
+  "t.closed":"ЗАКРИТО","t.org":"ІСТОТА","t.side":"СТОРОНА","t.entry":"ВХІД","t.exit":"ВИХІД","tl.head":"ОСТАННІ 12 ГОДИН"},
+
+ zh:{ "nav.floor":"交易大厅","nav.organism":"生物体","nav.replay":"回放","nav.race":"竞赛","nav.gates":"关卡","nav.timeline":"时间线","nav.sources":"数据来源","nav.stack":"技术栈","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"三个真实的<br>神经系统，<br>各一万美元。","hero.m1":"神经元总数","hero.m2":"模拟账户","hero.m3":"交易数","hero.m4":"领先者",
+  "s1.h":"微生物开放办公区","s2.h":"观测中的大脑","s3.h":"各自的交易台","s4.h":"大脑竞赛","s5.h":"到底卡在哪一关","s6.h":"它们做了什么，按时间","s7.h":"每个决策都在下单前入账","s8.h":"每个大脑的出处","s9.h":"底层构成","s10.h":"这是公开实验，不是梗","s11.h":"MICRO 在 Bio 生态中的位置","s13.h":"这里什么是真的，什么不是",
+  "s1.k":"各自守着终端 · 头顶卡片 = 持仓","s2.k":"实时神经元云 · 拖动可旋转","s3.k":"实时脉冲回放 · 屏幕上的交易流水","s5.k":"八道关卡 · 首次失败即停 · 记录原因","s6.k":"三条轨道 · 开仓、换仓、平仓 · 悬停查看","s7.k":"无法事后伪造的公开日志","s8.k":"接线真实 · 数据集已发表 · 可公开验证","s9.k":"完整技术栈 · 每夜研究流程 · MIT 引擎","s10.k":"连接组公开 · 日志公开 · 产出可验证","s11.k":"三个层级 · 各自接入了什么","s13.k":"直说",
+  "u.h":"持有者权益","u1":"以 $BIO 分红","u2":"投票选生物","u3":"完整数据访问","u4":"皮肤外观","c.h":"合约",
+  "t.closed":"平仓时间","t.org":"生物体","t.side":"方向","t.entry":"入场","t.exit":"出场","tl.head":"最近 12 小时"},
+
+ ko:{ "nav.floor":"트레이딩 플로어","nav.organism":"생물","nav.replay":"리플레이","nav.race":"레이스","nav.gates":"게이트","nav.timeline":"타임라인","nav.sources":"출처","nav.stack":"스택","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"진짜 신경계 셋,<br>각각 1만 달러로<br>거래한다.","hero.m1":"총 뉴런 수","hero.m2":"데모 계좌","hero.m3":"거래 수","hero.m4":"선두",
+  "s1.h":"미생물 오픈 플로어","s2.h":"관찰 중인 뇌","s3.h":"각자의 자리에서","s4.h":"두뇌 레이스","s5.h":"정확히 어디서 멈췄나","s6.h":"시간순으로 본 행동","s7.h":"모든 판단은 체결 전에 기록된다","s8.h":"각 뇌의 출처","s9.h":"내부 구조","s10.h":"밈이 아니라 공개 실험","s11.h":"Bio 생태계 속 MICRO의 위치","s13.h":"무엇이 진짜이고 무엇이 아닌가",
+  "s1.k":"각자 단말 앞에 · 머리 위 카드 = 보유 포지션","s2.k":"실시간 뉴런 클라우드 · 끌어서 회전","s3.k":"실시간 스파이크 리플레이 · 화면의 체결 내역","s5.k":"여덟 개 게이트 · 첫 실패에서 정지 · 사유 기록","s6.k":"세 개 레인 · 진입, 전환, 청산 · 점에 마우스를","s7.k":"사후 조작이 불가능한 공개 로그","s8.k":"실제 배선 · 공개된 데이터셋 · 검증 가능","s9.k":"전체 스택 · 야간 리서치 패스 · MIT 엔진","s10.k":"공개 커넥톰 · 공개 로그 · 검증 가능한 결과","s11.k":"세 계층 · 각각 무엇이 연결됐는지","s13.k":"있는 그대로",
+  "u.h":"홀더 혜택","u1":"$BIO 배당","u2":"생물 선정 투표","u3":"전체 데이터 접근","u4":"코스메틱","c.h":"컨트랙트",
+  "t.closed":"청산","t.org":"생물","t.side":"방향","t.entry":"진입","t.exit":"청산가","tl.head":"최근 12시간"},
+
+ es:{ "nav.floor":"SALA","nav.organism":"ORGANISMO","nav.replay":"REPLAY","nav.race":"CARRERA","nav.gates":"FILTROS","nav.timeline":"CRONOLOGÍA","nav.sources":"FUENTES","nav.stack":"STACK","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"tres sistemas<br>nerviosos reales,<br>$10.000 cada uno.","hero.m1":"NEURONAS TOTALES","hero.m2":"CUENTA DEMO","hero.m3":"OPERACIONES","hero.m4":"LÍDER",
+  "s1.h":"Oficina abierta de microbios","s2.h":"Cerebro bajo observación","s3.h":"Cada uno en su puesto","s4.h":"Carrera de cerebros","s5.h":"Dónde se atascó exactamente","s6.h":"Qué hicieron, en el tiempo","s7.h":"Cada decisión se registra antes de la orden","s8.h":"De dónde sale cada cerebro","s9.h":"Qué hay debajo","s10.h":"Un experimento abierto, no un meme","s11.h":"Dónde encaja MICRO en el ecosistema Bio","s13.h":"Qué es real aquí y qué no",
+  "s1.k":"cada uno en su terminal · la tarjeta arriba = posición abierta","s2.k":"nube de neuronas en vivo · arrastra para girar","s3.k":"replay de espigas en vivo · blotter en pantalla","s5.k":"ocho filtros · se detiene en el primer fallo · se registra el motivo","s6.k":"tres carriles · entrada, rotación, salida · pasa el cursor","s7.k":"registro abierto que no se puede falsear después","s8.k":"cableado real · datasets publicados · verificable","s9.k":"stack completo · pase de investigación nocturno · motor MIT","s10.k":"conectomas abiertos · logs públicos · salida verificable","s11.k":"tres capas · qué se usa en cada una","s13.k":"dicho sin rodeos",
+  "u.h":"Utilidad del holder","u1":"Dividendos en $BIO","u2":"Votar organismos","u3":"Acceso total a los datos","u4":"Cosméticos","c.h":"Contrato",
+  "t.closed":"CERRADO","t.org":"ORGANISMO","t.side":"LADO","t.entry":"ENTRADA","t.exit":"SALIDA","tl.head":"ÚLTIMAS 12 HORAS"},
+
+ pt:{ "nav.floor":"SALÃO","nav.organism":"ORGANISMO","nav.replay":"REPLAY","nav.race":"CORRIDA","nav.gates":"FILTROS","nav.timeline":"LINHA DO TEMPO","nav.sources":"FONTES","nav.stack":"STACK","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"três sistemas<br>nervosos reais,<br>$10.000 cada.","hero.m1":"NEURÔNIOS NO TOTAL","hero.m2":"CONTA DEMO","hero.m3":"OPERAÇÕES","hero.m4":"LÍDER",
+  "s1.h":"Open space dos micróbios","s2.h":"Cérebro sob observação","s3.h":"Cada um na sua mesa","s4.h":"Corrida de cérebros","s5.h":"Onde exatamente travou","s6.h":"O que fizeram, ao longo do tempo","s7.h":"Cada decisão registrada antes da ordem","s8.h":"De onde vem cada cérebro","s9.h":"O que tem por baixo","s10.h":"Um experimento aberto, não um meme","s11.h":"Onde o MICRO fica no ecossistema Bio","s13.h":"O que aqui é real e o que não é",
+  "s1.k":"cada um no seu terminal · o card acima = posição aberta","s2.k":"nuvem de neurônios ao vivo · arraste para girar","s3.k":"replay de spikes ao vivo · blotter na tela","s5.k":"oito filtros · para na primeira falha · motivo registrado","s6.k":"três trilhas · entrada, rotação, saída · passe o mouse","s7.k":"log aberto que não dá para forjar depois","s8.k":"fiação real · datasets publicados · verificável","s9.k":"stack completo · passe de pesquisa noturno · motor MIT","s10.k":"conectomas abertos · logs públicos · saída verificável","s11.k":"três camadas · o que está ligado em cada uma","s13.k":"dito sem rodeios",
+  "u.h":"Utilidade do holder","u1":"Dividendos em $BIO","u2":"Votar nos organismos","u3":"Acesso total aos dados","u4":"Cosméticos","c.h":"Contrato",
+  "t.closed":"FECHADO","t.org":"ORGANISMO","t.side":"LADO","t.entry":"ENTRADA","t.exit":"SAÍDA","tl.head":"ÚLTIMAS 12 HORAS"},
+
+ fr:{ "nav.floor":"SALLE","nav.organism":"ORGANISME","nav.replay":"REPLAY","nav.race":"COURSE","nav.gates":"FILTRES","nav.timeline":"CHRONOLOGIE","nav.sources":"SOURCES","nav.stack":"STACK","nav.bio":"BIO","nav.token":"$MICRO",
+  "hero.h1":"trois systèmes<br>nerveux réels,<br>10 000 $ chacun.","hero.m1":"NEURONES AU TOTAL","hero.m2":"COMPTE DÉMO","hero.m3":"TRANSACTIONS","hero.m4":"EN TÊTE",
+  "s1.h":"Open space des microbes","s2.h":"Cerveau sous observation","s3.h":"Chacun à son poste","s4.h":"Course de cerveaux","s5.h":"Où ça a bloqué exactement","s6.h":"Ce qu'ils ont fait, dans le temps","s7.h":"Chaque décision est consignée avant l'ordre","s8.h":"D'où vient chaque cerveau","s9.h":"Ce qu'il y a dessous","s10.h":"Une expérience ouverte, pas un mème","s11.h":"La place de MICRO dans l'écosystème Bio","s13.h":"Ce qui est réel ici et ce qui ne l'est pas",
+  "s1.k":"chacun à son terminal · la carte au-dessus = position ouverte","s2.k":"nuage de neurones en direct · glissez pour tourner","s3.k":"replay des spikes en direct · blotter à l'écran","s5.k":"huit filtres · arrêt au premier échec · motif consigné","s6.k":"trois pistes · entrée, rotation, sortie · survolez un point","s7.k":"journal ouvert impossible à falsifier après coup","s8.k":"câblage réel · jeux de données publiés · vérifiable","s9.k":"stack complet · passe de recherche nocturne · moteur MIT","s10.k":"connectomes ouverts · logs publics · sortie vérifiable","s11.k":"trois couches · ce qui est branché dans chacune","s13.k":"dit sans détour",
+  "u.h":"Utilité du holder","u1":"Dividendes en $BIO","u2":"Voter pour les organismes","u3":"Accès complet aux données","u4":"Cosmétiques","c.h":"Contrat",
+  "t.closed":"CLÔTURÉ","t.org":"ORGANISME","t.side":"SENS","t.entry":"ENTRÉE","t.exit":"SORTIE","tl.head":"12 DERNIÈRES HEURES"},
+};
+
+const LANGS=[['en','EN'],['ru','RU'],['uk','UK'],['zh','中文'],['ko','한국어'],['es','ES'],['pt','PT'],['fr','FR']];
+
+function applyLang(code){
+  const d=I18N[code]||I18N.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const v=d[el.getAttribute('data-i18n')];
+    if(v!==undefined) el.innerHTML=v;
+  });
+  document.documentElement.lang=code;
+  try{localStorage.setItem('micro_lang',code);}catch(e){}
+  document.querySelectorAll('.lgbtn').forEach(b=>{
+    b.classList.toggle('on', b.dataset.lang===code);
+  });
+}
+
+(function initLang(){
+  const bar=document.getElementById('langbar');
+  if(bar){
+    bar.innerHTML=LANGS.map(([c,l])=>`<button class="lgbtn" data-lang="${c}">${l}</button>`).join('');
+    bar.querySelectorAll('.lgbtn').forEach(b=>b.onclick=()=>applyLang(b.dataset.lang));
+  }
+  let saved=null;
+  try{saved=localStorage.getItem('micro_lang');}catch(e){}
+  const nav=(navigator.language||'en').slice(0,2);
+  applyLang(saved || (I18N[nav]?nav:'en'));
+})();
 
 </script>
 </body>
