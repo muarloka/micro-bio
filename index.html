@@ -14,7 +14,11 @@
   nav{position:sticky;top:0;z-index:20;background:rgba(8,8,11,.88);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
   nav .in{max-width:960px;margin:0 auto;padding:0 18px;height:46px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--dim);letter-spacing:.5px}
   nav .logo{color:var(--fg);font-size:14px;letter-spacing:2px}
-  nav .links{display:flex;gap:16px}nav .links a:hover{color:var(--fg)}
+  nav .links{display:flex;gap:16px}
+  .burger{display:none;background:transparent;border:1px solid var(--line);color:var(--fg);font-size:15px;line-height:1;padding:5px 10px;border-radius:6px;cursor:pointer}
+  .totop{position:fixed;right:14px;bottom:14px;z-index:40;background:rgba(17,17,20,.92);border:1px solid var(--line);color:var(--mid);font-family:var(--mono);font-size:11px;padding:9px 12px;border-radius:8px;cursor:pointer;display:none;backdrop-filter:blur(6px)}
+  .totop.show{display:block}
+  .totop:hover{border-color:var(--purple);color:var(--fg)}nav .links a:hover{color:var(--fg)}
   .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);margin-right:6px}
   .green{color:var(--green)}.red{color:var(--red)}nav b{color:var(--fg);font-weight:400}
   .specbar{border-bottom:1px solid var(--line);font-size:11px;color:var(--dim)}
@@ -27,7 +31,7 @@
   .shk{font-size:11px;color:var(--dim);letter-spacing:1px;margin-bottom:18px}
   .lead{color:var(--mid);font-size:14px;line-height:1.7;max-width:520px;margin-bottom:24px}
   .stage{background:linear-gradient(180deg,#0c0c14 0%,#08080b 82%);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  canvas{display:block;width:100%;image-rendering:pixelated}
+  canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
   .metrics{display:flex;gap:30px;flex-wrap:wrap;margin-top:22px}
   .metric .l{font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:3px}.metric .v{font-size:22px}
   .btn{display:inline-block;background:var(--panel);border:1px solid var(--line);color:var(--fg);font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:6px;cursor:pointer;margin-top:6px}
@@ -62,7 +66,40 @@
   .src .doi span{color:#cfcaf6}
   .ipgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
   .mono-sm{font-size:11px;color:#cfcaf6}
-  @media(max-width:720px){.ipgrid{grid-template-columns:1fr}}
+  @media(max-width:860px){
+    .burger{display:block}
+    nav .in{gap:10px}
+    nav .links{
+      display:none; position:fixed; top:46px; left:0; right:0;
+      background:rgba(8,8,11,.97); backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+      flex-direction:column; gap:0; padding:6px 0; max-height:70vh; overflow:auto;
+    }
+    nav .links.open{display:flex}
+    nav .links a{padding:13px 18px;border-bottom:1px solid #15151c;font-size:13px}
+    nav .links a:last-child{border-bottom:none}
+  }
+  @media(max-width:720px){
+    h1{font-size:34px;line-height:1.05}
+    h2{font-size:20px}
+    section{padding:34px 0}
+    .wrap{padding:0 14px}
+    .lead{font-size:13px}
+    .metrics{gap:18px}
+    .metric .v{font-size:18px}
+    .specbar .in{gap:12px;font-size:10px;padding:9px 14px}
+    table{font-size:11px}
+    th,td{padding:7px 6px}
+    .tabs .tab{font-size:11px;padding:7px 10px}
+    .tabs .tab small{display:none}
+    .srcgrid .src{padding:12px}
+    .src .cite{font-size:10px}
+    .src .doi{font-size:9px}
+    .curl{font-size:9px}
+    .waddr{font-size:8px}
+    .stat .sv{font-size:15px}
+    .ledrow{grid-template-columns:46px 40px 48px 1fr auto;font-size:9px}
+    .ipgrid{grid-template-columns:1fr}}
   .ecogrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
   .eco{display:block;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;transition:border-color .15s}
   a.eco:hover{border-color:var(--purple)}
@@ -137,7 +174,7 @@
   .dhead b{color:var(--fg);font-weight:400}
   .dbody{padding:12px}
   .scene{background:linear-gradient(180deg,#0d0d16 0%,#08080b 82%)}
-  .scene canvas{display:block;width:100%;image-rendering:pixelated}
+  .scene canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
   .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
   .stat{background:#0c0c12;border:1px solid var(--line);border-radius:6px;padding:9px 11px}
   .stat .sl{font-size:9px;color:var(--dim);letter-spacing:1px}
@@ -240,16 +277,17 @@
 
 <nav><div class="in">
   <span class="logo">MICRO</span>
-  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <button id="burger" class="burger" aria-label="menu">☰</button>
+  <span class="links" id="navlinks"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
   <span><button id="sound-btn" class="sndbtn">◼ sound off</button><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
 <div class="specbar"><div class="in">
-  <span>SPECIMENS <b>3 CONNECTOMES</b></span>
+  <span>SPECIMENS <b id="sb-spec">—</b></span>
   <span>VENUE <b>Hyperliquid</b></span>
-  <span>UNIVERSE <b>all perps</b></span>
-  <span>MODE <b>paper / live</b></span>
-  <span>STATUS <b class="green">trading</b></span>
+  <span>UNIVERSE <b id="sb-universe">—</b></span>
+  <span>MODE <b id="sb-mode">—</b></span>
+  <span>STATUS <b class="green" id="sb-status">—</b></span>
 </div></div>
 
 <section id="top" style="border-bottom:none;padding-bottom:24px">
@@ -1099,6 +1137,38 @@ document.getElementById('sound-btn')?.addEventListener('click', function(){
 });
 
 
+
+// ---------- MOBILE NAV ----------
+(function nav(){
+  const b=document.getElementById('burger');
+  const links=document.getElementById('navlinks');
+  const top=document.getElementById('totop');
+
+  if(b && links){
+    b.addEventListener('click',()=>{
+      const open=links.classList.toggle('open');
+      b.textContent = open ? '✕' : '☰';
+    });
+    // close after picking a section, otherwise the menu covers what you chose
+    links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      links.classList.remove('open'); b.textContent='☰';
+    }));
+  }
+
+  // back to top: the page is long, and on a phone scrolling up by hand is a chore
+  if(top){
+    top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    let ticking=false;
+    window.addEventListener('scroll',()=>{
+      if(ticking) return; ticking=true;
+      requestAnimationFrame(()=>{
+        top.classList.toggle('show', window.scrollY > 900);
+        ticking=false;
+      });
+    },{passive:true});
+  }
+})();
+
 // ---------- TRADING DESK ----------
 // Every number on this dashboard comes from /api/state, /api/ledger and the
 // price history the page has observed. Nothing is generated for looks.
@@ -1473,6 +1543,13 @@ async function pull(){
     TRADES.sort((a,b)=>a.open-b.open);
     drawTimeline();
 
+    // spec bar, straight from the backend
+    const sbSet=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+    sbSet('sb-universe', (s.market && s.market.universe) || '—');
+    sbSet('sb-spec', (s.creatures||[]).length + ' CONNECTOMES');
+    sbSet('sb-mode', s.mode || '—');
+    sbSet('sb-status', (s.creatures||[]).some(c=>c.trades>0) ? 'trading' : 'waiting');
+
     dkUpdate(s); dkDrawChart();
     drawLB(); updateBrainStats(); drawGates();
   }catch(err){
@@ -1624,5 +1701,6 @@ setInterval(verify, 60000);
 
 
 </script>
+<button class="totop" id="totop">↑ top</button>
 </body>
 </html>
