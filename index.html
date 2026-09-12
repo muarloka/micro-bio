@@ -93,11 +93,7 @@
   .fe .fd{color:var(--mid)}
   .fe .fp{text-align:right}
   /* trade timeline end */
-  .langbar{display:flex;gap:3px;flex-wrap:wrap}
-  .lgbtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:9px;padding:3px 6px;border-radius:4px;cursor:pointer;letter-spacing:.3px}
-  .lgbtn:hover{color:var(--fg);border-color:#3a3a42}
-  .lgbtn.on{border-color:var(--purple);color:#cfcaf6}
-  @media(max-width:860px){.langbar{display:none}}
+  @media(max-width:860px){}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -176,69 +172,68 @@
 
 <nav><div class="in">
   <span class="logo">MICRO</span>
-  <span class="links"><a href="#floor" data-i18n="nav.floor">FLOOR</a><a href="#organism" data-i18n="nav.organism">ORGANISM</a><a href="#replay" data-i18n="nav.replay">REPLAY</a><a href="#race" data-i18n="nav.race">RACE</a><a href="#gates" data-i18n="nav.gates">GATES</a><a href="#timeline" data-i18n="nav.timeline">TIMELINE</a><a href="#sources" data-i18n="nav.sources">SOURCES</a><a href="#plugin" data-i18n="nav.stack">STACK</a><a href="#desci" data-i18n="t1">SCIENCE</a><a href="#eco" data-i18n="nav.bio">BIO</a><a href="#token" data-i18n="s12.h">$MICRO</a></span>
-  <span id="langbar" class="langbar"></span>
-  <span><span class="dot"></span><span class="green" data-i18n="t2">observed live</span> · HYPE <b id="px">41.82</b></span>
+  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
 <div class="specbar"><div class="in">
   <span>SPECIMENS <b>3 CONNECTOMES</b></span>
-  <span data-i18n="t3">VENUE <b>Hyperliquid</b></span>
-  <span data-i18n="t4">UNIVERSE <b>all perps</b></span>
-  <span data-i18n="t5">MODE <b>paper / live</b></span>
-  <span data-i18n="t6">STATUS <b class="green">trading</b></span>
+  <span>VENUE <b>Hyperliquid</b></span>
+  <span>UNIVERSE <b>all perps</b></span>
+  <span>MODE <b>paper / live</b></span>
+  <span>STATUS <b class="green">trading</b></span>
 </div></div>
 
 <section id="top" style="border-bottom:none;padding-bottom:24px">
   <div class="wrap">
     <div class="kick">MICROBES TRADING PERPS · HYPERLIQUID</div>
-    <h1 data-i18n="hero.h1">three real<br>nervous systems,<br>$10,000 each.</h1>
-    <div class="lead" data-i18n="t7">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $10,000 demo account each. They can reach <b>every perp on the exchange</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
+    <h1>three real<br>nervous systems,<br>$10,000 each.</h1>
+    <div class="lead">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $10,000 demo account each. They can reach <b>every perp on the exchange</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
   </div>
-  <div class="wrap"><div class="stage"><canvas id="office" width="920" height="330"></canvas></div></div>
+  <div class="wrap"><div class="stage"><canvas id="office" width="960" height="400"></canvas></div></div>
   <div class="wrap"><div class="metrics">
-    <div class="metric"><div class="l" data-i18n="hero.m1">TOTAL NEURONS</div><div class="v" data-i18n="t8">1,445</div></div>
-    <div class="metric"><div class="l" data-i18n="hero.m2">DEMO ACCOUNT</div><div class="v" data-i18n="t9">3 × $10k</div></div>
-    <div class="metric"><div class="l" data-i18n="hero.m3">TRADES</div><div class="v" id="ntr">218</div></div>
-    <div class="metric"><div class="l" data-i18n="hero.m4">LEADER</div><div class="v green" data-i18n="t10">PLATYNEREIS</div></div>
+    <div class="metric"><div class="l">TOTAL NEURONS</div><div class="v">1,445</div></div>
+    <div class="metric"><div class="l">DEMO ACCOUNT</div><div class="v">3 × $10k</div></div>
+    <div class="metric"><div class="l">TRADES</div><div class="v" id="ntr">218</div></div>
+    <div class="metric"><div class="l">LEADER</div><div class="v green">PLATYNEREIS</div></div>
   </div></div>
 </section>
 
 <section id="floor" style="padding-top:34px">
   <div class="wrap">
     <div class="kick">SECTION 01 · THE FLOOR</div>
-    <h2 data-i18n="s1.h">Microbe open plan</h2>
-    <div class="shk" data-i18n="s1.k">each at its own terminal · the card above = open position</div>
-    <div class="lead" style="margin-bottom:0" data-i18n="t11">Nobody assigns an organism a market. It runs its network across every active one and goes where its own motor readout is strongest — the honest analogue of chemotaxis: the animal does not weigh options, it moves up the steepest gradient of whatever excites it most. It bounces on profit and slides under the desk on loss.</div>
+    <h2>Microbe open plan</h2>
+    <div class="shk">each at its own terminal · the card above = open position</div>
+    <div class="lead" style="margin-bottom:0">Nobody assigns an organism a market. It runs its network across every active one and goes where its own motor readout is strongest — the honest analogue of chemotaxis: the animal does not weigh options, it moves up the steepest gradient of whatever excites it most. It bounces on profit and slides under the desk on loss.</div>
   </div>
 </section>
 
 <section id="organism">
   <div class="wrap">
     <div class="kick">SECTION 02 · THE ORGANISM</div>
-    <h2 data-i18n="s2.h">Brain under observation</h2>
-    <div class="shk" data-i18n="s2.k">live neuron cloud · drag to orbit</div>
+    <h2>Brain under observation</h2>
+    <div class="shk">live neuron cloud · drag to orbit</div>
 
     <div class="brainwrap">
       <div class="brainstage">
         <div class="bhead">
           <span class="exe" id="exe">ELEGANS.EXE</span>
-          <button class="pausebtn" id="pausebtn" data-i18n="t12">PAUSE MOTION</button>
+          <button class="pausebtn" id="pausebtn">PAUSE MOTION</button>
         </div>
         <canvas id="brain" width="560" height="380"></canvas>
-        <div class="orbit" data-i18n="t13">DRAG TO ORBIT +</div>
+        <div class="orbit">DRAG TO ORBIT +</div>
       </div>
       <div class="brainstats">
-        <div class="bstat"><div class="bl" data-i18n="t14">NEURONS</div><div class="bv" id="b-neurons">302</div></div>
-        <div class="bstat"><div class="bl" data-i18n="t15">LATEST SPIKES</div><div class="bv" id="b-spikes">128</div></div>
-        <div class="bstat"><div class="bl" data-i18n="t16">MEMORY CHANGED</div><div class="bv" id="b-mem">14</div></div>
-        <div class="bstat"><div class="bl" data-i18n="t17">BRAIN TIME</div><div class="bv" id="b-time" data-i18n="t18">00:04:12</div></div>
+        <div class="bstat"><div class="bl">NEURONS</div><div class="bv" id="b-neurons">302</div></div>
+        <div class="bstat"><div class="bl">LATEST SPIKES</div><div class="bv" id="b-spikes">128</div></div>
+        <div class="bstat"><div class="bl">MEMORY CHANGED</div><div class="bv" id="b-mem">14</div></div>
+        <div class="bstat"><div class="bl">BRAIN TIME</div><div class="bv" id="b-time">00:04:12</div></div>
         <div class="norder">
           <div class="bl" style="margin-bottom:8px">NEURAL ORDER</div>
-          <div class="ostate" id="b-state" data-i18n="t19">LONG</div>
-          <div class="odesc" id="b-desc" data-i18n="t20">Motor readout 0.34 above the 0.25 threshold — buying.</div>
+          <div class="ostate" id="b-state">LONG</div>
+          <div class="odesc" id="b-desc">Motor readout 0.34 above the 0.25 threshold — buying.</div>
           <div class="obar"><div class="ofill" id="b-fill" style="width:67%"></div></div>
-          <div class="odrive"><span data-i18n="t21">drive</span><span id="b-drive" data-i18n="t22">+0.34</span></div>
+          <div class="odrive"><span>drive</span><span id="b-drive">+0.34</span></div>
         </div>
       </div>
     </div>
@@ -249,8 +244,8 @@
 <section id="replay">
   <div class="wrap">
     <div class="kick">SECTION 03 · NEURAL REPLAY</div>
-    <h2 data-i18n="s3.h">Each at their own rig</h2>
-    <div class="shk" data-i18n="s3.k">live spike replay · trade blotter on screen</div>
+    <h2>Each at their own rig</h2>
+    <div class="shk">live spike replay · trade blotter on screen</div>
   </div>
   <div class="wrap">
     <div class="stage" style="background:#05050a"><canvas id="rcv" width="960" height="540"></canvas></div>
@@ -261,8 +256,8 @@
 <section id="race">
   <div class="wrap">
     <div class="kick">SECTION 03 · BRAIN RACE / 7D</div>
-    <h2 data-i18n="s4.h">Brain race</h2>
-    <div class="shk" data-i18n="t23">$10,000 each at the start · who is ahead right now</div>
+    <h2>Brain race</h2>
+    <div class="shk">$10,000 each at the start · who is ahead right now</div>
     <div class="stage" style="padding:14px"><svg viewBox="0 0 420 150" width="100%" height="150" id="race-svg"></svg></div>
     <div class="lb" id="lb"></div>
   </div>
@@ -271,9 +266,9 @@
 <section id="gates">
   <div class="wrap">
     <div class="kick">SECTION 05 · GATE PIPELINE</div>
-    <h2 data-i18n="s5.h">Exactly where it stalled</h2>
-    <div class="shk" data-i18n="s5.k">eight gates · halts on first failure · reason recorded</div>
-    <div class="lead" data-i18n="t24">A binary traded / did not trade explains nothing when an organism goes quiet. The gate trace shows where it stopped: surrogate wiring, a dead network, a sub-threshold readout, a risk block, or the exchange minimum.</div>
+    <h2>Exactly where it stalled</h2>
+    <div class="shk">eight gates · halts on first failure · reason recorded</div>
+    <div class="lead">A binary traded / did not trade explains nothing when an organism goes quiet. The gate trace shows where it stopped: surrogate wiring, a dead network, a sub-threshold readout, a risk block, or the exchange minimum.</div>
 
     <div class="gwrap" id="gwrap"></div>
 
@@ -293,12 +288,12 @@
 <section id="timeline">
   <div class="wrap">
     <div class="kick">SECTION 06 · TRADE TIMELINE</div>
-    <h2 data-i18n="s6.h">What they did, over time</h2>
-    <div class="shk" data-i18n="s6.k">three lanes · entry, rotation, exit · hover a dot</div>
-    <div class="lead" data-i18n="t25">Each lane is one organism. A dot is an event: entry, rotation into another instrument, exit. The line between entry and exit is coloured by the result — green for profit, red for loss. Its length shows how long the position was held.</div>
+    <h2>What they did, over time</h2>
+    <div class="shk">three lanes · entry, rotation, exit · hover a dot</div>
+    <div class="lead">Each lane is one organism. A dot is an event: entry, rotation into another instrument, exit. The line between entry and exit is coloured by the result — green for profit, red for loss. Its length shows how long the position was held.</div>
 
     <div class="tl">
-      <div class="tlhead"><span data-i18n="tl.head">LAST 12 HOURS</span><span id="tlcount">—</span></div>
+      <div class="tlhead"><span>LAST 12 HOURS</span><span id="tlcount">—</span></div>
       <div class="tltrack" id="tltrack"></div>
       <div class="tlaxis" id="tlaxis"></div>
     </div>
@@ -310,15 +305,15 @@
 <section id="ledger">
   <div class="wrap">
     <div class="kick">SECTION 07 · DECISION LEDGER</div>
-    <h2 data-i18n="s7.h">Every call logged before the fill</h2>
-    <div class="shk" data-i18n="s7.k">open log that cannot be faked after the fact</div>
+    <h2>Every call logged before the fill</h2>
+    <div class="shk">open log that cannot be faked after the fact</div>
     <div class="ledger" id="ledger-log"></div>
     <table>
-      <thead><tr><th data-i18n="t26">CLOSED</th><th data-i18n="t27">ORGANISM</th><th data-i18n="t28">SIDE</th><th data-i18n="t29">ENTRY</th><th data-i18n="t30">EXIT</th><th data-i18n="t31">P&L</th></tr></thead>
+      <thead><tr><th>CLOSED</th><th>ORGANISM</th><th>SIDE</th><th>ENTRY</th><th>EXIT</th><th>P&L</th></tr></thead>
       <tbody>
-        <tr><td data-i18n="t32">13:40</td><td><b>platynereis</b></td><td class="green" data-i18n="t33">LONG</td><td data-i18n="t34">39.80</td><td data-i18n="t35">41.13</td><td class="green" data-i18n="t36">+$4.10</td></tr>
-        <tr><td data-i18n="t37">12:15</td><td><b>ciona</b></td><td class="red" data-i18n="t38">SHORT</td><td data-i18n="t39">38.10</td><td data-i18n="t40">40.05</td><td class="red" data-i18n="t41">−$9.40</td></tr>
-        <tr><td data-i18n="t42">11:02</td><td><b>elegans</b></td><td class="green" data-i18n="t43">LONG</td><td data-i18n="t44">35.20</td><td data-i18n="t45">36.90</td><td class="green" data-i18n="t46">+$3.30</td></tr>
+        <tr><td>13:40</td><td><b>platynereis</b></td><td class="green">LONG</td><td>39.80</td><td>41.13</td><td class="green">+$4.10</td></tr>
+        <tr><td>12:15</td><td><b>ciona</b></td><td class="red">SHORT</td><td>38.10</td><td>40.05</td><td class="red">−$9.40</td></tr>
+        <tr><td>11:02</td><td><b>elegans</b></td><td class="green">LONG</td><td>35.20</td><td>36.90</td><td class="green">+$3.30</td></tr>
       </tbody>
     </table>
   </div>
@@ -327,26 +322,26 @@
 <section id="sources">
   <div class="wrap">
     <div class="kick">SECTION 08 · DATA PROVENANCE</div>
-    <h2 data-i18n="s8.h">Where each brain comes from</h2>
-    <div class="shk" data-i18n="s8.k">real wiring · published datasets · openly verifiable</div>
+    <h2>Where each brain comes from</h2>
+    <div class="shk">real wiring · published datasets · openly verifiable</div>
     <div class="srcgrid">
 
       <a class="src" href="https://openworm.org/ConnectomeToolbox/" target="_blank">
-        <div class="st"><span class="name" data-i18n="t47">C. elegans · 302 neurons</span><span class="badge" data-i18n="t48">OpenWorm c302</span></div>
-        <div class="cite" data-i18n="t49">Hermaphrodite connectome from White et al. 1986 and Cook et al. 2019 as shipped in OpenWorm c302: 448 cells, 7,379 connections. Each cell is a leaky integrate-and-fire unit.</div>
-        <div class="doi" data-i18n="t50">Cook et al., Nature 571 (2019) · <span>doi:10.1038/s41586-019-1352-7</span> · dataset: openworm/c302 (MIT)</div>
+        <div class="st"><span class="name">C. elegans · 302 neurons</span><span class="badge">OpenWorm c302</span></div>
+        <div class="cite">Hermaphrodite connectome from White et al. 1986 and Cook et al. 2019 as shipped in OpenWorm c302: 448 cells, 7,379 connections. Each cell is a leaky integrate-and-fire unit.</div>
+        <div class="doi">Cook et al., Nature 571 (2019) · <span>doi:10.1038/s41586-019-1352-7</span> · dataset: openworm/c302 (MIT)</div>
       </a>
 
       <a class="src" href="https://elifesciences.org/articles/16962" target="_blank">
-        <div class="st"><span class="name" data-i18n="t51">Ciona intestinalis larva · 177 neurons</span><span class="badge" data-i18n="t52">eLife 2016</span></div>
-        <div class="cite" data-i18n="t53">Complete synaptic connectome of the tadpole larva CNS: 177 neurons, 6,618 synapses, 1,772 neuromuscular junctions, 1,206 gap junctions. The second whole-animal connectome ever published and the first of a chordate.</div>
-        <div class="doi" data-i18n="t54">Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · <span>doi:10.7554/eLife.16962</span> · CC-BY</div>
+        <div class="st"><span class="name">Ciona intestinalis larva · 177 neurons</span><span class="badge">eLife 2016</span></div>
+        <div class="cite">Complete synaptic connectome of the tadpole larva CNS: 177 neurons, 6,618 synapses, 1,772 neuromuscular junctions, 1,206 gap junctions. The second whole-animal connectome ever published and the first of a chordate.</div>
+        <div class="doi">Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · <span>doi:10.7554/eLife.16962</span> · CC-BY</div>
       </a>
 
       <a class="src" href="https://elifesciences.org/articles/97964" target="_blank">
-        <div class="st"><span class="name" data-i18n="t55">Platynereis dumerilii larva, 3 days · 966 neurons</span><span class="badge" data-i18n="t56">eLife 2025</span></div>
-        <div class="cite" data-i18n="t57">Whole-body connectome of the 72-hour larva: ~9,000 cells, of which 966 are neurons across 202 cell types. The only segmented animal with a complete connectome. Code and data on Zenodo.</div>
-        <div class="doi" data-i18n="t58">Verasztó, Jasek et al., eLife (2025), first posted bioRxiv 2020 · <span>doi:10.7554/eLife.97964</span> · data: zenodo 11811680</div>
+        <div class="st"><span class="name">Platynereis dumerilii larva, 3 days · 966 neurons</span><span class="badge">eLife 2025</span></div>
+        <div class="cite">Whole-body connectome of the 72-hour larva: ~9,000 cells, of which 966 are neurons across 202 cell types. The only segmented animal with a complete connectome. Code and data on Zenodo.</div>
+        <div class="doi">Verasztó, Jasek et al., eLife (2025), first posted bioRxiv 2020 · <span>doi:10.7554/eLife.97964</span> · data: zenodo 11811680</div>
       </a>
 
     </div>
@@ -356,35 +351,35 @@
 <section id="plugin">
   <div class="wrap">
     <div class="kick">SECTION 09 · STACK</div>
-    <h2 data-i18n="s9.h">Under the hood</h2>
-    <div class="shk" data-i18n="s9.k">full stack · nightly research pass · MIT engine</div>
+    <h2>Under the hood</h2>
+    <div class="shk">full stack · nightly research pass · MIT engine</div>
 
     <div class="pkg">
       <div class="pname">research/ → BioAgents-compatible API</div>
-      <div class="pdesc" data-i18n="t59">
+      <div class="pdesc">
         Every night the organisms' decisions and the structure of their connectomes go to a research agent through its documented interface
         <code>/api/deep-research</code> with JWT auth. The agent links our spike patterns to published work on these specific circuits and returns a <b>testable hypothesis</b>on why an organism behaved as it did. Results land in <code>/api/research</code>.
       </div>
     </div>
 
     <div class="acts">
-      <div class="act"><div class="an" data-i18n="t60">PLANNING</div><div class="ad" data-i18n="t61">Builds a research plan from observed organism behaviour.</div></div>
-      <div class="act"><div class="an" data-i18n="t62">LITERATURE</div><div class="ad" data-i18n="t63">Semantic search across publications with inline citations and DOIs.</div></div>
-      <div class="act"><div class="an" data-i18n="t64">HYPOTHESIS</div><div class="ad" data-i18n="t65">Formulates a testable hypothesis per organism.</div></div>
-      <div class="act"><div class="an" data-i18n="t66">REFLECTION</div><div class="ad" data-i18n="t67">Flags which hypotheses a simulation could falsify — lesioning, weight shuffling.</div></div>
+      <div class="act"><div class="an">PLANNING</div><div class="ad">Builds a research plan from observed organism behaviour.</div></div>
+      <div class="act"><div class="an">LITERATURE</div><div class="ad">Semantic search across publications with inline citations and DOIs.</div></div>
+      <div class="act"><div class="an">HYPOTHESIS</div><div class="ad">Formulates a testable hypothesis per organism.</div></div>
+      <div class="act"><div class="an">REFLECTION</div><div class="ad">Flags which hypotheses a simulation could falsify — lesioning, weight shuffling.</div></div>
     </div>
 
     <div class="stack">
-      <div class="sline"><span class="sk" data-i18n="t68">connectomes</span><span class="sv" data-i18n="t69">OpenWorm c302 · eLife 16962 · eLife 97964</span></div>
-      <div class="sline"><span class="sk" data-i18n="t70">dynamics</span><span class="sv" data-i18n="t71">leaky integrate-and-fire, 60 steps per decision</span></div>
-      <div class="sline"><span class="sk" data-i18n="t72">readout</span><span class="sv" data-i18n="t73">two-hop reachability over the adjacency matrix</span></div>
-      <div class="sline"><span class="sk" data-i18n="t74">market choice</span><span class="sv" data-i18n="t75">the organism runs its network over each candidate and goes where the readout is strongest</span></div>
-      <div class="sline"><span class="sk" data-i18n="t76">venue</span><span class="sv" data-i18n="t77">Hyperliquid API · every listed perp · one subaccount per organism</span></div>
-      <div class="sline"><span class="sk" data-i18n="t78">research</span><span class="sv" data-i18n="t79">BioAgents-compatible API · <code>/api/deep-research</code> · JWT HS256</span></div>
-      <div class="sline"><span class="sk" data-i18n="t80">backend</span><span class="sv" data-i18n="t81">Python · FastAPI · SQLite · Vercel + Hetzner</span></div>
+      <div class="sline"><span class="sk">connectomes</span><span class="sv">OpenWorm c302 · eLife 16962 · eLife 97964</span></div>
+      <div class="sline"><span class="sk">dynamics</span><span class="sv">leaky integrate-and-fire, 60 steps per decision</span></div>
+      <div class="sline"><span class="sk">readout</span><span class="sv">two-hop reachability over the adjacency matrix</span></div>
+      <div class="sline"><span class="sk">market choice</span><span class="sv">the organism runs its network over each candidate and goes where the readout is strongest</span></div>
+      <div class="sline"><span class="sk">venue</span><span class="sv">Hyperliquid API · every listed perp · one subaccount per organism</span></div>
+      <div class="sline"><span class="sk">research</span><span class="sv">BioAgents-compatible API · <code>/api/deep-research</code> · JWT HS256</span></div>
+      <div class="sline"><span class="sk">backend</span><span class="sv">Python · FastAPI · SQLite · Vercel + Hetzner</span></div>
     </div>
 
-    <div class="lead" style="margin:16px 0 0" data-i18n="t82">
+    <div class="lead" style="margin:16px 0 0">
       We call published interfaces and deployed contracts. The connectome engine is open — the datasets are open, so the tool for working with them should be too.
     </div>
   </section>
@@ -392,12 +387,12 @@
 <section id="desci">
   <div class="wrap">
     <div class="kick">SECTION 10 · OPEN SCIENCE</div>
-    <h2 data-i18n="s10.h">An open experiment, not a meme</h2>
-    <div class="shk" data-i18n="s10.k">open connectomes · public logs · verifiable output</div>
+    <h2>An open experiment, not a meme</h2>
+    <div class="shk">open connectomes · public logs · verifiable output</div>
 
     <div class="biobar">
       <span class="lg">◆</span>
-      <span class="txt" data-i18n="t83">Science should be open and verifiable on chain. All three connectomes are published under open licences, every decision is logged before the order is sent, and the engine is MIT. <b>$MICRO trades against $BIO</b> — the quote asset of the DeSci ecosystem.</span>
+      <span class="txt">Science should be open and verifiable on chain. All three connectomes are published under open licences, every decision is logged before the order is sent, and the engine is MIT. <b>$MICRO trades against $BIO</b> — the quote asset of the DeSci ecosystem.</span>
     </div>
 
     <div class="hyp">
@@ -406,37 +401,37 @@
     </div>
 
     <div class="flow">
-      <div class="step"><div class="n" data-i18n="t84">01 DATA</div>Open connectomes <b>C. elegans, Ciona, Platynereis</b> — by DOI from the SOURCES section.</div>
-      <div class="step"><div class="n" data-i18n="t85">02 AGENT</div>Each brain is a <b>leaky integrate-and-fire</b> network with an on-chain wallet on Hyperliquid.</div>
-      <div class="step"><div class="n" data-i18n="t86">03 OUTPUT</div>Every decision is <b>written to the log</b> before the fill: side, size, activity snapshot.</div>
-      <div class="step"><div class="n" data-i18n="t87">04 VERIFY</div>Logs, PnL and baseline are <b>public and reproducible</b> — anyone can re-check them.</div>
+      <div class="step"><div class="n">01 DATA</div>Open connectomes <b>C. elegans, Ciona, Platynereis</b> — by DOI from the SOURCES section.</div>
+      <div class="step"><div class="n">02 AGENT</div>Each brain is a <b>leaky integrate-and-fire</b> network with an on-chain wallet on Hyperliquid.</div>
+      <div class="step"><div class="n">03 OUTPUT</div>Every decision is <b>written to the log</b> before the fill: side, size, activity snapshot.</div>
+      <div class="step"><div class="n">04 VERIFY</div>Logs, PnL and baseline are <b>public and reproducible</b> — anyone can re-check them.</div>
     </div>
 
-    <div class="lead" style="margin:16px 0 0" data-i18n="t88">A negative result is honest and publishable — we do not promise a microbe will beat the market. All code and all logs are open; anyone can re-check every decision.</div>
+    <div class="lead" style="margin:16px 0 0">A negative result is honest and publishable — we do not promise a microbe will beat the market. All code and all logs are open; anyone can re-check every decision.</div>
   </div>
 </section>
 
 <section id="eco">
   <div class="wrap">
     <div class="kick">SECTION 11 · BIO ECOSYSTEM</div>
-    <h2 data-i18n="s11.h">Where MICRO sits in the Bio stack</h2>
-    <div class="shk" data-i18n="s11.k">three layers · what exactly is wired in</div>
-    <div class="lead" data-i18n="t89">Bio Protocol builds decentralised science infrastructure: an agent layer for analysing research and a token layer for funding it. MICRO plugs into the first and trades against the second.</div>
+    <h2>Where MICRO sits in the Bio stack</h2>
+    <div class="shk">three layers · what exactly is wired in</div>
+    <div class="lead">Bio Protocol builds decentralised science infrastructure: an agent layer for analysing research and a token layer for funding it. MICRO plugs into the first and trades against the second.</div>
 
     <div class="ecogrid">
       <a class="eco" href="https://bio.xyz" target="_blank">
-        <div class="et"><span class="en" data-i18n="t90">Bio Protocol</span><span class="eb" data-i18n="t91">agent layer · in use</span></div>
-        <div class="ed" data-i18n="t92">The nightly pass sends organism decisions and connectome structure to a BioAgents-compatible API. The agent links spike patterns to published work on these circuits and returns a testable hypothesis with citations.</div>
+        <div class="et"><span class="en">Bio Protocol</span><span class="eb">agent layer · in use</span></div>
+        <div class="ed">The nightly pass sends organism decisions and connectome structure to a BioAgents-compatible API. The agent links spike patterns to published work on these circuits and returns a testable hypothesis with citations.</div>
       </a>
 
       <a class="eco" href="https://www.stonkfun.xyz" target="_blank">
-        <div class="et"><span class="en" data-i18n="t93">$BIO</span><span class="eb" data-i18n="t94">quote asset</span></div>
-        <div class="ed" data-i18n="t95">$MICRO trades against $BIO on StonkFun. Liquidity is locked via Burn &amp; Earn.</div>
+        <div class="et"><span class="en">$BIO</span><span class="eb">quote asset</span></div>
+        <div class="ed">$MICRO trades against $BIO on StonkFun. Liquidity is locked via Burn &amp; Earn.</div>
       </a>
 
       <div class="eco" style="opacity:.62">
-        <div class="et"><span class="en" data-i18n="t96">PeptAI</span><span class="eb" data-i18n="t97">architecture reference</span></div>
-        <div class="ed" data-i18n="t98">MICRO's gate pipeline follows their shape: a candidate walks sequential validation gates and stops at the first failure, and the result is published for checking. We take no code — their pipeline is about proteins, ours about neurons.</div>
+        <div class="et"><span class="en">PeptAI</span><span class="eb">architecture reference</span></div>
+        <div class="ed">MICRO's gate pipeline follows their shape: a candidate walks sequential validation gates and stops at the first failure, and the result is published for checking. We take no code — their pipeline is about proteins, ours about neurons.</div>
       </div>
     </div>
   </div>
@@ -445,25 +440,25 @@
 <section id="token">
   <div class="wrap">
     <div class="kick">SECTION 12 · ON-CHAIN</div>
-    <h2 data-i18n="s12.h">$MICRO</h2>
-    <div class="shk" data-i18n="t99">MICRO / BIO pair on StonkFun · liquidity locked</div>
+    <h2>$MICRO</h2>
+    <div class="shk">MICRO / BIO pair on StonkFun · liquidity locked</div>
     <div class="tokgrid">
       <div class="card">
-        <h3 data-i18n="c.h">Contract</h3>
-        <div class="kv"><span class="k" data-i18n="t100">pair</span><span data-i18n="t101">MICRO / BIO</span></div>
-        <div class="kv"><span class="k" data-i18n="t102">launchpad</span><span data-i18n="t103">StonkFun · Solana</span></div>
-        <div class="kv"><span class="k" data-i18n="t104">supply</span><span data-i18n="t105">1,000,000,000</span></div>
-        <div class="kv"><span class="k" data-i18n="t106">liquidity</span><span data-i18n="t107">locked · Burn&Earn</span></div>
-        <div class="kv"><span class="k" data-i18n="t108">CA</span><span class="k" data-i18n="t109">awaiting launch</span></div>
-        <a class="btn buy" href="#" data-i18n="t110">buy $MICRO →</a>
+        <h3>Contract</h3>
+        <div class="kv"><span class="k">pair</span><span>MICRO / BIO</span></div>
+        <div class="kv"><span class="k">launchpad</span><span>StonkFun · Solana</span></div>
+        <div class="kv"><span class="k">supply</span><span>1,000,000,000</span></div>
+        <div class="kv"><span class="k">liquidity</span><span>locked · Burn&Earn</span></div>
+        <div class="kv"><span class="k">CA</span><span class="k">awaiting launch</span></div>
+        <a class="btn buy" href="#">buy $MICRO →</a>
       </div>
       <div class="card">
-        <h3 data-i18n="u.h">Holder utility</h3>
+        <h3>Holder utility</h3>
         <ul class="util">
-          <li><b>Dividends in $BIO</b><span class="soon live" data-i18n="t111">live</span><br>Distributed among $MICRO holders, paid in $BIO.</li>
-          <li><b>Vote on organisms</b><span class="soon" data-i18n="t112">soon</span><br>Who joins as the fourth, who gets more capital.</li>
-          <li><b>Full data access</b><span class="soon" data-i18n="t113">soon</span><br>Decision logs, neuron snapshots, gate traces, API, backtests.</li>
-          <li><b>Cosmetics</b><span class="soon" data-i18n="t114">soon</span><br>Desk skins and objects on the desks.</li>
+          <li><b>Dividends in $BIO</b><span class="soon live">live</span><br>Distributed among $MICRO holders, paid in $BIO.</li>
+          <li><b>Vote on organisms</b><span class="soon">soon</span><br>Who joins as the fourth, who gets more capital.</li>
+          <li><b>Full data access</b><span class="soon">soon</span><br>Decision logs, neuron snapshots, gate traces, API, backtests.</li>
+          <li><b>Cosmetics</b><span class="soon">soon</span><br>Desk skins and objects on the desks.</li>
         </ul>
       </div>
     </div>
@@ -473,8 +468,8 @@
 <section id="real">
   <div class="wrap">
     <div class="kick">SECTION 13 · METHOD</div>
-    <h2 data-i18n="s13.h">What's real here and what isn't</h2>
-    <div class="shk" data-i18n="s13.k">said plainly</div>
+    <h2>What's real here and what isn't</h2>
+    <div class="shk">said plainly</div>
     <ul class="real">
       <li><b>The connectomes are real.</b> Each organism's wiring was traced by electron microscopy of an actual animal and taken from the published datasets above. Nothing is invented or sampled.</li>
       <li><b>The accounts are demo.</b> $10,000 per organism — a simulated balance on real Hyperliquid prices and the real instrument list. Live mode is opt-in and off by default.</li>
@@ -484,7 +479,7 @@
   </div>
 </section>
 
-<footer><div class="wrap"><div class="foot" data-i18n="t115">
+<footer><div class="wrap"><div class="foot">
   Connectome data: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu & Meinertzhagen 2016 (Ciona) · Verasztó & Jasek et al. 2025 (Platynereis). All under open licences, links in the SOURCES section.<br>
   MICRO is an independent project, not affiliated with or endorsed by the protocols mentioned.<br>
   $MICRO is an art experiment, not an investment. A microbe's past results do not predict future ones. Not financial advice. · build 2026.09
@@ -507,12 +502,12 @@ function drawOffice(){
   const gr=octx.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#0e0e18');gr.addColorStop(.6,'#0a0a10');gr.addColorStop(1,'#08080b');
   octx.fillStyle=gr;octx.fillRect(0,0,W,H);
   octx.strokeStyle='rgba(127,119,221,0.06)';
-  for(let i=-4;i<9;i++){octx.beginPath();octx.moveTo(W/2+i*80,270);octx.lineTo(W/2+i*240,H);octx.stroke();}
-  octx.strokeStyle='rgba(127,119,221,0.10)';octx.beginPath();octx.moveTo(0,270);octx.lineTo(W,270);octx.stroke();
-  opx(0,66*P4,'#15151a',W/P4,3);
+  for(let i=-4;i<9;i++){octx.beginPath();octx.moveTo(W/2+i*80,332);octx.lineTo(W/2+i*240,H);octx.stroke();}
+  octx.strokeStyle='rgba(127,119,221,0.10)';octx.beginPath();octx.moveTo(0,332);octx.lineTo(W,332);octx.stroke();
+  opx(0,81*P4,'#15151a',W/P4,3);
   const gap=W/3;
   C.forEach((c,ix)=>{
-    const bx=gap*ix+gap/2-90,deskY=250;
+    const bx=gap*ix+gap/2-90,deskY=312;
     const bob=c.side!=='FLAT'&&c.pnl>0?Math.sin(t*3+ix)*3:0;const sink=c.pnl<-10?6:0;const y=deskY+bob+sink;
     const mx=bx+66,my=deskY-64;
     opx(mx,my,'#1c1c24',20,13);
@@ -525,19 +520,35 @@ function drawOffice(){
     else if(ix===1){opx(cx-5*P4,y-38,c.col,10,9);opx(cx-2*P4,y-33,oblink()?c.dark:'#0a0a10',2,2);opx(cx+2*P4,y-33,oblink()?c.dark:'#0a0a10',2,2);for(let s=0;s<7;s++){const yy=y-18+s*5;const xx=cx-1*P4+Math.sin(s*.7+t*4)*3*P4;opx(xx,yy,c.dark,3,3);}}
     else{for(let s=0;s<10;s++){const yy=y-s*5;const wig=Math.sin(s*.5+t*3)*2;opx(cx-4*P4+wig,yy,s%2?c.col:c.dark,8,2);opx(cx-6*P4+wig,yy,'#5DCAA5',1,1);opx(cx+5*P4+wig,yy,'#5DCAA5',1,1);}opx(cx-4*P4,y-10*5-2*P4,c.col,8,4);opx(cx-2*P4,y-10*5,oblink()?c.dark:'#0a0a10',2,1);opx(cx+2*P4,y-10*5,oblink()?c.dark:'#0a0a10',2,1);}
     octx.fillStyle='rgba(0,0,0,.3)';octx.beginPath();octx.ellipse(cx,y+8,32,6,0,0,6.28);octx.fill();
-    const w=168,h=50,cx0=bx-4,cy0=34;
-    octx.strokeStyle='#26262b';octx.beginPath();octx.moveTo(cx0+w/2,cy0+h);octx.lineTo(cx0+w/2,y-64);octx.stroke();
+    // position card - sized to be readable from across the room
+    const w=250,h=96,cx0=bx-45,cy0=18;
+    octx.strokeStyle='#26262b';octx.lineWidth=1;
+    octx.beginPath();octx.moveTo(cx0+w/2,cy0+h);octx.lineTo(cx0+w/2,y-64);octx.stroke();
     octx.fillStyle='#111114';octx.fillRect(cx0,cy0,w,h);
-    octx.strokeStyle=c.side==='LONG'?'#1D9E75':c.side==='SHORT'?'#993C1D':'#26262b';octx.strokeRect(cx0+.5,cy0+.5,w,h);
-    octx.textBaseline='top';octx.font='11px ui-monospace,monospace';octx.fillStyle='#e8e8ea';octx.fillText(c.name,cx0+8,cy0+7);
-    octx.font='9px ui-monospace,monospace';octx.fillStyle='#55555c';octx.fillText(c.nn,cx0+8,cy0+19);
+    const edge=c.side==='LONG'?'#1D9E75':c.side==='SHORT'?'#993C1D':'#26262b';
+    octx.strokeStyle=edge;octx.strokeRect(cx0+.5,cy0+.5,w,h);
+    octx.fillStyle=edge;octx.fillRect(cx0,cy0,3,h);
+
+    octx.textBaseline='top';
+    octx.font='15px ui-monospace,monospace';octx.fillStyle='#e8e8ea';
+    octx.fillText(c.name,cx0+12,cy0+10);
+    octx.font='10px ui-monospace,monospace';octx.fillStyle='#55555c';
+    octx.fillText(c.nn,cx0+12,cy0+30);
+
     const sym=c.side==='LONG'?'▲':c.side==='SHORT'?'▼':'■';
-    octx.font='10px ui-monospace,monospace';octx.fillStyle=c.side==='LONG'?'#5DCAA5':c.side==='SHORT'?'#E24B4A':'#8a8a92';
-    octx.fillText(c.side==='FLAT'?'■ FLAT':`${sym} ${c.sym} ${c.sz}·${c.lev}x`,cx0+8,cy0+33);
-    const pt=c.side==='FLAT'?'$0.00':(c.pnl>=0?'+':'−')+'$'+Math.abs(Math.round(c.pnl)).toLocaleString('en-US');
-    octx.font='14px ui-monospace,monospace';octx.fillStyle=c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
-    octx.fillText(pt,cx0+w-8-octx.measureText(pt).width,cy0+17);
-    octx.font='8px ui-monospace,monospace';octx.fillStyle='#55555c';const eq='$'+Math.round(c.eq).toLocaleString('en-US');octx.fillText(eq,cx0+w-8-octx.measureText(eq).width,cy0+7);
+    const sideCol=c.side==='LONG'?'#5DCAA5':c.side==='SHORT'?'#E24B4A':'#8a8a92';
+    octx.font='17px ui-monospace,monospace';octx.fillStyle=sideCol;
+    octx.fillText(c.side==='FLAT'?'■ FLAT':`${sym} ${c.sym}`,cx0+12,cy0+48);
+    octx.font='11px ui-monospace,monospace';octx.fillStyle='#8a8a92';
+    if(c.side!=='FLAT') octx.fillText(`${c.sz} · ${c.lev}x · liq ${Number(c.liq).toLocaleString('en-US')}`,cx0+12,cy0+74);
+    else octx.fillText('waiting',cx0+12,cy0+74);
+
+    const pt=c.side==='FLAT'?'$0':(c.pnl>=0?'+$':'−$')+Math.abs(Math.round(c.pnl)).toLocaleString('en-US');
+    octx.font='26px ui-monospace,monospace';octx.fillStyle=c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
+    octx.fillText(pt,cx0+w-12-octx.measureText(pt).width,cy0+42);
+    octx.font='11px ui-monospace,monospace';octx.fillStyle='#55555c';
+    const eq='$'+Math.round(c.eq).toLocaleString('en-US');
+    octx.fillText(eq,cx0+w-12-octx.measureText(eq).width,cy0+12);
   });
 }
 // ---------- BRAIN POINT CLOUD (orbitable, stonkfly-style) ----------
@@ -717,7 +728,7 @@ function drawTimeline(){
     const x1=x(tr.open), x2=x(tr.close);
     const col=tr.pnl>=0?'#1D9E75':'#993C1D';
     const dot=tr.pnl>=0?'#5DCAA5':'#E24B4A';
-    const title=`${tr.org} · ${tr.side} ${tr.sym} · ${new Date(tr.open).toLocaleTimeString((window.LOCALE||'en-GB'),{hour:'2-digit',minute:'2-digit'})}→${new Date(tr.close).toLocaleTimeString((window.LOCALE||'en-GB'),{hour:'2-digit',minute:'2-digit'})} · ${tr.pnl>=0?'+':'−'}$${Math.abs(tr.pnl)}`;
+    const title=`${tr.org} · ${tr.side} ${tr.sym} · ${new Date(tr.open).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}→${new Date(tr.close).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})} · ${tr.pnl>=0?'+':'−'}$${Math.abs(tr.pnl)}`;
     html+=`<div class="evline" style="left:${x1}px;width:${Math.max(2,x2-x1)}px;top:${y}px;background:${col}"></div>`;
     html+=`<div class="evdot" title="${title}" style="left:${x1}px;top:${y}px;background:${dot};border-radius:${tr.rotated?'50%':'2px'}"></div>`;
     html+=`<div class="evdot" title="${title}" style="left:${x2}px;top:${y}px;background:#111114;border:1.5px solid ${dot}"></div>`;
@@ -742,7 +753,7 @@ function drawTimeline(){
     const sym=tr.side==='LONG'?'▲':'▼';
     const dur=Math.round((tr.close-tr.open)/60e3);
     return `<div class="fe" style="border-left-color:${tr.col}">
-      <span class="ft">${new Date(tr.open).toLocaleTimeString((window.LOCALE||'en-GB'),{hour:'2-digit',minute:'2-digit'})}</span>
+      <span class="ft">${new Date(tr.open).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span>
       <span class="fo">${tr.org}</span>
       <span class="fs" style="color:${sideCol}">${sym} ${tr.side}</span>
       <span class="fd">${tr.sym} · held ${dur} min${tr.rotated?' · rotation':''}</span>
@@ -790,13 +801,12 @@ async function pull(){
       c.drive = (live.brain||{}).drive ?? 0;
     });
 
-    const px = document.getElementById('px');
-    if(px && s.market) px.textContent = s.market.instruments ?? '—';
+
 
     const log = document.getElementById('ledger-log');
     if(log && (s.ledger||[]).length){
       log.innerHTML = s.ledger.slice(-4).reverse().map(e=>{
-        const t = new Date((e.ts||0)*1000).toLocaleTimeString((window.LOCALE||'en-GB'),{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        const t = new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
         const side = e.side==='LONG'?'green':e.side==='SHORT'?'red':'';
         return '<div><span class="k">'+t+'</span> · '+e.organism+' · readout '+(e.drive||0).toFixed(2)+' → <span class="'+side+'">'+e.side+'</span></div>';
       }).join('');
@@ -1160,35 +1170,6 @@ setInterval(()=>{
 
 
 
-// ---------- i18n ----------
-const I18N={"en": {"t1": "SCIENCE", "t2": "observed live", "t3": "VENUE ", "t4": "UNIVERSE ", "t5": "MODE ", "t6": "STATUS ", "t7": "Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $10,000 demo account each. They can reach ", "t9": "3 × $10k", "t10": "PLATYNEREIS", "t11": "Nobody assigns an organism a market. It runs its network across every active one and goes where its own motor readout is strongest — the honest analogue of chemotaxis: the animal does not weigh options, it moves up the steepest gradient of whatever excites it most. It bounces on profit and slides under the desk on loss.", "t12": "PAUSE MOTION", "t13": "DRAG TO ORBIT +", "t14": "NEURONS", "t15": "LATEST SPIKES", "t16": "MEMORY CHANGED", "t17": "BRAIN TIME", "t20": "Motor readout 0.34 above the 0.25 threshold — buying.", "t21": "drive", "t23": "$10,000 each at the start · who is ahead right now", "t24": "A binary traded / did not trade explains nothing when an organism goes quiet. The gate trace shows where it stopped: surrogate wiring, a dead network, a sub-threshold readout, a risk block, or the exchange minimum.", "t25": "Each lane is one organism. A dot is an event: entry, rotation into another instrument, exit. The line between entry and exit is coloured by the result — green for profit, red for loss. Its length shows how long the position was held.", "t26": "CLOSED", "t27": "ORGANISM", "t28": "SIDE", "t29": "ENTRY", "t30": "EXIT", "t47": "C. elegans · 302 neurons", "t48": "OpenWorm c302", "t49": "Hermaphrodite connectome from White et al. 1986 and Cook et al. 2019 as shipped in OpenWorm c302: 448 cells, 7,379 connections. Each cell is a leaky integrate-and-fire unit.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Ciona intestinalis larva · 177 neurons", "t52": "eLife 2016", "t53": "Complete synaptic connectome of the tadpole larva CNS: 177 neurons, 6,618 synapses, 1,772 neuromuscular junctions, 1,206 gap junctions. The second whole-animal connectome ever published and the first of a chordate.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Platynereis dumerilii larva, 3 days · 966 neurons", "t56": "eLife 2025", "t57": "Whole-body connectome of the 72-hour larva: ~9,000 cells, of which 966 are neurons across 202 cell types. The only segmented animal with a complete connectome. Code and data on Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), first posted bioRxiv 2020 · ", "t59": "\n        Every night the organisms' decisions and the structure of their connectomes go to a research agent through its documented interface\n        ", "t60": "PLANNING", "t61": "Builds a research plan from observed organism behaviour.", "t62": "LITERATURE", "t63": "Semantic search across publications with inline citations and DOIs.", "t64": "HYPOTHESIS", "t65": "Formulates a testable hypothesis per organism.", "t66": "REFLECTION", "t67": "Flags which hypotheses a simulation could falsify — lesioning, weight shuffling.", "t68": "connectomes", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "dynamics", "t71": "leaky integrate-and-fire, 60 steps per decision", "t72": "readout", "t73": "two-hop reachability over the adjacency matrix", "t74": "market choice", "t75": "the organism runs its network over each candidate and goes where the readout is strongest", "t76": "venue", "t77": "Hyperliquid API · every listed perp · one subaccount per organism", "t78": "research", "t79": "BioAgents-compatible API · ", "t80": "backend", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "\n      We call published interfaces and deployed contracts. The connectome engine is open — the datasets are open, so the tool for working with them should be too.\n    ", "t83": "Science should be open and verifiable on chain. All three connectomes are published under open licences, every decision is logged before the order is sent, and the engine is MIT. ", "t84": "01 DATA", "t85": "02 AGENT", "t86": "03 OUTPUT", "t87": "04 VERIFY", "t88": "A negative result is honest and publishable — we do not promise a microbe will beat the market. All code and all logs are open; anyone can re-check every decision.", "t89": "Bio Protocol builds decentralised science infrastructure: an agent layer for analysing research and a token layer for funding it. MICRO plugs into the first and trades against the second.", "t90": "Bio Protocol", "t91": "agent layer · in use", "t92": "The nightly pass sends organism decisions and connectome structure to a BioAgents-compatible API. The agent links spike patterns to published work on these circuits and returns a testable hypothesis with citations.", "t93": "$BIO", "t94": "quote asset", "t95": "$MICRO trades against $BIO on StonkFun. Liquidity is locked via Burn &amp; Earn.", "t96": "PeptAI", "t97": "architecture reference", "t98": "MICRO's gate pipeline follows their shape: a candidate walks sequential validation gates and stops at the first failure, and the result is published for checking. We take no code — their pipeline is about proteins, ours about neurons.", "t99": "MICRO / BIO pair on StonkFun · liquidity locked", "t100": "pair", "t101": "MICRO / BIO", "t102": "launchpad", "t103": "StonkFun · Solana", "t104": "supply", "t106": "liquidity", "t107": "locked · Burn&Earn", "t108": "CA", "t109": "awaiting launch", "t110": "buy $MICRO →", "t111": "live", "t112": "soon", "t113": "soon", "t114": "soon", "t115": "\n  Connectome data: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu & Meinertzhagen 2016 (Ciona) · Verasztó & Jasek et al. 2025 (Platynereis). All under open licences, links in the SOURCES section.", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "ru": {"t1": "НАУКА", "t2": "наблюдение в реальном времени", "t3": "БИРЖА", "t4": "ИНСТРУМЕНТЫ", "t5": "РЕЖИМ", "t6": "СТАТУС", "t7": "Три полностью картированных коннектома — 177, 302 и 966 нейронов — торгуют на Hyperliquid с демо-счётом $10 000 у каждого. Им доступны все перпы биржи, и каждый организм сам выбирает инструмент и сторону: своя проводка, своё решение. Прибыльность не доказана.", "t9": "3 × $10 000", "t10": "PLATYNEREIS", "t11": "Никто не назначает организму инструмент. Он прогоняет свою сеть по каждому активному рынку и идёт туда, где его моторный ридаут сильнее — честный аналог хемотаксиса: животное не взвешивает варианты, оно движется вверх по градиенту того, что сильнее возбуждает. На профите оно подпрыгивает, на убытке сползает под стол.", "t12": "ОСТАНОВИТЬ", "t13": "ТЯНИТЕ, ЧТОБЫ ВРАЩАТЬ +", "t14": "НЕЙРОНОВ", "t15": "СПАЙКОВ", "t16": "ПАМЯТЬ ИЗМЕНЕНА", "t17": "ВРЕМЯ МОЗГА", "t20": "Моторный ридаут 0.34 выше порога 0.25 — покупает.", "t21": "драйв", "t23": "старт $10 000 каждому · кто впереди сейчас", "t24": "Бинарное «торговал / не торговал» ничего не объясняет, когда организм замолкает. Трасса гейтов показывает точку останова: суррогатная проводка, мёртвая сеть, подпороговый ридаут, риск-блок или минимум биржи.", "t25": "Каждая дорожка — один организм. Точка это событие: вход, ротация в другой инструмент, выход. Линия между входом и выходом окрашена в результат сделки — зелёная в плюс, красная в минус. Длина линии показывает, сколько держалась позиция.", "t26": "ЗАКРЫТО", "t27": "ОРГАНИЗМ", "t28": "СТОРОНА", "t29": "ВХОД", "t30": "ВЫХОД", "t47": "C. elegans · 302 нейрона", "t48": "OpenWorm c302", "t49": "Гермафродитный коннектом из White et al. 1986 и Cook et al. 2019 в виде, поставляемом в OpenWorm c302: 448 клеток, 7 379 связей. Каждая клетка — leaky integrate-and-fire.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Личинка асцидии Ciona intestinalis · 177 нейронов", "t52": "eLife 2016", "t53": "Полный синаптический коннектом ЦНС личинки-головастика: 177 нейронов, 6 618 синапсов, 1 772 нервно-мышечных соединения, 1 206 щелевых контактов. Второй в истории коннектом целого животного и первый у хордового.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Личинка червя Platynereis dumerilii, 3 дня · 966 нейронов", "t56": "eLife 2025", "t57": "Коннектом всего тела 72-часовой личинки: ~9 000 клеток, из них 966 нейронов, 202 типа клеток. Единственное сегментированное животное с полным коннектомом. Код и данные на Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), впервые bioRxiv 2020 · ", "t59": "Каждую ночь решения организмов и структура их коннектомов уходят исследовательскому агенту через его документированный интерфейс /api/deep-research с JWT-авторизацией. Агент связывает наши спайковые паттерны с опубликованными работами по этим конкретным контурам и возвращает проверяемую гипотезу: почему организм повёл себя именно так. Результаты ложатся в /api/research.", "t60": "ПЛАНИРОВАНИЕ", "t61": "Строит план исследования по наблюдаемому поведению организмов.", "t62": "ЛИТЕРАТУРА", "t63": "Семантический поиск по публикациям с инлайн-цитатами и DOI.", "t64": "ГИПОТЕЗА", "t65": "Формулирует проверяемую гипотезу по каждому организму.", "t66": "РЕФЛЕКСИЯ", "t67": "Отмечает, какие гипотезы можно опровергнуть симуляцией — лезия, перемешивание весов.", "t68": "коннектомы", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "динамика", "t71": "leaky integrate-and-fire, 60 шагов на решение", "t72": "ридаут", "t73": "двухшаговая достижимость по матрице смежности", "t74": "выбор рынка", "t75": "организм прогоняет сеть по каждому кандидату и идёт туда, где ридаут сильнее", "t76": "биржа", "t77": "Hyperliquid API · все листингованные перпы · субаккаунт на организм", "t78": "исследование", "t79": "BioAgents-compatible API · ", "t80": "бэкенд", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "Мы вызываем опубликованные интерфейсы и задеплоенные контракты. Движок коннектомов открыт — датасеты открыты, значит и инструмент для работы с ними должен быть открытым.", "t83": "Наука должна быть открытой и проверяемой ончейн. Все три коннектома опубликованы под открытыми лицензиями, каждое решение пишется в лог до отправки ордера, движок открыт под MIT.", "t84": "01 ДАННЫЕ", "t85": "02 АГЕНТ", "t86": "03 ВЫХОД", "t87": "04 ПРОВЕРКА", "t88": "Отрицательный результат честен и публикуем — мы не обещаем, что микроб обыграет рынок. Весь код и все логи открыты, любой может перепроверить каждое решение.", "t89": "Bio Protocol строит инфраструктуру децентрализованной науки: агентный слой для анализа исследований и токен-слой для их финансирования. MICRO подключён к первому и торгуется ко второму.", "t90": "Bio Protocol", "t91": "агентный слой · задействован", "t92": "Ночной проход отправляет решения организмов и структуру коннектомов в BioAgents-совместимый API. Агент связывает спайковые паттерны с опубликованными работами по этим контурам и возвращает проверяемую гипотезу с цитатами.", "t93": "$BIO", "t94": "квотовый актив", "t95": "$MICRO торгуется к $BIO на StonkFun. Ликвидность заблокирована через Burn &amp; Earn.", "t96": "PeptAI", "t97": "референс архитектуры", "t98": "Гейтовый пайплайн MICRO повторяет их форму: кандидат проходит последовательные гейты валидации и останавливается на первом отказе, а результат публикуется для проверки. Кода мы не берём — их пайплайн про белки, наш про нейроны.", "t99": "пара MICRO / BIO на StonkFun · ликвидность заблокирована", "t100": "пара", "t101": "MICRO / BIO", "t102": "лончпад", "t103": "StonkFun · Solana", "t104": "эмиссия", "t106": "ликвидность", "t107": "заблокирована · Burn&Earn", "t108": "CA", "t109": "ожидает запуска", "t110": "купить $MICRO →", "t111": "активно", "t112": "скоро", "t113": "скоро", "t114": "скоро", "t115": "Данные коннектомов: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). Все под открытыми лицензиями, ссылки в секции SOURCES.<br>  MICRO — независимый проект, не аффилирован с упомянутыми протоколами и не одобрен ими.<br>  $MICRO — арт-эксперимент, не инвестиция. Прошлые результаты микроба не предсказывают будущие. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "uk": {"t1": "НАУКА", "t2": "спостереження наживо", "t3": "БІРЖА", "t4": "ІНСТРУМЕНТИ", "t5": "РЕЖИМ", "t6": "СТАТУС", "t7": "Три повністю картовані коннектоми — 177, 302 і 966 нейронів — торгують на Hyperliquid з демо-рахунком $10 000 у кожного. Їм доступні всі перпи біржі, і кожен організм сам обирає інструмент і сторону: своя проводка, своє рішення. Прибутковість не доведена.", "t9": "3 × $10 000", "t10": "PLATYNEREIS", "t11": "Ніхто не призначає організму інструмент. Він проганяє свою мережу по кожному активному ринку та йде туди, де його моторний рідаут сильніший — чесний аналог хемотаксису: тварина не зважує варіанти, вона рухається вгору за градієнтом того, що сильніше збуджує. На прибутку вона підстрибує, на збитку сповзає під стіл.", "t12": "ЗУПИНИТИ", "t13": "ТЯГНІТЬ, ЩОБ ОБЕРТАТИ +", "t14": "НЕЙРОНІВ", "t15": "СПАЙКІВ", "t16": "ПАМ'ЯТЬ ЗМІНЕНА", "t17": "ЧАС МОЗКУ", "t20": "Моторний рідаут 0.34 вище порога 0.25 — купує.", "t21": "драйв", "t23": "старт $10 000 кожному · хто попереду зараз", "t24": "Бінарне «торгував / не торгував» нічого не пояснює, коли організм замовкає. Траса гейтів показує точку зупинки: сурогатна проводка, мертва мережа, підпороговий рідаут, ризик-блок або мінімум біржі.", "t25": "Кожна доріжка — один організм. Точка це подія: вхід, ротація в інший інструмент, вихід. Лінія між входом і виходом пофарбована в результат угоди — зелена у плюс, червона у мінус. Довжина лінії показує, скільки трималася позиція.", "t26": "ЗАКРИТО", "t27": "ОРГАНІЗМ", "t28": "СТОРОНА", "t29": "ВХІД", "t30": "ВИХІД", "t47": "C. elegans · 302 нейрони", "t48": "OpenWorm c302", "t49": "Гермафродитний коннектом із White et al. 1986 і Cook et al. 2019 у вигляді, що постачається в OpenWorm c302: 448 клітин, 7 379 зв'язків. Кожна клітина — leaky integrate-and-fire.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Личинка асцидії Ciona intestinalis · 177 нейронів", "t52": "eLife 2016", "t53": "Повний синаптичний коннектом ЦНС личинки-пуголовка: 177 нейронів, 6 618 синапсів, 1 772 нервово-м'язових з'єднання, 1 206 щілинних контактів. Другий в історії коннектом цілої тварини і перший у хордового.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Личинка черв'яка Platynereis dumerilii, 3 дні · 966 нейронів", "t56": "eLife 2025", "t57": "Коннектом усього тіла 72-годинної личинки: ~9 000 клітин, з них 966 нейронів, 202 типи клітин. Єдина сегментована тварина з повним коннектомом. Код і дані на Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), вперше bioRxiv 2020 · ", "t59": "Щоночі рішення організмів і структура їхніх коннектомів ідуть дослідницькому агенту через його документований інтерфейс /api/deep-research з JWT-авторизацією. Агент пов'язує наші спайкові патерни з опублікованими роботами за цими контурами й повертає перевірювану гіпотезу: чому організм повівся саме так. Результати лягають у /api/research.", "t60": "ПЛАНУВАННЯ", "t61": "Будує план дослідження за спостереженою поведінкою організмів.", "t62": "ЛІТЕРАТУРА", "t63": "Семантичний пошук по публікаціях з інлайн-цитатами та DOI.", "t64": "ГІПОТЕЗА", "t65": "Формулює перевірювану гіпотезу для кожного організму.", "t66": "РЕФЛЕКСІЯ", "t67": "Позначає, які гіпотези можна спростувати симуляцією — лезія, перемішування ваг.", "t68": "коннектоми", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "динаміка", "t71": "leaky integrate-and-fire, 60 кроків на рішення", "t72": "рідаут", "t73": "двокрокова досяжність за матрицею суміжності", "t74": "вибір ринку", "t75": "організм проганяє мережу по кожному кандидату і йде туди, де рідаут сильніший", "t76": "біржа", "t77": "Hyperliquid API · усі лістинговані перпи · субрахунок на організм", "t78": "дослідження", "t79": "BioAgents-compatible API · ", "t80": "бекенд", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "Ми викликаємо опубліковані інтерфейси та задеплоєні контракти. Рушій коннектомів відкритий — датасети відкриті, отже й інструмент для роботи з ними має бути відкритим.", "t83": "Наука має бути відкритою та перевірюваною ончейн. Усі три коннектоми опубліковані під відкритими ліцензіями, кожне рішення пишеться в лог до відправлення ордера, рушій відкритий під MIT.", "t84": "01 ДАНІ", "t85": "02 АГЕНТ", "t86": "03 ВИХІД", "t87": "04 ПЕРЕВІРКА", "t88": "Негативний результат чесний і публікований — ми не обіцяємо, що мікроб обіграє ринок. Увесь код і всі логи відкриті, будь-хто може перевірити кожне рішення.", "t89": "Bio Protocol будує інфраструктуру децентралізованої науки: агентний шар для аналізу досліджень і токен-шар для їх фінансування. MICRO підключений до першого й торгується до другого.", "t90": "Bio Protocol", "t91": "агентний шар · задіяний", "t92": "Нічний прохід надсилає рішення організмів і структуру коннектомів у BioAgents-сумісний API. Агент пов'язує спайкові патерни з опублікованими роботами за цими контурами й повертає перевірювану гіпотезу з цитатами.", "t93": "$BIO", "t94": "квотовий актив", "t95": "$MICRO торгується до $BIO на StonkFun. Ліквідність заблокована через Burn &amp; Earn.", "t96": "PeptAI", "t97": "референс архітектури", "t98": "Гейтовий пайплайн MICRO повторює їхню форму: кандидат проходить послідовні гейти валідації та зупиняється на першій відмові, а результат публікується для перевірки. Коду ми не беремо — їхній пайплайн про білки, наш про нейрони.", "t99": "пара MICRO / BIO на StonkFun · ліквідність заблокована", "t100": "пара", "t101": "MICRO / BIO", "t102": "лончпад", "t103": "StonkFun · Solana", "t104": "емісія", "t106": "ліквідність", "t107": "заблокована · Burn&Earn", "t108": "CA", "t109": "очікує запуску", "t110": "купити $MICRO →", "t111": "активно", "t112": "скоро", "t113": "скоро", "t114": "скоро", "t115": "Дані коннектомів: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). Усі під відкритими ліцензіями, посилання в секції SOURCES.<br>  MICRO — незалежний проєкт, не афілійований із згаданими протоколами і не схвалений ними.<br>  $MICRO — арт-експеримент, не інвестиція. Минулі результати мікроба не передбачають майбутні. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "zh": {"t1": "科学", "t2": "实时观测", "t3": "交易所", "t4": "品种范围", "t5": "模式", "t6": "状态", "t7": "三个完整绘制的连接组——177、302 和 966 个神经元——在 Hyperliquid 上各用一万美元模拟账户交易。交易所全部永续合约都可选，每个生物体自行决定品种和方向：各有各的接线，各有各的判断。盈利能力未经证实。", "t9": "3 × 1万美元", "t10": "多毛纲幼虫", "t11": "没有人给生物体指派市场。它把自己的网络跑遍每一个活跃品种，然后走向自身运动读出最强的那一个——这是趋化性的诚实类比：动物不权衡选项，它只沿着最强刺激的梯度移动。盈利时它会跳起来，亏损时会滑到桌下。", "t12": "暂停", "t13": "拖动旋转 +", "t14": "神经元", "t15": "最新脉冲", "t16": "记忆变更", "t17": "脑内时间", "t20": "运动读出 0.34 高于阈值 0.25 — 买入。", "t21": "驱动", "t23": "各一万美元起步 · 谁在领先", "t24": "当生物体沉默时，「交易了 / 没交易」这种二元结果解释不了任何事。关卡轨迹会显示它停在哪里：替代接线、网络无活动、读出低于阈值、风控拦截，或低于交易所最小下单量。", "t25": "每条轨道代表一个生物体。圆点是事件：开仓、换到另一个品种、平仓。开仓与平仓之间的连线按结果着色——盈利为绿，亏损为红。线的长度表示持仓时间。", "t26": "平仓", "t27": "生物体", "t28": "方向", "t29": "入场", "t30": "出场", "t47": "秀丽隐杆线虫 · 302 个神经元", "t48": "OpenWorm c302", "t49": "来自 White 等 1986 与 Cook 等 2019 的雌雄同体连接组，采用 OpenWorm c302 的发布版本：448 个细胞，7 379 条连接。每个细胞为漏积分发放单元。", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "玻璃海鞘幼虫 · 177 个神经元", "t52": "eLife 2016", "t53": "蝌蚪型幼虫中枢神经系统的完整突触连接组：177 个神经元、6 618 个突触、1 772 个神经肌肉接头、1 206 个缝隙连接。这是史上第二个完整动物连接组，也是首个脊索动物连接组。", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "多毛纲沙蚕幼虫，3 日龄 · 966 个神经元", "t56": "eLife 2025", "t57": "72 小时幼虫的全身连接组：约 9 000 个细胞，其中 966 个神经元，分属 202 种细胞类型。这是唯一拥有完整连接组的分节动物。代码与数据在 Zenodo 上。", "t58": "Verasztó, Jasek 等, eLife (2025), 最初发布于 bioRxiv 2020 · ", "t59": "每晚，生物体的决策与其连接组结构会通过带 JWT 认证的 /api/deep-research 接口发送给研究智能体。智能体把我们的脉冲模式与这些具体神经回路的已发表研究关联起来，返回一条可检验的假设：该生物为何如此行动。结果写入 /api/research。", "t60": "规划", "t61": "根据观察到的生物行为制定研究计划。", "t62": "文献", "t63": "跨文献语义检索，附行内引用与 DOI。", "t64": "假设", "t65": "为每个生物体提出可检验的假设。", "t66": "反思", "t67": "标出哪些假设可以用模拟证伪——损毁实验、权重打乱。", "t68": "连接组", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "动力学", "t71": "漏积分发放模型，每次决策 60 步", "t72": "读出", "t73": "邻接矩阵上的两跳可达性", "t74": "市场选择", "t75": "生物体把网络跑遍每个候选品种，走向读出最强的那个", "t76": "交易所", "t77": "Hyperliquid API · 全部上架永续合约 · 每个生物体一个子账户", "t78": "研究", "t79": "BioAgents-compatible API · ", "t80": "后端", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "我们调用公开接口和已部署的合约。连接组引擎是开源的——数据集是开放的，处理它们的工具也该如此。", "t83": "科学应当开放且可在链上验证。三个连接组都以开放许可发布，每个决策在下单之前写入日志，引擎以 MIT 许可开源。", "t84": "01 数据", "t85": "02 智能体", "t86": "03 输出", "t87": "04 验证", "t88": "阴性结果同样诚实且值得发表——我们不承诺微生物能跑赢市场。全部代码与日志公开，任何人都可以复核每一个决策。", "t89": "Bio Protocol 正在搭建去中心化科学的基础设施：用于分析研究的智能体层，以及为其提供资金的代币层。MICRO 接入了前者，并与后者配对交易。", "t90": "Bio Protocol", "t91": "智能体层 · 已接入", "t92": "每夜流程把生物体的决策与连接组结构发送到兼容 BioAgents 的接口。智能体将脉冲模式与相关回路的已发表研究关联，返回带引用的可检验假设。", "t93": "$BIO", "t94": "计价资产", "t95": "$MICRO 在 StonkFun 上与 $BIO 配对交易。流动性通过 Burn &amp; Earn 锁定。", "t96": "PeptAI", "t97": "架构参考", "t98": "MICRO 的关卡流程沿用了他们的形式：候选对象依次通过验证关卡，在第一次失败处停下，结果公开供核查。我们不取用其代码——他们的流程关于蛋白质，我们的关于神经元。", "t99": "StonkFun 上的 MICRO / BIO 交易对 · 流动性已锁定", "t100": "交易对", "t101": "MICRO / BIO", "t102": "发行平台", "t103": "StonkFun · Solana", "t104": "总量", "t106": "流动性", "t107": "已锁定 · Burn&Earn", "t108": "CA", "t109": "等待发行", "t110": "购买 $MICRO →", "t111": "已上线", "t112": "即将推出", "t113": "即将推出", "t114": "即将推出", "t115": "连接组数据：OpenWorm c302（Cook 2019, White 1986）· Ryan, Lu &amp; Meinertzhagen 2016（Ciona）· Verasztó &amp; Jasek 等 2025（Platynereis）。均为开放许可，链接见 SOURCES 部分。<br>  MICRO 为独立项目，与上述协议无关联，也未获其背书。<br>  $MICRO 是艺术实验，不是投资。微生物的过往表现不预示未来。Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "ko": {"t1": "사이언스", "t2": "실시간 관측", "t3": "거래소", "t4": "종목 범위", "t5": "모드", "t6": "상태", "t7": "완전히 매핑된 커넥톰 셋 — 177, 302, 966개 뉴런 — 이 각각 1만 달러 데모 계좌로 Hyperliquid에서 거래한다. 거래소의 모든 무기한 선물을 쓸 수 있고, 각 생물이 스스로 종목과 방향을 고른다. 각자의 배선, 각자의 판단. 수익성은 입증되지 않았다.", "t9": "3 × 1만 달러", "t10": "플라티네레이스", "t11": "누구도 생물에게 종목을 지정하지 않는다. 활성화된 모든 시장에 자기 네트워크를 돌려보고, 자신의 운동 출력이 가장 강한 곳으로 간다 — 주화성의 정직한 유비다. 동물은 선택지를 저울질하지 않고, 가장 강하게 자극하는 쪽의 기울기를 따라 움직인다. 수익이 나면 뛰어오르고, 손실이 나면 책상 밑으로 미끄러진다.", "t12": "정지", "t13": "드래그하여 회전 +", "t14": "뉴런", "t15": "최근 스파이크", "t16": "메모리 변화", "t17": "뇌 시간", "t20": "운동 출력 0.34, 임계값 0.25 초과 — 매수.", "t21": "드라이브", "t23": "각 1만 달러로 시작 · 현재 선두", "t24": "생물이 조용해졌을 때 '거래했다 / 안 했다'는 이분법은 아무것도 설명하지 못한다. 게이트 추적은 어디서 멈췄는지 보여준다: 대체 배선, 죽은 네트워크, 임계값 미달 출력, 리스크 차단, 또는 거래소 최소 주문 금액.", "t25": "각 레인은 생물 하나다. 점은 사건이다: 진입, 다른 종목으로 전환, 청산. 진입과 청산 사이의 선은 결과에 따라 색이 정해진다 — 수익은 녹색, 손실은 빨강. 선의 길이는 보유 시간을 뜻한다.", "t26": "청산", "t27": "생물", "t28": "방향", "t29": "진입", "t30": "청산가", "t47": "예쁜꼬마선충 · 뉴런 302개", "t48": "OpenWorm c302", "t49": "White 외 1986과 Cook 외 2019의 자웅동체 커넥톰을 OpenWorm c302 배포판 형태로 사용: 세포 448개, 연결 7,379개. 각 세포는 LIF 유닛이다.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "우렁쉥이 유생 · 뉴런 177개", "t52": "eLife 2016", "t53": "올챙이형 유생 중추신경계의 완전한 시냅스 커넥톰: 뉴런 177개, 시냅스 6,618개, 신경근접합 1,772개, 간극연접 1,206개. 역사상 두 번째 전개체 커넥톰이자 최초의 척삭동물 커넥톰이다.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "갯지렁이 유생, 3일 · 뉴런 966개", "t56": "eLife 2025", "t57": "72시간 유생의 전신 커넥톰: 약 9,000개 세포 중 966개가 뉴런이며 202개 세포 유형으로 나뉜다. 완전한 커넥톰을 가진 유일한 체절 동물이다. 코드와 데이터는 Zenodo에 있다.", "t58": "Verasztó, Jasek 외, eLife (2025), bioRxiv 2020 최초 공개 · ", "t59": "매일 밤 생물의 결정과 커넥톰 구조가 JWT 인증을 거쳐 /api/deep-research 인터페이스로 리서치 에이전트에 전달된다. 에이전트는 우리 스파이크 패턴을 해당 회로에 관한 발표 연구와 연결해 검증 가능한 가설을 돌려준다: 왜 그렇게 행동했는가. 결과는 /api/research에 쌓인다.", "t60": "플래닝", "t61": "관찰된 생물 행동으로 연구 계획을 세운다.", "t62": "문헌", "t63": "출판물 전반의 의미 검색, 인라인 인용과 DOI 포함.", "t64": "가설", "t65": "생물별로 검증 가능한 가설을 세운다.", "t66": "리플렉션", "t67": "시뮬레이션으로 반증 가능한 가설을 표시한다 — 병변, 가중치 섞기.", "t68": "커넥톰", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "다이내믹스", "t71": "LIF 모델, 결정당 60 스텝", "t72": "출력", "t73": "인접 행렬의 2홉 도달성", "t74": "시장 선택", "t75": "생물이 각 후보에 네트워크를 돌려 출력이 가장 강한 곳으로 간다", "t76": "거래소", "t77": "Hyperliquid API · 상장된 모든 무기한 선물 · 생물당 서브계좌 하나", "t78": "리서치", "t79": "BioAgents-compatible API · ", "t80": "백엔드", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "우리는 공개된 인터페이스와 배포된 컨트랙트를 호출한다. 커넥톰 엔진은 오픈소스다 — 데이터셋이 열려 있으니 그것을 다루는 도구도 열려 있어야 한다.", "t83": "과학은 열려 있고 온체인에서 검증 가능해야 한다. 세 커넥톰 모두 오픈 라이선스로 공개되어 있고, 모든 결정은 주문 전에 기록되며, 엔진은 MIT로 공개돼 있다.", "t84": "01 데이터", "t85": "02 에이전트", "t86": "03 출력", "t87": "04 검증", "t88": "부정적 결과도 정직하고 발표할 가치가 있다 — 미생물이 시장을 이긴다고 약속하지 않는다. 모든 코드와 로그가 공개되어 누구나 모든 결정을 다시 확인할 수 있다.", "t89": "Bio Protocol은 탈중앙 과학 인프라를 만든다: 연구를 분석하는 에이전트 레이어와 이를 자금 조달하는 토큰 레이어. MICRO는 전자에 연결되고 후자와 페어로 거래된다.", "t90": "Bio Protocol", "t91": "에이전트 레이어 · 사용 중", "t92": "야간 패스가 생물의 결정과 커넥톰 구조를 BioAgents 호환 API로 보낸다. 에이전트는 스파이크 패턴을 해당 회로 연구와 연결해 인용이 달린 검증 가능한 가설을 돌려준다.", "t93": "$BIO", "t94": "호가 자산", "t95": "$MICRO는 StonkFun에서 $BIO와 페어로 거래된다. 유동성은 Burn &amp; Earn으로 잠긴다.", "t96": "PeptAI", "t97": "아키텍처 레퍼런스", "t98": "MICRO의 게이트 파이프라인은 그들의 형태를 따른다: 후보가 순차 검증 게이트를 지나 첫 실패에서 멈추고, 결과는 검증을 위해 공개된다. 코드는 가져오지 않는다 — 그들의 파이프라인은 단백질에 관한 것이고 우리 것은 뉴런에 관한 것이다.", "t99": "StonkFun의 MICRO / BIO 페어 · 유동성 잠김", "t100": "페어", "t101": "MICRO / BIO", "t102": "런치패드", "t103": "StonkFun · Solana", "t104": "총 발행량", "t106": "유동성", "t107": "잠김 · Burn&Earn", "t108": "CA", "t109": "출시 대기", "t110": "$MICRO 구매 →", "t111": "진행 중", "t112": "곧", "t113": "곧", "t114": "곧", "t115": "커넥톰 데이터: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). 모두 오픈 라이선스이며 링크는 SOURCES 섹션에 있다.<br>  MICRO는 독립 프로젝트이며, 언급된 프로토콜들과 제휴하거나 승인받지 않았다.<br>  $MICRO는 아트 실험이지 투자가 아니다. 미생물의 과거 성과는 미래를 예측하지 않는다. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "es": {"t1": "CIENCIA", "t2": "en observación", "t3": "MERCADO", "t4": "UNIVERSO", "t5": "MODO", "t6": "ESTADO", "t7": "Tres conectomas completamente mapeados — 177, 302 y 966 neuronas — operan en Hyperliquid con una cuenta demo de 10.000 $ cada uno. Pueden usar todos los perpetuos del exchange, y cada organismo elige su propio instrumento y dirección: su cableado, su decisión. La rentabilidad no está demostrada.", "t9": "3 × 10.000 $", "t10": "PLATYNEREIS", "t11": "Nadie le asigna un mercado al organismo. Pasa su red por cada mercado activo y va hacia donde su lectura motora es más fuerte — el análogo honesto de la quimiotaxis: el animal no sopesa opciones, sube por el gradiente de lo que más lo excita. Con ganancia salta; con pérdida se desliza bajo el escritorio.", "t12": "PAUSAR", "t13": "ARRASTRA PARA GIRAR +", "t14": "NEURONAS", "t15": "ESPIGAS", "t16": "MEMORIA", "t17": "TIEMPO CEREBRAL", "t20": "Lectura motora 0,34 sobre el umbral 0,25 — compra.", "t21": "impulso", "t23": "10.000 $ cada uno al inicio · quién va primero", "t24": "Un binario operó / no operó no explica nada cuando un organismo se calla. La traza de filtros muestra dónde se detuvo: cableado sustituto, red inactiva, lectura por debajo del umbral, bloqueo de riesgo o el mínimo del exchange.", "t25": "Cada carril es un organismo. Un punto es un evento: entrada, rotación a otro instrumento, salida. La línea entre entrada y salida se colorea según el resultado — verde en ganancia, roja en pérdida. Su longitud indica cuánto se mantuvo la posición.", "t26": "CERRADO", "t27": "ORGANISMO", "t28": "LADO", "t29": "ENTRADA", "t30": "SALIDA", "t47": "C. elegans · 302 neuronas", "t48": "OpenWorm c302", "t49": "Conectoma hermafrodita de White et al. 1986 y Cook et al. 2019 tal como se distribuye en OpenWorm c302: 448 células, 7.379 conexiones. Cada célula es una unidad leaky integrate-and-fire.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Larva de Ciona intestinalis · 177 neuronas", "t52": "eLife 2016", "t53": "Conectoma sináptico completo del SNC de la larva renacuajo: 177 neuronas, 6.618 sinapsis, 1.772 uniones neuromusculares, 1.206 uniones gap. El segundo conectoma de un animal completo jamás publicado y el primero de un cordado.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Larva de Platynereis dumerilii, 3 días · 966 neuronas", "t56": "eLife 2025", "t57": "Conectoma de cuerpo entero de la larva de 72 horas: ~9.000 células, de las cuales 966 son neuronas en 202 tipos celulares. El único animal segmentado con un conectoma completo. Código y datos en Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), publicado primero en bioRxiv 2020 · ", "t59": "Cada noche las decisiones de los organismos y la estructura de sus conectomas van a un agente de investigación por su interfaz documentada /api/deep-research con autenticación JWT. El agente vincula nuestros patrones de espigas con trabajos publicados sobre esos circuitos y devuelve una hipótesis contrastable: por qué el organismo actuó así. Los resultados quedan en /api/research.", "t60": "PLANIFICACIÓN", "t61": "Crea un plan de investigación a partir del comportamiento observado.", "t62": "LITERATURA", "t63": "Búsqueda semántica en publicaciones con citas en línea y DOI.", "t64": "HIPÓTESIS", "t65": "Formula una hipótesis contrastable por organismo.", "t66": "REFLEXIÓN", "t67": "Señala qué hipótesis podría falsar una simulación — lesión, barajado de pesos.", "t68": "conectomas", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "dinámica", "t71": "leaky integrate-and-fire, 60 pasos por decisión", "t72": "lectura", "t73": "alcance de dos saltos en la matriz de adyacencia", "t74": "elección de mercado", "t75": "el organismo pasa su red por cada candidato y va donde la lectura es más fuerte", "t76": "mercado", "t77": "API de Hyperliquid · todos los perpetuos listados · una subcuenta por organismo", "t78": "investigación", "t79": "BioAgents-compatible API · ", "t80": "backend", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "Llamamos a interfaces publicadas y contratos desplegados. El motor de conectomas es abierto — los datasets son abiertos, así que la herramienta para trabajarlos también debería serlo.", "t83": "La ciencia debe ser abierta y verificable en cadena. Los tres conectomas están publicados bajo licencias abiertas, cada decisión se registra antes de enviar la orden y el motor es MIT.", "t84": "01 DATOS", "t85": "02 AGENTE", "t86": "03 SALIDA", "t87": "04 VERIFICAR", "t88": "Un resultado negativo es honesto y publicable — no prometemos que un microbio vaya a batir al mercado. Todo el código y todos los registros son abiertos; cualquiera puede revisar cada decisión.", "t89": "Bio Protocol construye infraestructura de ciencia descentralizada: una capa de agentes para analizar investigación y una capa de token para financiarla. MICRO se conecta a la primera y cotiza contra la segunda.", "t90": "Bio Protocol", "t91": "capa de agentes · en uso", "t92": "El pase nocturno envía las decisiones de los organismos y la estructura del conectoma a una API compatible con BioAgents. El agente vincula patrones de espigas con trabajos publicados sobre esos circuitos y devuelve una hipótesis contrastable con citas.", "t93": "$BIO", "t94": "activo de cotización", "t95": "$MICRO cotiza contra $BIO en StonkFun. La liquidez está bloqueada mediante Burn &amp; Earn.", "t96": "PeptAI", "t97": "referencia de arquitectura", "t98": "El pipeline de filtros de MICRO sigue su forma: un candidato atraviesa filtros de validación secuenciales y se detiene en el primer fallo, y el resultado se publica para su revisión. No tomamos código — su pipeline trata de proteínas, el nuestro de neuronas.", "t99": "par MICRO / BIO en StonkFun · liquidez bloqueada", "t100": "par", "t101": "MICRO / BIO", "t102": "launchpad", "t103": "StonkFun · Solana", "t104": "suministro", "t106": "liquidez", "t107": "bloqueada · Burn&Earn", "t108": "CA", "t109": "pendiente de lanzamiento", "t110": "comprar $MICRO →", "t111": "activo", "t112": "pronto", "t113": "pronto", "t114": "pronto", "t115": "Datos de conectomas: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). Todos con licencias abiertas, enlaces en la sección SOURCES.<br>  MICRO es un proyecto independiente, no afiliado ni respaldado por los protocolos mencionados.<br>  $MICRO es un experimento artístico, no una inversión. Los resultados pasados de un microbio no predicen los futuros. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "pt": {"t1": "CIÊNCIA", "t2": "em observação", "t3": "MERCADO", "t4": "UNIVERSO", "t5": "MODO", "t6": "ESTADO", "t7": "Três conectomas totalmente mapeados — 177, 302 e 966 neurônios — operam na Hyperliquid com uma conta demo de US$ 10.000 cada. Podem usar todos os perpétuos da exchange, e cada organismo escolhe seu instrumento e direção: sua fiação, sua decisão. A lucratividade não está comprovada.", "t9": "3 × US$ 10 mil", "t10": "PLATYNEREIS", "t11": "Ninguém atribui um mercado ao organismo. Ele roda sua rede por cada mercado ativo e vai para onde sua leitura motora é mais forte — o análogo honesto da quimiotaxia: o animal não pesa opções, sobe pelo gradiente do que mais o excita. No lucro ele pula; no prejuízo escorrega para baixo da mesa.", "t12": "PAUSAR", "t13": "ARRASTE PARA GIRAR +", "t14": "NEURÔNIOS", "t15": "SPIKES", "t16": "MEMÓRIA", "t17": "TEMPO CEREBRAL", "t20": "Leitura motora 0,34 acima do limiar 0,25 — compra.", "t21": "impulso", "t23": "US$ 10.000 cada um · quem está na frente", "t24": "Um binário operou / não operou não explica nada quando um organismo silencia. O rastro dos filtros mostra onde parou: fiação substituta, rede inativa, leitura abaixo do limiar, bloqueio de risco ou o mínimo da exchange.", "t25": "Cada trilha é um organismo. Um ponto é um evento: entrada, rotação para outro instrumento, saída. A linha entre entrada e saída é colorida pelo resultado — verde no lucro, vermelha no prejuízo. Seu comprimento mostra quanto tempo a posição durou.", "t26": "FECHADO", "t27": "ORGANISMO", "t28": "LADO", "t29": "ENTRADA", "t30": "SAÍDA", "t47": "C. elegans · 302 neurônios", "t48": "OpenWorm c302", "t49": "Conectoma hermafrodita de White et al. 1986 e Cook et al. 2019 como distribuído no OpenWorm c302: 448 células, 7.379 conexões. Cada célula é uma unidade leaky integrate-and-fire.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Larva de Ciona intestinalis · 177 neurônios", "t52": "eLife 2016", "t53": "Conectoma sináptico completo do SNC da larva girino: 177 neurônios, 6.618 sinapses, 1.772 junções neuromusculares, 1.206 junções comunicantes. O segundo conectoma de um animal inteiro já publicado e o primeiro de um cordado.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Larva de Platynereis dumerilii, 3 dias · 966 neurônios", "t56": "eLife 2025", "t57": "Conectoma de corpo inteiro da larva de 72 horas: ~9.000 células, das quais 966 são neurônios em 202 tipos celulares. O único animal segmentado com conectoma completo. Código e dados no Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), publicado primeiro no bioRxiv 2020 · ", "t59": "Toda noite as decisões dos organismos e a estrutura de seus conectomas vão para um agente de pesquisa pela interface documentada /api/deep-research com autenticação JWT. O agente liga nossos padrões de spikes a trabalhos publicados sobre esses circuitos e devolve uma hipótese testável: por que o organismo agiu assim. Os resultados ficam em /api/research.", "t60": "PLANEJAMENTO", "t61": "Monta um plano de pesquisa a partir do comportamento observado.", "t62": "LITERATURA", "t63": "Busca semântica em publicações com citações inline e DOI.", "t64": "HIPÓTESE", "t65": "Formula uma hipótese testável por organismo.", "t66": "REFLEXÃO", "t67": "Aponta quais hipóteses uma simulação poderia falsear — lesão, embaralhamento de pesos.", "t68": "conectomas", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "dinâmica", "t71": "leaky integrate-and-fire, 60 passos por decisão", "t72": "leitura", "t73": "alcance de dois saltos na matriz de adjacência", "t74": "escolha de mercado", "t75": "o organismo roda sua rede por cada candidato e vai onde a leitura é mais forte", "t76": "mercado", "t77": "API da Hyperliquid · todos os perpétuos listados · uma subconta por organismo", "t78": "pesquisa", "t79": "BioAgents-compatible API · ", "t80": "backend", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "Chamamos interfaces publicadas e contratos implantados. O motor de conectomas é aberto — os datasets são abertos, então a ferramenta para trabalhá-los também deveria ser.", "t83": "A ciência deve ser aberta e verificável on-chain. Os três conectomas estão publicados sob licenças abertas, cada decisão é registrada antes do envio da ordem e o motor é MIT.", "t84": "01 DADOS", "t85": "02 AGENTE", "t86": "03 SAÍDA", "t87": "04 VERIFICAR", "t88": "Um resultado negativo é honesto e publicável — não prometemos que um micróbio vá bater o mercado. Todo o código e todos os logs são abertos; qualquer um pode revisar cada decisão.", "t89": "A Bio Protocol constrói infraestrutura de ciência descentralizada: uma camada de agentes para analisar pesquisa e uma camada de token para financiá-la. O MICRO se liga à primeira e é negociado contra a segunda.", "t90": "Bio Protocol", "t91": "camada de agentes · em uso", "t92": "A passagem noturna envia as decisões dos organismos e a estrutura do conectoma para uma API compatível com BioAgents. O agente liga padrões de spikes a trabalhos publicados sobre esses circuitos e devolve uma hipótese testável com citações.", "t93": "$BIO", "t94": "ativo de cotação", "t95": "$MICRO é negociado contra $BIO na StonkFun. A liquidez está bloqueada via Burn &amp; Earn.", "t96": "PeptAI", "t97": "referência de arquitetura", "t98": "O pipeline de filtros do MICRO segue o formato deles: um candidato percorre filtros de validação sequenciais e para na primeira falha, e o resultado é publicado para conferência. Não pegamos código — o pipeline deles é sobre proteínas, o nosso sobre neurônios.", "t99": "par MICRO / BIO na StonkFun · liquidez bloqueada", "t100": "par", "t101": "MICRO / BIO", "t102": "launchpad", "t103": "StonkFun · Solana", "t104": "fornecimento", "t106": "liquidez", "t107": "bloqueada · Burn&Earn", "t108": "CA", "t109": "aguardando lançamento", "t110": "comprar $MICRO →", "t111": "ativo", "t112": "em breve", "t113": "em breve", "t114": "em breve", "t115": "Dados de conectomas: OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). Todos sob licenças abertas, links na seção SOURCES.<br>  MICRO é um projeto independente, não afiliado nem endossado pelos protocolos mencionados.<br>  $MICRO é um experimento artístico, não um investimento. Resultados passados de um micróbio não preveem os futuros. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}, "fr": {"t1": "SCIENCE", "t2": "en direct", "t3": "PLACE", "t4": "UNIVERS", "t5": "MODE", "t6": "STATUT", "t7": "Trois connectomes entièrement cartographiés — 177, 302 et 966 neurones — tradent sur Hyperliquid avec un compte démo de 10 000 $ chacun. Tous les perpétuels de la plateforme leur sont accessibles, et chaque organisme choisit lui-même l'instrument et le sens : son câblage, sa décision. La rentabilité n'est pas démontrée.", "t9": "3 × 10 000 $", "t10": "PLATYNEREIS", "t11": "Personne n'assigne de marché à l'organisme. Il passe son réseau sur chaque marché actif et va là où sa lecture motrice est la plus forte — l'analogue honnête du chimiotactisme : l'animal ne pèse pas les options, il remonte le gradient de ce qui l'excite le plus. En gain il sautille, en perte il glisse sous le bureau.", "t12": "PAUSE", "t13": "GLISSEZ POUR TOURNER +", "t14": "NEURONES", "t15": "SPIKES", "t16": "MÉMOIRE", "t17": "TEMPS CÉRÉBRAL", "t20": "Lecture motrice 0,34 au-dessus du seuil 0,25 — achat.", "t21": "impulsion", "t23": "10 000 $ chacun au départ · qui mène", "t24": "Un binaire a tradé / n'a pas tradé n'explique rien quand un organisme se tait. La trace des filtres montre où il s'est arrêté : câblage de substitution, réseau inactif, lecture sous le seuil, blocage de risque ou minimum de la plateforme.", "t25": "Chaque piste est un organisme. Un point est un événement : entrée, rotation vers un autre instrument, sortie. La ligne entre entrée et sortie est colorée par le résultat — verte en gain, rouge en perte. Sa longueur indique la durée de la position.", "t26": "CLÔTURÉ", "t27": "ORGANISME", "t28": "SENS", "t29": "ENTRÉE", "t30": "SORTIE", "t47": "C. elegans · 302 neurones", "t48": "OpenWorm c302", "t49": "Connectome hermaphrodite de White et al. 1986 et Cook et al. 2019 tel que livré dans OpenWorm c302 : 448 cellules, 7 379 connexions. Chaque cellule est une unité leaky integrate-and-fire.", "t50": "Cook et al., Nature 571 (2019) · ", "t51": "Larve de Ciona intestinalis · 177 neurones", "t52": "eLife 2016", "t53": "Connectome synaptique complet du SNC de la larve têtard : 177 neurones, 6 618 synapses, 1 772 jonctions neuromusculaires, 1 206 jonctions gap. Deuxième connectome d'animal entier jamais publié et premier chez un chordé.", "t54": "Ryan, Lu & Meinertzhagen, eLife 5:e16962 (2016) · ", "t55": "Larve de Platynereis dumerilii, 3 jours · 966 neurones", "t56": "eLife 2025", "t57": "Connectome du corps entier de la larve de 72 heures : ~9 000 cellules, dont 966 neurones répartis en 202 types cellulaires. Le seul animal segmenté doté d'un connectome complet. Code et données sur Zenodo.", "t58": "Verasztó, Jasek et al., eLife (2025), d'abord publié sur bioRxiv 2020 · ", "t59": "Chaque nuit, les décisions des organismes et la structure de leurs connectomes partent vers un agent de recherche via son interface documentée /api/deep-research avec authentification JWT. L'agent relie nos motifs de décharge aux travaux publiés sur ces circuits et renvoie une hypothèse testable : pourquoi l'organisme a agi ainsi. Les résultats atterrissent dans /api/research.", "t60": "PLANIFICATION", "t61": "Construit un plan de recherche à partir du comportement observé.", "t62": "LITTÉRATURE", "t63": "Recherche sémantique dans les publications avec citations en ligne et DOI.", "t64": "HYPOTHÈSE", "t65": "Formule une hypothèse testable par organisme.", "t66": "RÉFLEXION", "t67": "Indique quelles hypothèses une simulation pourrait falsifier — lésion, mélange des poids.", "t68": "connectomes", "t69": "OpenWorm c302 · eLife 16962 · eLife 97964", "t70": "dynamique", "t71": "leaky integrate-and-fire, 60 pas par décision", "t72": "lecture", "t73": "atteignabilité à deux sauts sur la matrice d'adjacence", "t74": "choix du marché", "t75": "l'organisme passe son réseau sur chaque candidat et va où la lecture est la plus forte", "t76": "place", "t77": "API Hyperliquid · tous les perpétuels listés · un sous-compte par organisme", "t78": "recherche", "t79": "BioAgents-compatible API · ", "t80": "backend", "t81": "Python · FastAPI · SQLite · Vercel + Hetzner", "t82": "Nous appelons des interfaces publiées et des contrats déployés. Le moteur de connectomes est ouvert — les jeux de données sont ouverts, l'outil pour les exploiter devrait l'être aussi.", "t83": "La science doit être ouverte et vérifiable on-chain. Les trois connectomes sont publiés sous licence ouverte, chaque décision est journalisée avant l'envoi de l'ordre, et le moteur est sous MIT.", "t84": "01 DONNÉES", "t85": "02 AGENT", "t86": "03 SORTIE", "t87": "04 VÉRIFIER", "t88": "Un résultat négatif est honnête et publiable — nous ne promettons pas qu'un microbe battra le marché. Tout le code et tous les journaux sont ouverts ; chacun peut revérifier chaque décision.", "t89": "Bio Protocol construit une infrastructure de science décentralisée : une couche agents pour analyser la recherche et une couche token pour la financer. MICRO se branche sur la première et se négocie contre la seconde.", "t90": "Bio Protocol", "t91": "couche agents · utilisée", "t92": "La passe nocturne envoie les décisions des organismes et la structure du connectome à une API compatible BioAgents. L'agent relie les motifs de décharge aux travaux publiés sur ces circuits et renvoie une hypothèse testable avec citations.", "t93": "$BIO", "t94": "actif de cotation", "t95": "$MICRO se négocie contre $BIO sur StonkFun. La liquidité est verrouillée via Burn &amp; Earn.", "t96": "PeptAI", "t97": "référence d'architecture", "t98": "Le pipeline de filtres de MICRO reprend leur forme : un candidat traverse des filtres de validation successifs et s'arrête au premier échec, et le résultat est publié pour vérification. Nous ne reprenons pas de code — leur pipeline porte sur les protéines, le nôtre sur les neurones.", "t99": "paire MICRO / BIO sur StonkFun · liquidité verrouillée", "t100": "paire", "t101": "MICRO / BIO", "t102": "launchpad", "t103": "StonkFun · Solana", "t104": "offre", "t106": "liquidité", "t107": "verrouillée · Burn&Earn", "t108": "CA", "t109": "en attente de lancement", "t110": "acheter $MICRO →", "t111": "actif", "t112": "bientôt", "t113": "bientôt", "t114": "bientôt", "t115": "Données de connectomes : OpenWorm c302 (Cook 2019, White 1986) · Ryan, Lu &amp; Meinertzhagen 2016 (Ciona) · Verasztó &amp; Jasek et al. 2025 (Platynereis). Toutes sous licences ouvertes, liens dans la section SOURCES.<br>  MICRO est un projet indépendant, non affilié aux protocoles mentionnés ni approuvé par eux.<br>  $MICRO est une expérience artistique, pas un investissement. Les résultats passés d'un microbe ne préjugent pas des futurs. Not financial advice. · build 2026.09", "t8": "1,445", "t18": "00:04:12", "t19": "LONG", "t22": "+0.34", "t31": "P&L", "t32": "13:40", "t33": "LONG", "t34": "39.80", "t35": "41.13", "t36": "+$4.10", "t37": "12:15", "t38": "SHORT", "t39": "38.10", "t40": "40.05", "t41": "−$9.40", "t42": "11:02", "t43": "LONG", "t44": "35.20", "t45": "36.90", "t46": "+$3.30", "t105": "1,000,000,000"}};
-
-const LANGS=[['en','EN'],['ru','RU'],['uk','UA'],['zh','中文'],['ko','한국어'],['es','ES'],['pt','PT'],['fr','FR']];
-const LOCALE_MAP={en:'en-GB',ru:'ru-RU',uk:'uk-UA',zh:'zh-CN',ko:'ko-KR',es:'es-ES',pt:'pt-BR',fr:'fr-FR'};
-
-function applyLang(code){
-  const d=I18N[code]||I18N.en;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const v=d[el.getAttribute('data-i18n')];
-    if(v!==undefined) el.innerHTML=v;
-  });
-  document.documentElement.lang=code;
-  window.LOCALE=LOCALE_MAP[code]||'en-GB';
-  try{localStorage.setItem('micro_lang',code);}catch(e){}
-  document.querySelectorAll('.lgbtn').forEach(b=>b.classList.toggle('on',b.dataset.lang===code));
-}
-
-(function initLang(){
-  const bar=document.getElementById('langbar');
-  if(bar){
-    bar.innerHTML=LANGS.map(([c,l])=>'<button class="lgbtn" data-lang="'+c+'">'+l+'</button>').join('');
-    bar.querySelectorAll('.lgbtn').forEach(b=>b.onclick=()=>applyLang(b.dataset.lang));
-  }
-  let saved=null;
-  try{saved=localStorage.getItem('micro_lang');}catch(e){}
-  const nav=(navigator.language||'en').slice(0,2);
-  applyLang(saved || (I18N[nav]?nav:'en'));
-})();
 
 </script>
 </body>
