@@ -1,7 +1,9 @@
 # MICRO
 
-Three published connectomes read the price of HYPE as a sensory stimulus and
-trade it on Hyperliquid. Each starts with $1,000 of testnet USDC from the Hyperliquid faucet.
+Three published connectomes read the price of BTC and ETH as a sensory
+stimulus and trade those two markets on Hyperliquid. Each organism starts with
+$1,000 of testnet USDC from the faucet, picks its own instrument and its own
+side, and trades from its own wallet.
 
 **Profitability is not demonstrated.** See Results below — as of this commit the
 organisms are statistically indistinguishable from a coin flip, and one of them
@@ -122,7 +124,7 @@ Read this honestly:
   which is volatility, not skill.
 - Ciona never crosses the decision threshold. Its readout is close to
   degenerate at 177 neurons — a real open issue, not a feature.
-- These are synthetic prices. Replace `synthetic_prices()` with saved HYPE
+- These are synthetic prices. Replace `synthetic_prices()` with saved BTC/ETH
   candles before drawing any conclusion at all.
 
 If the numbers stay like this, the site says so. A negative result is publishable.
@@ -362,5 +364,5 @@ happened anyway.
 1. Ciona does not trade. Readout degeneracy at small N.
 2. No plasticity. A reward-modulated rule on existing edges is the obvious
    next step, and the honest framing is "we are trying it", not "it learns".
-3. Synthetic prices in the backtest. Needs a real HYPE candle archive.
+3. Synthetic prices in the backtest. Needs a real BTC/ETH candle archive.
 4. Single instrument means all three can be wrong in the same direction at once.
