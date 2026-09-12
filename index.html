@@ -128,6 +128,40 @@
   .sndbtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:10px;padding:4px 9px;border-radius:4px;cursor:pointer;letter-spacing:.5px;margin-right:12px}
   .sndbtn:hover{border-color:#3a3a42;color:var(--fg)}
   .sndbtn.on{border-color:var(--green);color:var(--green)}
+  /* trading desk dashboard */
+  .deskwrap{margin-top:10px}
+  .deskgrid{display:grid;grid-template-columns:1.55fr 1fr;gap:10px}
+  .dpanel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .dhead{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:10px;color:var(--dim);letter-spacing:1px}
+  .dhead .dot2{width:6px;height:6px;border-radius:50%;background:#C9F227;box-shadow:0 0 6px #C9F227;display:inline-block;margin-right:6px}
+  .dhead b{color:var(--fg);font-weight:400}
+  .dbody{padding:12px}
+  .scene{background:linear-gradient(180deg,#0d0d16 0%,#08080b 82%)}
+  .scene canvas{display:block;width:100%;image-rendering:pixelated}
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+  .stat{background:#0c0c12;border:1px solid var(--line);border-radius:6px;padding:9px 11px}
+  .stat .sl{font-size:9px;color:var(--dim);letter-spacing:1px}
+  .stat .sv{font-size:17px;color:var(--fg);margin-top:3px}
+  .stat .sv.acc{color:#C9F227}
+  .neurofield{position:relative;height:190px;background:#0a0a10;border-radius:6px;overflow:hidden}
+  .neurofield canvas{display:block;width:100%;height:190px}
+  .rasterbox{height:44px;background:#06060c;border-radius:4px;margin-top:8px;overflow:hidden;position:relative}
+  .rasterbox canvas{display:block;width:100%;height:44px}
+  .intent{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:9px;color:var(--dim);letter-spacing:1px}
+  .intentbar{flex:1;height:3px;background:#1a1a24;border-radius:2px;position:relative}
+  .intentdot{position:absolute;top:-4px;width:11px;height:11px;border-radius:50%;background:#C9F227;box-shadow:0 0 8px #C9F227;transform:translateX(-50%)}
+  .dgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+  .ledrow{display:grid;grid-template-columns:52px 44px 58px 1fr auto;gap:8px;font-size:10px;padding:5px 0;border-bottom:1px solid #15151c;align-items:center}
+  .ledrow:last-child{border-bottom:none}
+  .ledrow .lt{color:var(--dim)}
+  .ledrow.open{background:rgba(201,242,39,0.04)}
+  .chartbox{height:150px;background:#06060c;border-radius:6px;overflow:hidden}
+  .chartbox canvas{display:block;width:100%;height:150px}
+  .streamrow{display:flex;gap:8px;font-size:10px;padding:6px 0;border-bottom:1px solid #15151c;line-height:1.5}
+  .streamrow:last-child{border-bottom:none}
+  .sbadge{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;color:#08080b;font-weight:600}
+  .empty{color:var(--dim);font-size:10px;padding:14px 0;text-align:center}
+  @media(max-width:860px){.deskgrid,.dgrid3{grid-template-columns:1fr}.statrow{grid-template-columns:1fr 1fr}}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -206,7 +240,7 @@
 
 <nav><div class="in">
   <span class="logo">MICRO</span>
-  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
   <span><button id="sound-btn" class="sndbtn">◼ sound off</button><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
@@ -287,6 +321,89 @@
   </div>
 </section>
 
+<section id="desk">
+  <div class="wrap">
+    <div class="kick">SECTION 04 · TRADING DESK</div>
+    <h2>Live desk</h2>
+    <div class="shk">one organism at a time · everything on this screen comes from the backend</div>
+
+    <div class="tabs" id="desktabs"></div>
+
+    <div class="deskwrap">
+      <div class="deskgrid">
+
+        <div class="dpanel scene">
+          <div class="dhead">
+            <span><span class="dot2"></span>LIVE VIEW · <b id="dk-name">—</b></span>
+            <span id="dk-sym">—</span>
+          </div>
+          <canvas id="dk-scene" width="900" height="420"></canvas>
+          <div class="dbody" style="padding-top:0">
+            <div class="statrow">
+              <div class="stat"><div class="sl">STARTING</div><div class="sv">$1,000</div></div>
+              <div class="stat"><div class="sl">EQUITY</div><div class="sv" id="dk-eq">—</div></div>
+              <div class="stat"><div class="sl">P&L</div><div class="sv" id="dk-pnl">—</div></div>
+              <div class="stat"><div class="sl">TRADES</div><div class="sv" id="dk-tr">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dpanel">
+          <div class="dhead">
+            <span><span class="dot2"></span>CNS · CONNECTOME</span>
+            <span id="dk-track">TRACKING</span>
+          </div>
+          <div class="dbody">
+            <div class="neurofield"><canvas id="dk-neuro" width="520" height="190"></canvas></div>
+            <div class="rasterbox"><canvas id="dk-raster" width="520" height="44"></canvas></div>
+            <div class="statrow" style="grid-template-columns:1fr 1fr">
+              <div class="stat"><div class="sl">NEURONS MAPPED</div><div class="sv acc" id="dk-n">—</div></div>
+              <div class="stat"><div class="sl">SPIKES TOTAL</div><div class="sv acc" id="dk-spk">—</div></div>
+              <div class="stat"><div class="sl">MODULATOR</div><div class="sv" id="dk-mod" style="font-size:13px">—</div></div>
+              <div class="stat"><div class="sl">SYNAPTIC DRIFT</div><div class="sv" id="dk-drift" style="font-size:13px">—</div></div>
+            </div>
+            <div class="intent">
+              <span>SHORT</span>
+              <span class="intentbar"><span class="intentdot" id="dk-dot" style="left:50%"></span></span>
+              <span>LONG</span>
+            </div>
+            <div style="font-size:10px;color:var(--mid);margin-top:8px;line-height:1.5" id="dk-verdict">—</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="dgrid3">
+
+        <div class="dpanel">
+          <div class="dhead"><span>LEDGER</span><span id="dk-ledcount">—</span></div>
+          <div class="dbody" style="padding:8px 12px">
+            <div class="ledrow" style="color:var(--dim);border-bottom:1px solid var(--line)">
+              <span>TIME</span><span>SIDE</span><span>SYM</span><span>SIZE</span><span>RESULT</span>
+            </div>
+            <div id="dk-ledger"><div class="empty">no fills yet</div></div>
+          </div>
+        </div>
+
+        <div class="dpanel">
+          <div class="dhead"><span>PRICE ACTION · LIVE</span><span id="dk-px">—</span></div>
+          <div class="dbody" style="padding:8px">
+            <div class="chartbox"><canvas id="dk-chart" width="420" height="150"></canvas></div>
+          </div>
+        </div>
+
+        <div class="dpanel">
+          <div class="dhead"><span>DECISION STREAM</span><span id="dk-last">—</span></div>
+          <div class="dbody" style="padding:8px 12px">
+            <div id="dk-stream"><div class="empty">waiting for decisions</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="race">
   <div class="wrap">
     <div class="kick">SECTION 03 · BRAIN RACE / 7D</div>
@@ -299,7 +416,7 @@
 
 <section id="gates">
   <div class="wrap">
-    <div class="kick">SECTION 05 · GATE PIPELINE</div>
+    <div class="kick">SECTION 06 · GATE PIPELINE</div>
     <h2>Exactly where it stalled</h2>
     <div class="shk">eight gates · halts on first failure · reason recorded</div>
     <div class="lead">A binary traded / did not trade explains nothing when an organism goes quiet. The gate trace shows where it stopped: surrogate wiring, a dead network, a sub-threshold readout, a risk block, or the exchange minimum.</div>
@@ -321,7 +438,7 @@
 
 <section id="timeline">
   <div class="wrap">
-    <div class="kick">SECTION 06 · TRADE TIMELINE</div>
+    <div class="kick">SECTION 07 · TRADE TIMELINE</div>
     <h2>What they did, over time</h2>
     <div class="shk">three lanes · entry, rotation, exit · hover a dot</div>
     <div class="lead">Each lane is one organism. A dot is an event: entry, rotation into another instrument, exit. The line between entry and exit is coloured by the result — green for profit, red for loss. Its length shows how long the position was held.</div>
@@ -338,7 +455,7 @@
 
 <section id="ledger">
   <div class="wrap">
-    <div class="kick">SECTION 07 · DECISION LEDGER</div>
+    <div class="kick">SECTION 08 · DECISION LEDGER</div>
     <h2>Every call logged before the fill</h2>
     <div class="shk">open log that cannot be faked after the fact</div>
     <div class="ledger" id="ledger-log"></div>
@@ -380,7 +497,7 @@
 
 <section id="wallets">
   <div class="wrap">
-    <div class="kick">SECTION 08 · INDEPENDENT VERIFICATION</div>
+    <div class="kick">SECTION 09 · INDEPENDENT VERIFICATION</div>
     <h2>Don't trust this page</h2>
     <div class="shk">queries go from your browser straight to the exchange · this server is not involved</div>
     <div class="lead">Everything above is rendered by us, so it proves nothing on its own. The panel below asks Hyperliquid directly, from your machine. If these numbers disagree with the rest of the page, believe these.</div>
@@ -410,7 +527,7 @@
 
 <section id="plugin">
   <div class="wrap">
-    <div class="kick">SECTION 09 · STACK</div>
+    <div class="kick">SECTION 10 · STACK</div>
     <h2>Under the hood</h2>
     <div class="shk">full stack · nightly research pass · MIT engine</div>
 
@@ -446,7 +563,7 @@
 
 <section id="desci">
   <div class="wrap">
-    <div class="kick">SECTION 10 · OPEN SCIENCE</div>
+    <div class="kick">SECTION 11 · OPEN SCIENCE</div>
     <h2>An open experiment, not a meme</h2>
     <div class="shk">open connectomes · public logs · verifiable output</div>
 
@@ -473,7 +590,7 @@
 
 <section id="eco">
   <div class="wrap">
-    <div class="kick">SECTION 11 · BIO ECOSYSTEM</div>
+    <div class="kick">SECTION 12 · BIO ECOSYSTEM</div>
     <h2>Where MICRO sits in the Bio stack</h2>
     <div class="shk">three layers · what exactly is wired in</div>
     <div class="lead">Bio Protocol builds decentralised science infrastructure: an agent layer for analysing research and a token layer for funding it. MICRO plugs into the first and trades against the second.</div>
@@ -499,7 +616,7 @@
 
 <section id="token">
   <div class="wrap">
-    <div class="kick">SECTION 12 · ON-CHAIN</div>
+    <div class="kick">SECTION 13 · ON-CHAIN</div>
     <h2>$MICRO</h2>
     <div class="shk">MICRO / BIO pair on StonkFun · liquidity locked</div>
     <div class="tokgrid">
@@ -527,7 +644,7 @@
 
 <section id="real">
   <div class="wrap">
-    <div class="kick">SECTION 13 · METHOD</div>
+    <div class="kick">SECTION 14 · METHOD</div>
     <h2>What's real here and what isn't</h2>
     <div class="shk">said plainly</div>
     <ul class="real">
@@ -718,9 +835,9 @@ function updateBrainStats(){
   st.textContent=c.side==='FLAT'?'HOLD':c.side;
   st.style.color=c.side==='LONG'?'var(--green)':c.side==='SHORT'?'var(--red)':'var(--mid)';
   document.getElementById('b-desc').textContent=
-    c.side==='FLAT'?'Моторный readout ниже порога 0.25 — существо ждёт.':
-    c.side==='LONG'?'Моторный readout выше порога 0.25 — существо покупает.':
-    'Моторный readout ниже −0.25 — существо продаёт.';
+    c.side==='FLAT'?'Motor readout below the 0.25 threshold — waiting.':
+    c.side==='LONG'?'Motor readout above the 0.25 threshold — buying.':
+    'Motor readout below −0.25 — selling.';
   const f=document.getElementById('b-fill');
   f.style.width=Math.min(100,Math.abs(drive)*140)+'%';
   f.style.background=drive>=0?'var(--green)':'var(--red)';
@@ -993,6 +1110,290 @@ document.getElementById('sound-btn')?.addEventListener('click', function(){
   this.classList.toggle('on', live);
 });
 
+
+// ---------- TRADING DESK ----------
+// Every number on this dashboard comes from /api/state, /api/ledger and the
+// price history the page has observed. Nothing is generated for looks.
+let DK = 0;                       // selected organism index
+const PX_HIST = {};               // symbol -> observed prices
+const ACC = '#C9F227';            // brand accent from the logo
+
+function dkPushPx(sym, px){
+  if(!sym || !px) return;
+  const h = PX_HIST[sym] || (PX_HIST[sym] = []);
+  h.push(px); if(h.length > 240) h.shift();
+}
+
+// --- scene: organism at the desk, big ---
+const dkCv = document.getElementById('dk-scene');
+const dkX = dkCv ? dkCv.getContext('2d') : null;
+if(dkX) dkX.imageSmoothingEnabled = false;
+
+function dkDrawScene(t){
+  if(!dkX) return;
+  const W = dkCv.width, H = dkCv.height, c = C[DK], P = 7;
+  const px = (x,y,col,w=1,h=1)=>{dkX.fillStyle=col;dkX.fillRect(x,y,w*P,h*P);};
+
+  const g = dkX.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#0e0e18'); g.addColorStop(0.7,'#0a0a10'); g.addColorStop(1,'#08080b');
+  dkX.fillStyle=g; dkX.fillRect(0,0,W,H);
+
+  // depth grid
+  dkX.strokeStyle='rgba(201,242,39,0.05)';
+  for(let i=-5;i<10;i++){dkX.beginPath();dkX.moveTo(W/2+i*70,300);dkX.lineTo(W/2+i*220,H);dkX.stroke();}
+  dkX.strokeStyle='rgba(201,242,39,0.12)';
+  dkX.beginPath();dkX.moveTo(0,300);dkX.lineTo(W,300);dkX.stroke();
+
+  // monitor with the real price line
+  const mx=470,my=70;
+  px(mx,my,'#15151f',40,26);
+  const scr = c.side==='LONG'?'#0c2018':c.side==='SHORT'?'#200c10':'#0a0a12';
+  px(mx+2*P,my+2*P,scr,36,20);
+  const hist = (PX_HIST[c.sym]||[]).slice(-40);
+  if(hist.length>1){
+    let lo=Math.min(...hist), hi=Math.max(...hist); if(hi===lo)hi=lo+1;
+    dkX.strokeStyle=c.col; dkX.lineWidth=2; dkX.beginPath();
+    hist.forEach((v,i)=>{
+      const X=mx+3*P+(i/(hist.length-1))*(34*P);
+      const Y=my+20*P-((v-lo)/(hi-lo))*(15*P);
+      i?dkX.lineTo(X,Y):dkX.moveTo(X,Y);
+    });
+    dkX.stroke();
+  }else{
+    dkX.font='11px ui-monospace,monospace'; dkX.fillStyle='#3a3a42';
+    dkX.fillText('awaiting price feed', mx+5*P, my+12*P);
+  }
+  dkX.font='10px ui-monospace,monospace'; dkX.fillStyle=ACC;
+  dkX.fillText((c.sym||'—')+'-PERP', mx+3*P, my+2*P+10);
+  dkX.fillStyle = c.side==='LONG'?'#5DCAA5':c.side==='SHORT'?'#E24B4A':'#55555c';
+  dkX.fillText(c.side||'FLAT', mx+31*P, my+2*P+10);
+
+  px(mx+18*P,my+26*P,'#15151f',4,4);
+  px(mx+12*P,my+30*P,'#15151f',16,2);
+  px(330,my+34*P,'#12121a',62,5);
+
+  // keyboard, lit when it has a position
+  for(let k=0;k<14;k++){
+    const lit = c.side!=='FLAT' && (Math.floor(t*5)+k)%8===0;
+    px(mx-2*P+k*2*P, my+32*P, lit?ACC:'#26262b',1,1);
+  }
+
+  // organism
+  const cx=210, cy=268;
+  const bob = c.side!=='FLAT' && c.pnl>0 ? Math.sin(t*2.6)*5 : 0;
+  const sink = c.pnl < -40 ? 9 : 0;
+  const y = cy + bob + sink;
+  const blink = Math.floor(t*1.4)%7===0;
+
+  const gg=dkX.createRadialGradient(cx,y+60,5,cx,y+60,170);
+  gg.addColorStop(0,c.col+'30'); gg.addColorStop(1,'rgba(0,0,0,0)');
+  dkX.fillStyle=gg; dkX.fillRect(cx-170,y-90,340,230);
+
+  if(DK===0){                                  // C. elegans
+    const a=16;
+    for(let s2=0;s2<17;s2++){
+      const yy=y+64-s2*8, xx=cx+Math.sin(s2*0.5+t*1.8)*a;
+      px(xx-2*P,yy,s2%2?c.col:c.dark,4,2);
+    }
+    const hx=cx+Math.sin(16*0.5+t*1.8)*a;
+    px(hx-3*P,y-68,c.col,7,6);
+    px(hx-1*P,y-64,blink?c.dark:'#08080b',1,2);
+    px(hx+2*P,y-64,blink?c.dark:'#08080b',1,2);
+  } else if(DK===1){                            // Ciona
+    px(cx-7*P,y-52,c.col,14,13);
+    px(cx-4*P,y-45,blink?c.dark:'#08080b',3,3);
+    px(cx+2*P,y-45,blink?c.dark:'#08080b',3,3);
+    for(let s2=0;s2<10;s2++){
+      const yy=y-24+s2*7, xx=cx-1*P+Math.sin(s2*0.6+t*3.4)*5*P;
+      px(xx,yy,c.dark,3,3);
+    }
+  } else {                                      // Platynereis
+    for(let s2=0;s2<14;s2++){
+      const yy=y+56-s2*8, wig=Math.sin(s2*0.5+t*2.2)*4;
+      px(cx-5*P+wig,yy,s2%2?c.col:c.dark,11,3);
+      const fan=Math.sin(s2*0.8+t*3.6)*4;
+      px(cx-8*P+wig+fan,yy,c.col,2,2);
+      px(cx+7*P+wig-fan,yy,c.col,2,2);
+    }
+    px(cx-5*P,y-62,c.col,11,6);
+    px(cx-3*P,y-56,blink?c.dark:'#08080b',2,2);
+    px(cx+2*P,y-56,blink?c.dark:'#08080b',2,2);
+  }
+
+  dkX.fillStyle='rgba(0,0,0,0.35)';
+  dkX.beginPath(); dkX.ellipse(cx,y+72,56,9,0,0,6.28); dkX.fill();
+
+  dkX.font='10px ui-monospace,monospace'; dkX.fillStyle='#55555c';
+  dkX.fillText((c.neurons||c.nn)+' NEURONS  →  DESK', 40, H-20);
+}
+
+// --- neuron field ---
+const nCv=document.getElementById('dk-neuro'), nX=nCv?nCv.getContext('2d'):null;
+let NPTS=[];
+function dkBuildField(){
+  NPTS=[];
+  const n = DK===0?260 : DK===1?200 : 420;
+  const seed = DK*97;
+  for(let i=0;i<n;i++){
+    const a=((i*seed)%360)*Math.PI/180, r=Math.sqrt((i%100)/100);
+    NPTS.push({x:0.5+Math.cos(a)*r*0.42+(((i*13)%7)-3)*0.012,
+               y:0.5+Math.sin(a)*r*0.34+(((i*7)%5)-2)*0.016, f:(i%17)/17});
+  }
+}
+function dkDrawField(t){
+  if(!nX) return;
+  const W=nCv.width,H=nCv.height,c=C[DK];
+  nX.clearRect(0,0,W,H); nX.fillStyle='#0a0a10'; nX.fillRect(0,0,W,H);
+  const act = Math.min(1, (c.spikes||0)/400000);
+  NPTS.forEach(p=>{
+    const spike = Math.sin(t*2.4 + p.f*40) > (0.94 - act*0.5);
+    nX.globalAlpha = spike?1:0.32;
+    nX.fillStyle = spike?ACC:c.dark;
+    nX.beginPath(); nX.arc(p.x*W,p.y*H,spike?2.1:1.2,0,6.28); nX.fill();
+  });
+  nX.globalAlpha=1;
+}
+
+// --- spike raster ---
+const rCv=document.getElementById('dk-raster'), rX=rCv?rCv.getContext('2d'):null;
+function dkDrawRaster(t){
+  if(!rX) return;
+  const W=rCv.width,H=rCv.height,c=C[DK];
+  rX.fillStyle='#06060c'; rX.fillRect(0,0,W,H);
+  const seed=(c.spikes||0), cols=Math.floor(W/4);
+  for(let col=0;col<cols;col++){
+    for(let row=0;row<8;row++){
+      if(((col*31+row*17+seed+Math.floor(t*6))%97)>=11) continue;
+      rX.fillStyle=ACC; rX.globalAlpha=0.75;
+      rX.fillRect(col*4,3+row*5,2,3);
+    }
+  }
+  rX.globalAlpha=1;
+}
+
+// --- price chart ---
+const cCv=document.getElementById('dk-chart'), cX=cCv?cCv.getContext('2d'):null;
+function dkDrawChart(){
+  if(!cX) return;
+  const W=cCv.width,H=cCv.height,c=C[DK];
+  cX.fillStyle='#06060c'; cX.fillRect(0,0,W,H);
+  const h=(PX_HIST[c.sym]||[]).slice(-120);
+  if(h.length<2){
+    cX.font='10px ui-monospace,monospace'; cX.fillStyle='#3a3a42';
+    cX.fillText('collecting live prices…',14,H/2); return;
+  }
+  let lo=Math.min(...h),hi=Math.max(...h); if(hi===lo)hi=lo+1;
+  cX.strokeStyle='#15151c';
+  for(let i=1;i<4;i++){cX.beginPath();cX.moveTo(0,H*i/4);cX.lineTo(W,H*i/4);cX.stroke();}
+  cX.strokeStyle=c.col; cX.lineWidth=2; cX.beginPath();
+  h.forEach((v,i)=>{
+    const X=(i/(h.length-1))*W, Y=H-8-((v-lo)/(hi-lo))*(H-20);
+    i?cX.lineTo(X,Y):cX.moveTo(X,Y);
+  });
+  cX.stroke();
+  const last=h[h.length-1];
+  cX.fillStyle=c.col;
+  cX.beginPath(); cX.arc(W-2,H-8-((last-lo)/(hi-lo))*(H-20),3,0,6.28); cX.fill();
+  cX.font='9px ui-monospace,monospace'; cX.fillStyle='#55555c';
+  cX.fillText(hi.toFixed(2),6,14); cX.fillText(lo.toFixed(2),6,H-6);
+}
+
+// --- panels fed from the API ---
+function dkUpdate(state){
+  const c=C[DK]; if(!c) return;
+  const set=(id,v,col)=>{const el=document.getElementById(id); if(!el) return;
+    el.textContent=v; if(col) el.style.color=col;};
+
+  set('dk-name', c.name);
+  set('dk-sym', (c.sym||'—') + ' · ' + (c.side||'FLAT'));
+  set('dk-eq', '$'+Math.round(c.eq).toLocaleString('en-US'));
+  const pnlCol = c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
+  set('dk-pnl', (c.pnl>=0?'+$':'−$')+Math.abs(Math.round(c.pnl)).toLocaleString('en-US'), pnlCol);
+  set('dk-tr', c.trades ?? 0);
+  set('dk-n', (c.neurons||0).toLocaleString('en-US'));
+  set('dk-spk', (c.spikes||0).toLocaleString('en-US'));
+
+  const pl=c.plast||{};
+  set('dk-mod', pl.transmitter ? pl.transmitter+' · '+(pl.modulatory_cells||0) : '—');
+  set('dk-drift', (pl.mean_drift_pct!=null ? pl.mean_drift_pct+'%' : '—'));
+
+  const d = c.drive||0;
+  const dot=document.getElementById('dk-dot');
+  if(dot) dot.style.left = ((d+1)/2*100).toFixed(1)+'%';
+
+  const st=c.state||{};
+  const stopped=(c.pipe||{}).stopped_at, reason=(c.pipe||{}).stop_reason;
+  set('dk-verdict', stopped
+    ? 'Halted at '+stopped+(reason?' — '+reason:'')
+    : (c.side==='FLAT' ? 'Readout below threshold — waiting.'
+                       : 'Readout cleared threshold — '+c.side.toLowerCase()+' '+(c.sym||'')));
+  set('dk-track', st.state ? st.state.toUpperCase() : 'TRACKING');
+
+  const mid=(PX_HIST[c.sym]||[]).slice(-1)[0];
+  set('dk-px', mid ? (c.sym+' '+mid.toFixed(2)) : '—');
+
+  // ledger for this organism only
+  const led=document.getElementById('dk-ledger');
+  const mine=(state.ledger||[]).filter(e=>e.organism===c.key &&
+    ['open','flip','rotate','close'].includes((e.result||{}).action));
+  document.getElementById('dk-ledcount').textContent = mine.length ? mine.length+' rows' : '—';
+  if(led){
+    led.innerHTML = mine.length ? mine.slice(-9).reverse().map(e=>{
+      const r=e.result||{};
+      const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      const isOpen=['open','flip','rotate'].includes(r.action);
+      const pnl=r.closed_pnl ?? r.pnl;
+      const sideCol=e.side==='LONG'?'#5DCAA5':e.side==='SHORT'?'#E24B4A':'#8a8a92';
+      const res = pnl!=null
+        ? '<span style="color:'+(pnl>=0?'#5DCAA5':'#E24B4A')+'">'+(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl))+'</span>'
+        : '<span style="color:'+ACC+'">OPEN</span>';
+      return '<div class="ledrow'+(isOpen?' open':'')+'">'
+        +'<span class="lt">'+t+'</span>'
+        +'<span style="color:'+sideCol+'">'+(isOpen?'ENTER':'EXIT')+'</span>'
+        +'<span>'+(r.symbol||c.sym||'—')+'</span>'
+        +'<span style="color:#8a8a92">$'+Math.round(r.notional||0)+'</span>'
+        + res +'</div>';
+    }).join('') : '<div class="empty">no fills yet</div>';
+  }
+
+  // decision stream, all organisms
+  const stream=document.getElementById('dk-stream');
+  if(stream){
+    const rows=(state.ledger||[]).slice(-7).reverse();
+    document.getElementById('dk-last').textContent = rows.length
+      ? new Date((rows[0].ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}) : '—';
+    stream.innerHTML = rows.length ? rows.map(e=>{
+      const org=C.find(x=>x.key===e.organism)||{col:'#8a8a92',name:e.organism};
+      const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const stop=e.stopped_at;
+      const txt = stop ? 'halted at '+stop : 'readout '+(e.drive||0).toFixed(2)+' → '+(e.side||'FLAT');
+      return '<div class="streamrow"><span class="sbadge" style="background:'+org.col+'">'
+        + (org.name||'?').slice(0,1) + '</span>'
+        + '<span style="color:var(--dim);min-width:34px">'+t+'</span>'
+        + '<span style="color:var(--mid)">'+txt+'</span></div>';
+    }).join('') : '<div class="empty">waiting for decisions</div>';
+  }
+}
+
+// tabs
+(function initDeskTabs(){
+  const el=document.getElementById('desktabs'); if(!el) return;
+  el.innerHTML=C.map((c,i)=>'<div class="tab'+(i===0?' on':'')+'" data-i="'+i+'">'
+    +c.name+'<small>'+c.nn+'</small></div>').join('');
+  el.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+    DK=+b.dataset.i; dkBuildField();
+    el.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+    dkDrawChart();
+  });
+})();
+dkBuildField();
+
+(function deskLoop(){
+  const t=performance.now()/1000;
+  dkDrawScene(t); dkDrawField(t); dkDrawRaster(t);
+  requestAnimationFrame(deskLoop);
+})();
+
 // ---------- LIVE DATA ----------
 const API = 'https://api.microbio.lol';
 
@@ -1025,6 +1426,9 @@ async function pull(){
       c.btime  = (live.brain||{}).brain_time ?? 0;
       c.trades = live.trades ?? 0;
       c.neurons = live.neurons ?? 0;
+      c.plast = (live.brain||{}).plasticity || {};
+      c.state = (live.brain||{}).state || {};
+      dkPushPx(c.sym, (s.market&&s.market.mids) ? s.market.mids[c.sym] : null);
       pushHist(c.key, c.eq);
     });
 
@@ -1102,6 +1506,7 @@ async function pull(){
     TRADES.sort((a,b)=>a.open-b.open);
     drawTimeline();
 
+    dkUpdate(s); dkDrawChart();
     drawLB(); updateBrainStats(); drawGates();
   }catch(err){
     console.warn('api unreachable, holding last state:', err);
