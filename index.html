@@ -124,6 +124,14 @@
   .curlhead{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:10px;color:var(--dim);letter-spacing:1px}
   .curl{padding:12px;font-size:10px;color:#8a8a92;white-space:pre-wrap;word-break:break-all;line-height:1.6;margin:0}
   @media(max-width:720px){.wgrid{grid-template-columns:1fr}}
+  .smodes{display:flex;gap:3px;margin-right:8px}
+  .smode{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:9px;padding:3px 7px;border-radius:4px;cursor:pointer;letter-spacing:.5px}
+  .smode:hover{color:var(--fg);border-color:#3a3a42}
+  .smode.on{border-color:var(--green);color:var(--green)}
+  @media(max-width:860px){.smodes{display:none !important}}
+  .sndbtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:10px;padding:4px 9px;border-radius:4px;cursor:pointer;letter-spacing:.5px;margin-right:12px}
+  .sndbtn:hover{border-color:#3a3a42;color:var(--fg)}
+  .sndbtn.on{border-color:var(--green);color:var(--green)}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -203,7 +211,7 @@
 <nav><div class="in">
   <span class="logo">MICRO</span>
   <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
-  <span><span class="dot"></span><span class="green">observed live</span> </span>
+  <span><span id="sound-modes" class="smodes" style="display:none"></span><button id="sound-btn" class="sndbtn">◼ sound off</button><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
 <div class="specbar"><div class="in">
@@ -891,6 +899,257 @@ C.forEach((c,i)=>{const b=document.createElement('div');b.className='tab'+(i===0
 function loop(){t+=0.016;if(!paused){autoRot+=0.0035;brainT+=0.016;}drawOffice();drawBrain();requestAnimationFrame(loop);}
 buildCloud();updateBrainStats();loop();drawRace();drawLB();drawGates();seedTrades();drawTimeline();
 window.addEventListener('resize',drawTimeline);
+
+
+// ---------- SOUND ENGINE ----------
+// Everything is synthesised at runtime: no audio files, no licensing, no
+// weight added to the page. Five palettes, each with its own voice, and every
+// alert is fired by a REAL backend event rather than a timer.
+const LAB = (() => {
+  let ctx=null, master=null, bus=null, verb=null, delay=null;
+  let on=false, mode='lab', loops=[];
+
+  // --- generated reverb, so rooms sound like rooms ---
+  function impulse(seconds, decay, reverse){
+    const n = ctx.sampleRate*seconds;
+    const buf = ctx.createBuffer(2, n, ctx.sampleRate);
+    for(let c=0;c<2;c++){
+      const d=buf.getChannelData(c);
+      for(let i=0;i<n;i++){
+        const k = reverse ? n-i : i;
+        d[i] = (Math.random()*2-1) * Math.pow(1-k/n, decay);
+      }
+    }
+    return buf;
+  }
+
+  function noiseBuffer(seconds, pink){
+    const n = ctx.sampleRate*seconds;
+    const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    let b0=0,b1=0,b2=0;
+    for(let i=0;i<n;i++){
+      const w = Math.random()*2-1;
+      if(pink){
+        b0=0.99765*b0+w*0.0990460; b1=0.96300*b1+w*0.2965164; b2=0.57000*b2+w*1.0526913;
+        d[i]=(b0+b1+b2+w*0.1848)*0.06;
+      } else d[i]=w*0.12;
+    }
+    return buf;
+  }
+
+  function build(){
+    ctx = new (window.AudioContext||window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value=-18; comp.ratio.value=4; comp.connect(master);
+
+    bus = ctx.createGain(); bus.gain.value=1; bus.connect(comp);
+
+    verb = ctx.createConvolver(); verb.buffer = impulse(3.2, 2.4, false);
+    const verbGain = ctx.createGain(); verbGain.gain.value=0.5;
+    verb.connect(verbGain); verbGain.connect(comp);
+
+    delay = ctx.createDelay(1.2); delay.delayTime.value=0.34;
+    const fb = ctx.createGain(); fb.gain.value=0.32;
+    const dWet = ctx.createGain(); dWet.gain.value=0.28;
+    delay.connect(fb); fb.connect(delay); delay.connect(dWet); dWet.connect(comp);
+  }
+
+  function stopLoops(){ loops.forEach(n=>{ try{n.stop?n.stop():n.disconnect();}catch(e){} }); loops=[]; }
+
+  function osc(type,freq,dest,gain){
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type; o.frequency.value=freq; g.gain.value=gain;
+    o.connect(g); g.connect(dest); o.start(); loops.push(o);
+    return {o,g};
+  }
+
+  // ---------------- palettes ----------------
+  const PALETTES = {
+    // clinical room: HVAC, mains hum, relay ticks
+    lab(){
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=210; lp.Q.value=6;
+      lp.connect(bus);
+      osc('sawtooth',49.5,lp,0.05); osc('sawtooth',50.4,lp,0.05);
+      const sweep=ctx.createOscillator(); sweep.frequency.value=0.05;
+      const amt=ctx.createGain(); amt.gain.value=70;
+      sweep.connect(amt); amt.connect(lp.frequency); sweep.start(); loops.push(sweep);
+
+      const n=ctx.createBufferSource(); n.buffer=noiseBuffer(4,true); n.loop=true;
+      const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=700; bp.Q.value=0.6;
+      const g=ctx.createGain(); g.gain.value=0.55;
+      n.connect(bp); bp.connect(g); g.connect(bus); n.start(); loops.push(n);
+
+      loops.push(setInt(()=>ping(1800+Math.random()*400,0.04,0.05,'sine',0.2), 5200));
+    },
+
+    // marine: these are larvae, so put them back in water
+    deep(){
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=320; lp.Q.value=1;
+      lp.connect(bus); lp.connect(verb);
+      [36.7,55,73.4,110].forEach((f,i)=>osc(i%2?'sine':'triangle',f,lp,0.07));
+
+      const n=ctx.createBufferSource(); n.buffer=noiseBuffer(6,true); n.loop=true;
+      const bp=ctx.createBiquadFilter(); bp.type='lowpass'; bp.frequency.value=420;
+      const g=ctx.createGain(); g.gain.value=0.8;
+      n.connect(bp); bp.connect(g); g.connect(verb); n.start(); loops.push(n);
+
+      const swell=ctx.createOscillator(); swell.frequency.value=0.07;
+      const sAmt=ctx.createGain(); sAmt.gain.value=180;
+      swell.connect(sAmt); sAmt.connect(bp.frequency); swell.start(); loops.push(swell);
+
+      loops.push(setInt(()=>sonar(), 7000));
+    },
+
+    // the honest one: the drone's pitch tracks total spike activity
+    neural(){
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=900; lp.Q.value=2;
+      lp.connect(bus); lp.connect(delay);
+      const v1=osc('square',82.4,lp,0.03), v2=osc('sawtooth',123.5,lp,0.025);
+      loops.push(setInt(()=>{
+        const tot=(typeof C!=='undefined')?C.reduce((a,c)=>a+(c.spikes||0),0):0;
+        const f=70+Math.min(120,(tot%200000)/1700);
+        if(ctx){ v1.o.frequency.linearRampToValueAtTime(f, ctx.currentTime+2);
+                 v2.o.frequency.linearRampToValueAtTime(f*1.5, ctx.currentTime+2); }
+      }, 2000));
+      loops.push(setInt(()=>{ for(let i=0;i<3;i++) setTimeout(()=>ping(400+Math.random()*2600,0.02,0.04,'square',0.1), i*70); }, 900));
+    },
+
+    // open-outcry floor: clacks, bells, phones
+    floor(){
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=160;
+      lp.connect(bus); osc('triangle',41.2,lp,0.06);
+      const n=ctx.createBufferSource(); n.buffer=noiseBuffer(5,true); n.loop=true;
+      const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1400; bp.Q.value=0.4;
+      const g=ctx.createGain(); g.gain.value=0.25;
+      n.connect(bp); bp.connect(g); g.connect(verb); n.start(); loops.push(n);
+      loops.push(setInt(()=>clack(), 400+Math.random()*900));
+    },
+
+    // cinematic pad, nothing else
+    drone(){
+      const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=600; lp.Q.value=3;
+      lp.connect(bus); lp.connect(verb);
+      [55,82.4,110,164.8,220].forEach((f,i)=>{
+        const v=osc(i>2?'sine':'sawtooth',f,lp,0.035);
+        const det=ctx.createOscillator(); det.frequency.value=0.03+i*0.011;
+        const dA=ctx.createGain(); dA.gain.value=1.5+i;
+        det.connect(dA); dA.connect(v.o.frequency); det.start(); loops.push(det);
+      });
+      const sweep=ctx.createOscillator(); sweep.frequency.value=0.021;
+      const amt=ctx.createGain(); amt.gain.value=320;
+      sweep.connect(amt); amt.connect(lp.frequency); sweep.start(); loops.push(sweep);
+    },
+  };
+
+  function setInt(fn, ms){ const id=setInterval(fn, ms); return {stop(){clearInterval(id);}}; }
+
+  // ---------------- voices ----------------
+  function ping(freq, dur, vol, type, wet){
+    if(!on||!ctx) return;
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(vol, ctx.currentTime+0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+    o.connect(g); g.connect(bus);
+    if(wet){ const w=ctx.createGain(); w.gain.value=wet; g.connect(w); w.connect(verb); }
+    o.start(); o.stop(ctx.currentTime+dur+0.1);
+  }
+  function sweepTone(f1,f2,dur,vol,type){
+    if(!on||!ctx) return;
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type||'sine';
+    o.frequency.setValueAtTime(f1, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(Math.max(20,f2), ctx.currentTime+dur);
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+    o.connect(g); g.connect(bus); const w=ctx.createGain(); w.gain.value=0.5; g.connect(w); w.connect(verb);
+    o.start(); o.stop(ctx.currentTime+dur+0.1);
+  }
+  function sonar(){ sweepTone(900,300,1.1,0.09,'sine'); }
+  function clack(){
+    if(!on||!ctx) return;
+    const n=ctx.createBufferSource(); n.buffer=noiseBuffer(0.05,false);
+    const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2200+Math.random()*1500; bp.Q.value=9;
+    const g=ctx.createGain(); g.gain.value=0.18;
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.07);
+    n.connect(bp); bp.connect(g); g.connect(bus); const w=ctx.createGain(); w.gain.value=0.4; g.connect(w); w.connect(verb);
+    n.start();
+  }
+
+  function apply(){
+    stopLoops();
+    (PALETTES[mode]||PALETTES.lab)();
+  }
+
+  return {
+    get on(){ return on; },
+    get mode(){ return mode; },
+    setMode(m){ mode=m; if(ctx&&on) apply(); },
+    toggle(){
+      if(!ctx) build();
+      if(ctx.state==='suspended') ctx.resume();
+      on=!on;
+      if(on) apply(); else stopLoops();
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.linearRampToValueAtTime(on?0.9:0, ctx.currentTime+0.7);
+      return on;
+    },
+    fill(side){
+      if(mode==='deep'){ sweepTone(side==='LONG'?420:260, side==='LONG'?840:130, 0.5, 0.13,'sine'); return; }
+      if(mode==='floor'){ clack(); setTimeout(()=>ping(side==='LONG'?1046:784,0.5,0.16,'triangle',0.6),60); return; }
+      ping(side==='LONG'?880:587,0.16,0.17,'triangle',0.35);
+      setTimeout(()=>ping(side==='LONG'?1318:440,0.22,0.12,'triangle',0.4),95);
+    },
+    close(profit){
+      if(mode==='deep'){ sweepTone(profit?600:200, profit?900:90, 0.9, 0.12,'sine'); return; }
+      ping(profit?784:294,0.45,0.15,'sine',0.6);
+      if(profit) setTimeout(()=>ping(1175,0.4,0.10,'sine',0.6),120);
+    },
+    gateStop(){ ping(110,0.3,0.13,'square',0.2); },
+    tick(){ if(mode!=='drone') ping(mode==='neural'?3200:2400,0.025,0.02,'sine',0); },
+  };
+})();
+
+const SND_MODES=[['lab','LAB'],['deep','DEEP'],['neural','NEURAL'],['floor','FLOOR'],['drone','DRONE']];
+
+(function initSound(){
+  const btn=document.getElementById('sound-btn');
+  const sel=document.getElementById('sound-modes');
+  if(sel){
+    sel.innerHTML=SND_MODES.map(([k,l])=>
+      '<button class="smode'+(k==='lab'?' on':'')+'" data-m="'+k+'">'+l+'</button>').join('');
+    sel.querySelectorAll('.smode').forEach(b=>b.addEventListener('click',()=>{
+      LAB.setMode(b.dataset.m);
+      sel.querySelectorAll('.smode').forEach(x=>x.classList.toggle('on',x===b));
+      if(!LAB.on) btn?.click();
+    }));
+  }
+  btn?.addEventListener('click',function(){
+    const live=LAB.toggle();
+    this.textContent = live?'◼ sound on':'◼ sound off';
+    this.classList.toggle('on',live);
+    if(sel) sel.style.display = live?'flex':'none';
+  });
+})();
+
+let SND_PREV={};
+function soundFromState(state){
+  if(!LAB.on) return;
+  (state.creatures||[]).forEach(c=>{
+    const p=c.position||{}, was=SND_PREV[c.key]||{};
+    if(p.side!=='FLAT' && (was.side!==p.side || was.symbol!==p.symbol)) LAB.fill(p.side);
+    if(was.side && was.side!=='FLAT' && p.side==='FLAT') LAB.close((was.pnl||0)>=0);
+    const stop=(c.pipeline||{}).stopped_at;
+    if(stop && stop!==was.stop && (stop==='G1_PROVENANCE'||stop==='G2_ACTIVITY')) LAB.gateStop();
+    SND_PREV[c.key]={side:p.side,symbol:p.symbol,pnl:p.pnl,stop:stop};
+  });
+  LAB.tick();
+}
+
 // ---------- LIVE DATA ----------
 const API = 'https://api.microbio.lol';
 
@@ -999,6 +1258,8 @@ async function pull(){
     });
     TRADES.sort((a,b)=>a.open-b.open);
     drawTimeline();
+
+    soundFromState(s);
 
     drawLB(); updateBrainStats(); drawGates();
   }catch(err){
