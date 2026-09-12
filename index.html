@@ -488,10 +488,14 @@
 <script>
 const P4=4,P6=6;
 const SYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT'];
+// Starting state is deliberately empty. Nothing here is invented: until the
+// backend answers, the site shows no position rather than a plausible-looking
+// fake one. A LONG whose liquidation sits above entry is exactly the kind of
+// nonsense a placeholder produces.
 const C=[
- {key:'elegans',name:'C. ELEGANS',nn:'302 N',sym:'SOL',eq:10641,side:'LONG',sz:12.4,lev:3,pnl:641,liq:118.2,col:'#5DCAA5',dark:'#1D9E75',sw:'#5DCAA5'},
- {key:'ciona',name:'CIONA',nn:'177 N',sym:'BTC',eq:8110,side:'SHORT',sz:0.18,lev:4,pnl:-1890,liq:79400,col:'#F0997B',dark:'#D85A30',sw:'#F0997B'},
- {key:'platynereis',name:'PLATYNEREIS',nn:'966 N',sym:'HYPE',eq:11430,side:'LONG',sz:310,lev:5,pnl:1430,liq:32.4,col:'#9FE1CB',dark:'#5DCAA5',sw:'#9FE1CB'},
+ {key:'elegans',name:'C. ELEGANS',nn:'302 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#5DCAA5',dark:'#1D9E75',sw:'#5DCAA5'},
+ {key:'ciona',name:'CIONA',nn:'177 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#F0997B',dark:'#D85A30',sw:'#F0997B'},
+ {key:'platynereis',name:'PLATYNEREIS',nn:'966 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#9FE1CB',dark:'#5DCAA5',sw:'#9FE1CB'},
 ];
 let t=0,sel=0;
 const off=document.getElementById('office'),octx=off.getContext('2d');octx.imageSmoothingEnabled=false;
@@ -540,8 +544,17 @@ function drawOffice(){
     octx.font='17px ui-monospace,monospace';octx.fillStyle=sideCol;
     octx.fillText(c.side==='FLAT'?'■ FLAT':`${sym} ${c.sym}`,cx0+12,cy0+48);
     octx.font='11px ui-monospace,monospace';octx.fillStyle='#8a8a92';
-    if(c.side!=='FLAT') octx.fillText(`${c.sz} · ${c.lev}x · liq ${Number(c.liq).toLocaleString('en-US')}`,cx0+12,cy0+74);
-    else octx.fillText('waiting',cx0+12,cy0+74);
+    if(c.side!=='FLAT'){
+      // A long liquidates below entry and a short above it. If the backend
+      // ever sends something on the wrong side of entry, show a dash rather
+      // than a number that cannot be true.
+      const sane = c.liq>0 && c.entry>0 &&
+        ((c.side==='LONG' && c.liq<c.entry) || (c.side==='SHORT' && c.liq>c.entry));
+      const liq = sane ? 'liq '+Number(c.liq).toLocaleString('en-US') : 'liq —';
+      octx.fillText(`${c.sz} · ${c.lev}x · ${liq}`,cx0+12,cy0+74);
+    } else {
+      octx.fillText('waiting',cx0+12,cy0+74);
+    }
 
     const pt=c.side==='FLAT'?'$0':(c.pnl>=0?'+$':'−$')+Math.abs(Math.round(c.pnl)).toLocaleString('en-US');
     octx.font='26px ui-monospace,monospace';octx.fillStyle=c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
@@ -796,6 +809,7 @@ async function pull(){
       c.lev   = p.leverage ?? 1;
       c.pnl   = p.pnl ?? 0;
       c.liq   = p.liq ?? 0;
+      c.entry = p.entry ?? 0;
       c.real  = live.real_connectome;
       c.pipe  = live.pipeline;
       c.drive = (live.brain||{}).drive ?? 0;
@@ -832,7 +846,7 @@ function mkTrades(n,seed){
   for(let i=0;i<n;i++){
     const sym=RSYMS[(seed*5+i*7)%RSYMS.length];
     const side=((seed+i)%10)>4?'LONG':'SHORT';
-    const open=!!(i>=n-2);
+    const open=!!(i>=n-2);  // most recent two are still open
     const pnl=open?Math.round((Math.random()-0.4)*700):Math.round((Math.random()-0.47)*900);
     out.push({ts,sym,side,size:+(0.4+((seed*3+i*11)%40)/2).toFixed(1),
               lev:1+((seed+i)%5),pnl,open});
