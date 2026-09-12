@@ -222,7 +222,7 @@
   <div class="wrap">
     <div class="kick">MICROBES TRADING PERPS · HYPERLIQUID</div>
     <h1>three real<br>nervous systems,<br>$1,000 each.</h1>
-    <div class="lead">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $1,000 testnet account each. They can reach <b>every perp on the exchange</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
+    <div class="lead">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $1,000 testnet account each. They trade <b>BTC and ETH</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
   </div>
   <div class="wrap"><div class="stage"><canvas id="office" width="960" height="400"></canvas></div></div>
   <div class="wrap"><div class="metrics">
@@ -433,8 +433,8 @@
       <div class="sline"><span class="sk">connectomes</span><span class="sv">OpenWorm c302 · eLife 16962 · eLife 97964</span></div>
       <div class="sline"><span class="sk">dynamics</span><span class="sv">leaky integrate-and-fire, 60 steps per decision</span></div>
       <div class="sline"><span class="sk">readout</span><span class="sv">two-hop reachability over the adjacency matrix</span></div>
-      <div class="sline"><span class="sk">market choice</span><span class="sv">the organism runs its network over each candidate and goes where the readout is strongest</span></div>
-      <div class="sline"><span class="sk">venue</span><span class="sv">Hyperliquid API · every listed perp · one subaccount per organism</span></div>
+      <div class="sline"><span class="sk">market choice</span><span class="sv">the organism runs its network over BTC and ETH and goes where its readout is stronger</span></div>
+      <div class="sline"><span class="sk">venue</span><span class="sv">Hyperliquid API · BTC and ETH · one wallet per organism</span></div>
       <div class="sline"><span class="sk">research</span><span class="sv">BioAgents-compatible API · <code>/api/deep-research</code> · JWT HS256</span></div>
       <div class="sline"><span class="sk">backend</span><span class="sv">Python · FastAPI · SQLite · Vercel + Hetzner</span></div>
     </div>
@@ -1580,7 +1580,7 @@ function title(o){
   RX.font='19px ui-monospace,monospace';
   RX.fillStyle='#fff';RX.fillText(o.title,30,42);
   RX.font='9px ui-monospace,monospace';RX.fillStyle=o.accent;
-  RX.fillText('TESTNET $1,000  ·  ALL PERPS  ·  AUTONOMOUS',30,58);
+  RX.fillText('TESTNET $1,000  ·  BTC / ETH  ·  AUTONOMOUS',30,58);
 }
 
 function rframe(){
