@@ -102,6 +102,28 @@
   .wcard a.wlink:hover{border-color:var(--purple);color:var(--fg)}
   .wcard .wnote{font-size:11px;color:var(--dim)}
   @media(max-width:720px){.wgrid{grid-template-columns:1fr}}
+  .vbar{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:10px 0;font-size:11px;color:var(--mid);flex-wrap:wrap}
+  .vdot{width:8px;height:8px;border-radius:50%;background:#55555c}
+  .vdot.ok{background:#5DCAA5;box-shadow:0 0 6px #5DCAA5}
+  .vdot.bad{background:#E24B4A;box-shadow:0 0 6px #E24B4A}
+  .vnet{margin-left:auto;color:var(--dim);font-size:10px;letter-spacing:1px}
+  .vbtn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:4px;cursor:pointer;letter-spacing:.5px}
+  .vbtn:hover{border-color:var(--purple);color:var(--fg)}
+  .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+  .wcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+  .wcard .worg{font-size:12px;color:var(--fg);letter-spacing:1px;margin-bottom:6px}
+  .wcard .waddr{font-size:9px;color:#cfcaf6;word-break:break-all;line-height:1.5;margin-bottom:10px}
+  .wcard a.wlink{display:block;font-size:11px;color:var(--mid);border:1px solid var(--line);border-radius:5px;padding:6px 9px;margin-top:5px}
+  .wcard a.wlink:hover{border-color:var(--purple);color:var(--fg)}
+  .wcard .wnote{font-size:11px;color:var(--dim)}
+  .vpos{border-top:1px solid #1c1c20;margin-top:10px;padding-top:9px;font-size:11px;line-height:1.8}
+  .vpos .vrow{display:flex;justify-content:space-between}
+  .vpos .vk{color:var(--dim)}
+  .vmis{margin-top:8px;font-size:10px;color:#E24B4A;line-height:1.5}
+  .curlbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-top:12px;overflow:hidden}
+  .curlhead{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:10px;color:var(--dim);letter-spacing:1px}
+  .curl{padding:12px;font-size:10px;color:#8a8a92;white-space:pre-wrap;word-break:break-all;line-height:1.6;margin:0}
+  @media(max-width:720px){.wgrid{grid-template-columns:1fr}}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -195,8 +217,8 @@
 <section id="top" style="border-bottom:none;padding-bottom:24px">
   <div class="wrap">
     <div class="kick">MICROBES TRADING PERPS · HYPERLIQUID</div>
-    <h1>three real<br>nervous systems,<br>$10,000 each.</h1>
-    <div class="lead">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $10,000 demo account each. They can reach <b>every perp on the exchange</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
+    <h1>three real<br>nervous systems,<br>$1,000 each.</h1>
+    <div class="lead">Three fully mapped connectomes — 177, 302 and 966 neurons — trade on Hyperliquid with a $1,000 testnet account each. They can reach <b>every perp on the exchange</b>, and each organism picks its own instrument and side: its own wiring, its own call. Profitability is not demonstrated.</div>
   </div>
   <div class="wrap"><div class="stage"><canvas id="office" width="960" height="400"></canvas></div></div>
   <div class="wrap"><div class="metrics">
@@ -265,7 +287,7 @@
   <div class="wrap">
     <div class="kick">SECTION 03 · BRAIN RACE / 7D</div>
     <h2>Brain race</h2>
-    <div class="shk">$10,000 each at the start · who is ahead right now</div>
+    <div class="shk">$1,000 each at the start · who is ahead right now</div>
     <div class="stage" style="padding:14px"><svg viewBox="0 0 420 150" width="100%" height="150" id="race-svg"></svg></div>
     <div class="lb" id="lb"></div>
   </div>
@@ -354,13 +376,30 @@
 
 <section id="wallets">
   <div class="wrap">
-    <div class="kick">SECTION 08 · ON-CHAIN WALLETS</div>
-    <h2>Verify it yourself</h2>
-    <div class="shk">one wallet per organism · positions are public · do not trust this page</div>
-    <div class="lead">A site showing its own numbers proves nothing. Each organism trades from its own wallet, so every position and every fill is on chain. Open the links and check the trades against what this page claims.</div>
-    <div class="wgrid" id="wgrid">
-      <div class="wcard"><div class="wnote">waiting for backend</div></div>
+    <div class="kick">SECTION 08 · INDEPENDENT VERIFICATION</div>
+    <h2>Don't trust this page</h2>
+    <div class="shk">queries go from your browser straight to the exchange · this server is not involved</div>
+    <div class="lead">Everything above is rendered by us, so it proves nothing on its own. The panel below asks Hyperliquid directly, from your machine. If these numbers disagree with the rest of the page, believe these.</div>
+
+    <div class="vbar">
+      <span class="vdot" id="v-dot"></span>
+      <span id="v-status">checking…</span>
+      <span class="vnet" id="v-net"></span>
+      <button class="vbtn" id="v-refresh">refresh</button>
     </div>
+
+    <div class="wgrid" id="wgrid">
+      <div class="wcard"><div class="wnote">waiting for wallet addresses…</div></div>
+    </div>
+
+    <div class="curlbox">
+      <div class="curlhead">
+        <span>run it yourself</span>
+        <button class="vbtn" id="v-copy">copy</button>
+      </div>
+      <pre class="curl" id="v-curl">—</pre>
+    </div>
+
     <div class="honest" id="wnote" style="margin-top:14px"></div>
   </div>
 </section>
@@ -489,7 +528,7 @@
     <div class="shk">said plainly</div>
     <ul class="real">
       <li><b>The connectomes are real.</b> Each organism's wiring was traced by electron microscopy of an actual animal and taken from the published datasets above. Nothing is invented or sampled.</li>
-      <li><b>The accounts are demo.</b> $10,000 per organism — a simulated balance on real Hyperliquid prices and the real instrument list. Live mode is opt-in and off by default.</li>
+      <li><b>The accounts are testnet.</b> $1,000 per organism, funded from the Hyperliquid testnet faucet. The orders are real and settle on chain, the money is not. Mainnet is a one-line change and off by default.</li>
       <li><b>The brain is a simulation.</b> Real wiring, invented dynamics. The neurons are leaky integrate-and-fire. This is not a forecast, it is a nervous system with a trading account.</li>
       <li><b>Profitability is not demonstrated.</b> The organisms did not learn to trade. We feed price in as sensory stimulus and read the motor output. This is an art-science experiment.</li>
     </ul>
@@ -523,9 +562,9 @@ const SYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT'];
 // fake one. A LONG whose liquidation sits above entry is exactly the kind of
 // nonsense a placeholder produces.
 const C=[
- {key:'elegans',name:'C. ELEGANS',nn:'302 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#5DCAA5',dark:'#1D9E75',sw:'#5DCAA5'},
- {key:'ciona',name:'CIONA',nn:'177 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#F0997B',dark:'#D85A30',sw:'#F0997B'},
- {key:'platynereis',name:'PLATYNEREIS',nn:'966 N',sym:'—',eq:10000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#9FE1CB',dark:'#5DCAA5',sw:'#9FE1CB'},
+ {key:'elegans',name:'C. ELEGANS',nn:'302 N',sym:'—',eq:1000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#5DCAA5',dark:'#1D9E75',sw:'#5DCAA5'},
+ {key:'ciona',name:'CIONA',nn:'177 N',sym:'—',eq:1000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#F0997B',dark:'#D85A30',sw:'#F0997B'},
+ {key:'platynereis',name:'PLATYNEREIS',nn:'966 N',sym:'—',eq:1000,side:'FLAT',sz:0,lev:1,pnl:0,liq:0,col:'#9FE1CB',dark:'#5DCAA5',sw:'#9FE1CB'},
 ];
 let t=0,sel=0;
 const off=document.getElementById('office'),octx=off.getContext('2d');octx.imageSmoothingEnabled=false;
@@ -686,13 +725,13 @@ function updateBrainStats(){
 }
 function drawRace(){
   const svg=document.getElementById('race-svg'); if(!svg) return;
-  const W=420,H=150,BASE=10000;
+  const W=420,H=150,BASE=1000;
   const series=C.map(c=>({col:c.sw, data:HIST[c.key]||[]}));
   const n=Math.max(...series.map(x=>x.data.length),0);
 
   let out=`<rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/>`
         + `<line x1="0" y1="80" x2="${W}" y2="80" stroke="#26262b" stroke-dasharray="3 3"/>`
-        + `<text x="4" y="76" fill="#55555c" font-size="9" font-family="monospace">$10,000</text>`;
+        + `<text x="4" y="76" fill="#55555c" font-size="9" font-family="monospace">$1,000</text>`;
 
   if(n < 2){
     out += `<text x="${W/2}" y="${H/2+16}" fill="#55555c" font-size="10"
@@ -718,7 +757,7 @@ function drawRace(){
 }
 function drawLB(){
   const sorted=[...C].sort((a,b)=>b.eq-a.eq),el=document.getElementById('lb');el.innerHTML='';
-  sorted.forEach((c,i)=>{const d=c.eq-10000,dc=d>0?'green':d<0?'red':'';const r=document.createElement('div');r.className='lbrow'+(i===0?' first':'');
+  sorted.forEach((c,i)=>{const d=c.eq-1000,dc=d>0?'green':d<0?'red':'';const r=document.createElement('div');r.className='lbrow'+(i===0?' first':'');
     r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${d>=0?'+':'−'}$${Math.abs(Math.round(d)).toLocaleString('en-US')}</span><span class="eq" style="color:var(--fg)">$${c.eq.toFixed(2)}</span>`;
     el.appendChild(r);});
 }
@@ -745,7 +784,7 @@ function drawGates(){
       depth = 0;
     }else{
       depth = c.side==='FLAT' ? 2 : 8;
-      if(c.side!=='FLAT' && c.eq<3000) depth=3;
+      if(c.side!=='FLAT' && c.eq<300) depth=3;
     }
     const row=document.createElement('div'); row.className='grow';
     let cells='';
@@ -897,7 +936,7 @@ async function pull(){
     set('m-neurons', totN ? totN.toLocaleString('en-US') : '—');
     set('m-trades', totT);
     set('m-leader', lead ? lead.name.split(' ')[0].toUpperCase() : '—');
-    set('m-cap', (s.creatures||[]).length + ' × $10k');
+    set('m-cap', (s.creatures||[]).length + ' × $1k');
 
     drawLog(s.ledger||[]);
 
@@ -967,36 +1006,140 @@ async function pull(){
   }
 }
 
-async function pullWallets(){
-  const grid=document.getElementById('wgrid'), note=document.getElementById('wnote');
-  if(!grid) return;
-  try{
-    const r=await fetch(API+'/api/wallets',{cache:'no-store'});
-    const w=await r.json();
-    if(!(w.wallets||[]).length){
-      grid.innerHTML='<div class="wcard"><div class="wnote">No live wallets configured yet — '
-        +'the organisms are still trading on a simulated balance against real prices.</div></div>';
-      note.innerHTML='<b>Nothing to verify yet.</b><br>Once wallets are funded, their addresses appear here and every fill becomes checkable on chain.';
-      return;
-    }
-    grid.innerHTML=w.wallets.map(x=>{
-      const dash = x.hyperdash
-        ? '<a class="wlink" target="_blank" href="'+x.hyperdash+'">HyperDash →</a>'
-        : '<div class="wnote" style="margin-top:5px">HyperDash indexes mainnet only</div>';
-      return '<div class="wcard"><div class="worg">'+x.organism.toUpperCase()+'</div>'
-        +'<div class="waddr">'+x.address+'</div>'
-        +'<a class="wlink" target="_blank" href="'+x.explorer+'">Explorer →</a>'+dash+'</div>';
-    }).join('');
-    note.innerHTML='<b>Network: '+w.network+'.</b><br>'+w.note;
-  }catch(e){
-    grid.innerHTML='<div class="wcard"><div class="wnote">backend unreachable</div></div>';
-  }
+// ---------- INDEPENDENT VERIFICATION ----------
+// These requests leave the visitor's browser and go straight to Hyperliquid.
+// Our server is not in the path, which is the entire point: if the numbers
+// here disagree with the rest of the page, these are the ones to believe.
+const HL = {
+  testnet: {api:'https://api.hyperliquid-testnet.xyz/info',
+            explorer:'https://app.hyperliquid-testnet.xyz/explorer/address/'},
+  mainnet: {api:'https://api.hyperliquid.xyz/info',
+            explorer:'https://app.hyperliquid.xyz/explorer/address/'},
+};
+let VWALLETS = [], VNET = 'testnet';
+
+async function hlUserState(api, address){
+  const r = await fetch(api, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({type:'clearinghouseState', user:address}),
+  });
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
 }
 
+function fmtUsd(v){
+  const n=Number(v)||0;
+  return (n<0?'−$':'$')+Math.abs(n).toLocaleString('en-US',{maximumFractionDigits:2});
+}
+
+async function verify(){
+  const grid=document.getElementById('wgrid');
+  const dot=document.getElementById('v-dot');
+  const st=document.getElementById('v-status');
+  const net=document.getElementById('v-net');
+  const note=document.getElementById('wnote');
+  const curl=document.getElementById('v-curl');
+  if(!grid) return;
+
+  // wallet list still comes from our backend - it only tells you WHICH
+  // addresses to check. What those addresses actually hold is asked of the
+  // exchange directly, below.
+  try{
+    const w = await (await fetch(API+'/api/wallets',{cache:'no-store'})).json();
+    VWALLETS = w.wallets||[];
+    VNET = w.network || 'testnet';
+    net.textContent = VNET.toUpperCase();
+    if(note) note.innerHTML = '<b>Network: '+VNET+'.</b><br>'+(w.note||'');
+  }catch(e){
+    dot.className='vdot bad'; st.textContent='cannot reach backend for wallet list';
+    return;
+  }
+
+  const cfg = HL[VNET] || HL.testnet;
+
+  if(!VWALLETS.length){
+    dot.className='vdot';
+    st.textContent='no live wallets yet — organisms trade a simulated balance on real prices';
+    grid.innerHTML='<div class="wcard"><div class="wnote">Nothing to verify yet. '
+      +'Once wallets are funded their addresses appear here and every fill becomes '
+      +'checkable on chain.</div></div>';
+    curl.textContent='—';
+    return;
+  }
+
+  curl.textContent = 'curl -X POST '+cfg.api+" \\\n"
+    + '  -H \'Content-Type: application/json\' \\\n'
+    + '  -d \'{"type":"clearinghouseState","user":"'+VWALLETS[0].address+'"}\'';
+
+  dot.className='vdot'; st.textContent='querying '+cfg.api+' …';
+
+  const cards = await Promise.all(VWALLETS.map(async w=>{
+    let body='', mismatch='';
+    try{
+      const d = await hlUserState(cfg.api, w.address);
+      const eq = d?.marginSummary?.accountValue;
+      const pos = (d?.assetPositions||[])
+        .map(p=>p.position).filter(p=>p && Number(p.szi)!==0);
+
+      let rows = '<div class="vrow"><span class="vk">equity</span><span>'+fmtUsd(eq)+'</span></div>';
+      if(!pos.length){
+        rows += '<div class="vrow"><span class="vk">position</span><span>flat</span></div>';
+      }else{
+        pos.forEach(p=>{
+          const long = Number(p.szi)>0;
+          const col = long?'#5DCAA5':'#E24B4A';
+          rows += '<div class="vrow"><span class="vk">'+p.coin+'</span>'
+               +  '<span style="color:'+col+'">'+(long?'▲ LONG ':'▼ SHORT ')
+               +  Math.abs(Number(p.szi))+'</span></div>'
+               +  '<div class="vrow"><span class="vk">entry</span><span>'+p.entryPx+'</span></div>'
+               +  '<div class="vrow"><span class="vk">uPnL</span><span style="color:'+col+'">'
+               +  fmtUsd(p.unrealizedPnl)+'</span></div>'
+               +  (p.liquidationPx?'<div class="vrow"><span class="vk">liq</span><span>'
+                    +p.liquidationPx+'</span></div>':'');
+        });
+      }
+
+      // cross-check against what our own page is claiming
+      const mine = C.find(c=>c.key===w.organism);
+      if(mine){
+        const chainSide = pos.length ? (Number(pos[0].szi)>0?'LONG':'SHORT') : 'FLAT';
+        if(chainSide !== mine.side){
+          mismatch = '<div class="vmis">⚠ this page says '+mine.side
+                   + ', the exchange says '+chainSide+'. Believe the exchange.</div>';
+        }
+      }
+      body = '<div class="vpos">'+rows+'</div>'+mismatch;
+    }catch(err){
+      body = '<div class="vpos"><span class="wnote">exchange query failed: '+err.message+'</span></div>';
+    }
+
+    const dash = w.hyperdash
+      ? '<a class="wlink" target="_blank" rel="noopener" href="'+w.hyperdash+'">HyperDash →</a>'
+      : '<div class="wnote" style="margin-top:5px">HyperDash indexes mainnet only</div>';
+
+    return '<div class="wcard"><div class="worg">'+w.organism.toUpperCase()+'</div>'
+         + '<div class="waddr">'+w.address+'</div>'
+         + body
+         + '<a class="wlink" target="_blank" rel="noopener" href="'+cfg.explorer+w.address+'">Explorer →</a>'
+         + dash + '</div>';
+  }));
+
+  grid.innerHTML = cards.join('');
+  dot.className='vdot ok';
+  st.textContent='answered by Hyperliquid at '+new Date().toLocaleTimeString('en-GB');
+}
+
+document.getElementById('v-refresh')?.addEventListener('click', verify);
+document.getElementById('v-copy')?.addEventListener('click', ()=>{
+  const t=document.getElementById('v-curl')?.textContent||'';
+  navigator.clipboard?.writeText(t);
+});
+
 pull();
-pullWallets();
+verify();
 setInterval(pull, 5000);
-setInterval(pullWallets, 60000);
+setInterval(verify, 60000);
 
 
 const rcv=document.getElementById('rcv'),RX=rcv.getContext('2d');
@@ -1092,7 +1235,7 @@ function equityLine(x,y,w,h,o){
   });
   RX.stroke();
   RX.strokeStyle='#26262b';RX.lineWidth=1;
-  const base=y+h-8-((10000-lo)/(hi-lo))*(h-18);
+  const base=y+h-8-((1000-lo)/(hi-lo))*(h-18);
   if(base>y && base<y+h){RX.setLineDash([3,3]);RX.beginPath();RX.moveTo(x+6,base);RX.lineTo(x+w-6,base);RX.stroke();RX.setLineDash([]);}
 }
 function equityPanel(x,y,w,h,o){
@@ -1335,7 +1478,7 @@ function title(o){
   RX.font='19px ui-monospace,monospace';
   RX.fillStyle='#fff';RX.fillText(o.title,30,42);
   RX.font='9px ui-monospace,monospace';RX.fillStyle=o.accent;
-  RX.fillText('DEMO $10,000  ·  ALL PERPS  ·  AUTONOMOUS',30,58);
+  RX.fillText('TESTNET $1,000  ·  ALL PERPS  ·  AUTONOMOUS',30,58);
 }
 
 function rframe(){
