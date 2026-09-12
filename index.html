@@ -16,6 +16,8 @@
   nav .in{max-width:960px;margin:0 auto;padding:0 18px;height:46px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--dim);letter-spacing:.5px}
   nav .logo{color:var(--fg);font-size:14px;letter-spacing:2px}
   nav .links{display:flex;gap:16px}
+  .langlink{border:1px solid var(--line);color:var(--dim);font-size:10px;padding:4px 9px;border-radius:5px;margin-left:10px;letter-spacing:.5px}
+  .langlink:hover{border-color:#C9F227;color:#C9F227}
   .burger{display:none;background:transparent;border:1px solid var(--line);color:var(--fg);font-size:15px;line-height:1;padding:5px 10px;border-radius:6px;cursor:pointer}
   .totop{position:fixed;right:14px;bottom:14px;z-index:40;background:rgba(17,17,20,.92);border:1px solid var(--line);color:var(--mid);font-family:var(--mono);font-size:11px;padding:9px 12px;border-radius:8px;cursor:pointer;display:none;backdrop-filter:blur(6px)}
   .totop.show{display:block}
@@ -291,7 +293,7 @@
 <body>
 
 <nav><div class="in">
-  <span class="logo">MICRO</span>
+  <span class="logo">MICRO</span><a href="index-zh.html" class="langlink">中文</a>
   <button id="burger" class="burger" aria-label="menu">☰</button>
   <span class="links" id="navlinks"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
   <span><button id="sound-btn" class="sndbtn">◼ sound off</button><span class="dot"></span><span class="green">observed live</span> </span>
@@ -375,7 +377,7 @@
 
         <div class="dpanel scene">
           <div class="dhead">
-            <span><span class="dot2"></span>LIVE VIEW · <b id="dk-name">—</b></span>
+            <span><span class="dot2"></span><span>LIVE VIEW</span> · <b id="dk-name">—</b></span>
             <span id="dk-sym">—</span>
           </div>
           <canvas id="dk-scene" width="900" height="420"></canvas>
@@ -391,7 +393,7 @@
 
         <div class="dpanel">
           <div class="dhead">
-            <span><span class="dot2"></span>CNS · CONNECTOME</span>
+            <span><span class="dot2"></span><span>CNS · CONNECTOME</span></span>
             <span id="dk-track">TRACKING</span>
           </div>
           <div class="dbody">
@@ -714,6 +716,8 @@
 </div></div></footer>
 
 <script>
+// `let` further down would still be in its temporal dead zone there.
+
 // Declared first: drawing functions reference HIST on the very first frame,
 // and a `const` further down would still be in its temporal dead zone there —
 // typeof does not protect against that, it throws.
@@ -907,7 +911,7 @@ function drawRace(){
 
   if(n < 2){
     out += `<text x="${W/2}" y="${H/2+16}" fill="#55555c" font-size="10"
-             font-family="monospace" text-anchor="middle">collecting live equity…</text>`;
+             font-family="monospace" text-anchor="middle">${'collecting live equity…'}</text>`;
     svg.innerHTML=out; return;
   }
 
@@ -971,7 +975,7 @@ function drawGates(){
       || (c.real===false ? 'surrogate graph, not real wiring' : null)
       || STOP_REASONS[depth+1] || 'condition not met';
     const msg = passed
-      ? '<b>Cleared all eight gates</b> — decision executed.'
+      ? '<b>'+'Cleared all eight gates'+'</b> — '+'decision executed'+'.'
       : '<b>Stopped at '+GATES[depth][0]+' '+GATES[depth][1]+'</b> — '+reason+'.';
     row.innerHTML=`
       <div class="ghead"><span class="gname">${c.name}</span>
@@ -1045,7 +1049,7 @@ function drawTimeline(){
 function drawLog(entries){
   const el=document.getElementById('ledger-log'); if(!el) return;
   if(!entries || !entries.length){
-    el.innerHTML='<div><span class="k">no decisions recorded yet</span></div>';
+    el.innerHTML='<div><span class="k">'+'no decisions recorded yet'+'</span></div>';
     return;
   }
   el.innerHTML = entries.slice(-6).reverse().map(e=>{
@@ -1160,6 +1164,7 @@ document.getElementById('sound-btn')?.addEventListener('click', function(){
   this.textContent = live ? '◼ sound on' : '◼ sound off';
   this.classList.toggle('on', live);
 });
+
 
 
 
@@ -1407,9 +1412,9 @@ function dkUpdate(state){
   const st=c.state||{};
   const stopped=(c.pipe||{}).stopped_at, reason=(c.pipe||{}).stop_reason;
   set('dk-verdict', stopped
-    ? 'Halted at '+stopped+(reason?' — '+reason:'')
+    ? 'Halted at'+' '+stopped+(reason?' — '+reason:'')
     : (c.side==='FLAT' ? 'Readout below threshold — waiting.'
-                       : 'Readout cleared threshold — '+c.side.toLowerCase()+' '+(c.sym||'')));
+                       : 'Readout cleared threshold —'+' '+c.side.toLowerCase()+' '+(c.sym||'')));
   set('dk-track', st.state ? st.state.toUpperCase() : 'TRACKING');
 
   const mid=(PX_HIST[c.sym]||[]).slice(-1)[0];
@@ -1419,7 +1424,7 @@ function dkUpdate(state){
   const led=document.getElementById('dk-ledger');
   const mine=(state.ledger||[]).filter(e=>e.organism===c.key &&
     ['open','flip','rotate','close'].includes((e.result||{}).action));
-  document.getElementById('dk-ledcount').textContent = mine.length ? mine.length+' rows' : '—';
+  document.getElementById('dk-ledcount').textContent = mine.length ? mine.length+' '+'rows' : '—';
   if(led){
     led.innerHTML = mine.length ? mine.slice(-9).reverse().map(e=>{
       const r=e.result||{};
@@ -1429,14 +1434,14 @@ function dkUpdate(state){
       const sideCol=e.side==='LONG'?'#5DCAA5':e.side==='SHORT'?'#E24B4A':'#8a8a92';
       const res = pnl!=null
         ? '<span style="color:'+(pnl>=0?'#5DCAA5':'#E24B4A')+'">'+(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl))+'</span>'
-        : '<span style="color:'+ACC+'">OPEN</span>';
+        : '<span style="color:'+ACC+'">'+'OPEN'+'</span>';
       return '<div class="ledrow'+(isOpen?' open':'')+'">'
         +'<span class="lt">'+t+'</span>'
         +'<span style="color:'+sideCol+'">'+(isOpen?'ENTER':'EXIT')+'</span>'
         +'<span>'+(r.symbol||c.sym||'—')+'</span>'
         +'<span style="color:#8a8a92">$'+Math.round(r.notional||0)+'</span>'
         + res +'</div>';
-    }).join('') : '<div class="empty">no fills yet</div>';
+    }).join('') : '<div class="empty">'+'no fills yet'+'</div>';
   }
 
   // decision stream, all organisms
@@ -1449,12 +1454,12 @@ function dkUpdate(state){
       const org=C.find(x=>x.key===e.organism)||{col:'#8a8a92',name:e.organism};
       const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
       const stop=e.stopped_at;
-      const txt = stop ? 'halted at '+stop : 'readout '+(e.drive||0).toFixed(2)+' → '+(e.side||'FLAT');
+      const txt = stop ? 'halted at'+' '+stop : 'readout'+' '+(e.drive||0).toFixed(2)+' → '+(e.side||'FLAT');
       return '<div class="streamrow"><span class="sbadge" style="background:'+org.col+'">'
         + (org.name||'?').slice(0,1) + '</span>'
         + '<span style="color:var(--dim);min-width:34px">'+t+'</span>'
         + '<span style="color:var(--mid)">'+txt+'</span></div>';
-    }).join('') : '<div class="empty">waiting for decisions</div>';
+    }).join('') : '<div class="empty">'+'waiting for decisions'+'</div>';
   }
 }
 
@@ -1543,7 +1548,7 @@ async function pull(){
         return '<tr><td>'+t+'</td><td><b>'+e.organism+'</b></td><td>'+(r.symbol||'—')
              +'</td><td>'+(e.price? e.price.toFixed(3):'—')+'</td><td>—</td><td class="'+cls+'">'
              +(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl)).toLocaleString('en-US')+'</td></tr>';
-      }).join('') : '<tr><td colspan="6" style="color:var(--dim)">no closed trades yet</td></tr>';
+      }).join('') : '<tr><td colspan="6" style="color:var(--dim)">'+'no closed trades yet'+'</td></tr>';
     }
 
     // replay scene: real position + this organism's own ledger rows
@@ -1655,7 +1660,7 @@ async function verify(){
     + '  -H \'Content-Type: application/json\' \\\n'
     + '  -d \'{"type":"clearinghouseState","user":"'+VWALLETS[0].address+'"}\'';
 
-  dot.className='vdot'; st.textContent='querying '+cfg.api+' …';
+  dot.className='vdot'; st.textContent='querying'+' '+cfg.api+' …';
 
   const cards = await Promise.all(VWALLETS.map(async w=>{
     let body='', mismatch='';
@@ -1689,7 +1694,7 @@ async function verify(){
         const chainSide = pos.length ? (Number(pos[0].szi)>0?'LONG':'SHORT') : 'FLAT';
         if(chainSide !== mine.side){
           mismatch = '<div class="vmis">⚠ this page says '+mine.side
-                   + ', the exchange says '+chainSide+'. Believe the exchange.</div>';
+                   + ', '+'the exchange says'+' '+chainSide+'. Believe the exchange.</div>';
         }
       }
       body = '<div class="vpos">'+rows+'</div>'+mismatch;
@@ -1699,18 +1704,18 @@ async function verify(){
 
     const dash = w.hyperdash
       ? '<a class="wlink" target="_blank" rel="noopener" href="'+w.hyperdash+'">HyperDash →</a>'
-      : '<div class="wnote" style="margin-top:5px">HyperDash indexes mainnet only</div>';
+      : '<div class="wnote" style="margin-top:5px">'+'HyperDash indexes mainnet only'+'</div>';
 
     return '<div class="wcard"><div class="worg">'+w.organism.toUpperCase()+'</div>'
          + '<div class="waddr">'+w.address+'</div>'
          + body
-         + '<a class="wlink" target="_blank" rel="noopener" href="'+cfg.explorer+w.address+'">Explorer →</a>'
+         + '<a class="wlink" target="_blank" rel="noopener" href="'+cfg.explorer+w.address+'">'+'Explorer →'+'</a>'
          + dash + '</div>';
   }));
 
   grid.innerHTML = cards.join('');
   dot.className='vdot ok';
-  st.textContent='answered by Hyperliquid at '+new Date().toLocaleTimeString('en-GB');
+  st.textContent='answered by Hyperliquid at'+' '+new Date().toLocaleTimeString('en-GB');
 }
 
 document.getElementById('v-refresh')?.addEventListener('click', verify);
