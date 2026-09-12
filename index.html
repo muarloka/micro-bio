@@ -192,10 +192,10 @@
   </div>
   <div class="wrap"><div class="stage"><canvas id="office" width="960" height="400"></canvas></div></div>
   <div class="wrap"><div class="metrics">
-    <div class="metric"><div class="l">TOTAL NEURONS</div><div class="v">1,445</div></div>
-    <div class="metric"><div class="l">DEMO ACCOUNT</div><div class="v">3 × $10k</div></div>
-    <div class="metric"><div class="l">TRADES</div><div class="v" id="ntr">218</div></div>
-    <div class="metric"><div class="l">LEADER</div><div class="v green">PLATYNEREIS</div></div>
+    <div class="metric"><div class="l">TOTAL NEURONS</div><div class="v" id="m-neurons">—</div></div>
+    <div class="metric"><div class="l">DEMO ACCOUNT</div><div class="v" id="m-cap">—</div></div>
+    <div class="metric"><div class="l">TRADES</div><div class="v" id="m-trades">—</div></div>
+    <div class="metric"><div class="l">LEADER</div><div class="v" id="m-leader">—</div></div>
   </div></div>
 </section>
 
@@ -224,16 +224,16 @@
         <div class="orbit">DRAG TO ORBIT +</div>
       </div>
       <div class="brainstats">
-        <div class="bstat"><div class="bl">NEURONS</div><div class="bv" id="b-neurons">302</div></div>
-        <div class="bstat"><div class="bl">LATEST SPIKES</div><div class="bv" id="b-spikes">128</div></div>
-        <div class="bstat"><div class="bl">MEMORY CHANGED</div><div class="bv" id="b-mem">14</div></div>
-        <div class="bstat"><div class="bl">BRAIN TIME</div><div class="bv" id="b-time">00:04:12</div></div>
+        <div class="bstat"><div class="bl">NEURONS</div><div class="bv" id="b-neurons">—</div></div>
+        <div class="bstat"><div class="bl">LATEST SPIKES</div><div class="bv" id="b-spikes">—</div></div>
+        <div class="bstat"><div class="bl">MEMORY CHANGED</div><div class="bv" id="b-mem">—</div></div>
+        <div class="bstat"><div class="bl">BRAIN TIME</div><div class="bv" id="b-time">—</div></div>
         <div class="norder">
           <div class="bl" style="margin-bottom:8px">NEURAL ORDER</div>
-          <div class="ostate" id="b-state">LONG</div>
-          <div class="odesc" id="b-desc">Motor readout 0.34 above the 0.25 threshold — buying.</div>
-          <div class="obar"><div class="ofill" id="b-fill" style="width:67%"></div></div>
-          <div class="odrive"><span>drive</span><span id="b-drive">+0.34</span></div>
+          <div class="ostate" id="b-state">—</div>
+          <div class="odesc" id="b-desc">awaiting backend</div>
+          <div class="obar"><div class="ofill" id="b-fill" style="width:0%"></div></div>
+          <div class="odrive"><span>drive</span><span id="b-drive">—</span></div>
         </div>
       </div>
     </div>
@@ -310,11 +310,7 @@
     <div class="ledger" id="ledger-log"></div>
     <table>
       <thead><tr><th>CLOSED</th><th>ORGANISM</th><th>SIDE</th><th>ENTRY</th><th>EXIT</th><th>P&L</th></tr></thead>
-      <tbody>
-        <tr><td>13:40</td><td><b>platynereis</b></td><td class="green">LONG</td><td>39.80</td><td>41.13</td><td class="green">+$4.10</td></tr>
-        <tr><td>12:15</td><td><b>ciona</b></td><td class="red">SHORT</td><td>38.10</td><td>40.05</td><td class="red">−$9.40</td></tr>
-        <tr><td>11:02</td><td><b>elegans</b></td><td class="green">LONG</td><td>35.20</td><td>36.90</td><td class="green">+$3.30</td></tr>
-      </tbody>
+      <tbody id="closed-body"><tr><td colspan="6" style="color:var(--dim)">no closed trades yet</td></tr></tbody>
     </table>
   </div>
 </section>
@@ -516,7 +512,21 @@ function drawOffice(){
     const mx=bx+66,my=deskY-64;
     opx(mx,my,'#1c1c24',20,13);
     const scr=c.side==='LONG'?'#0f2a20':c.side==='SHORT'?'#2a0f12':'#141417';opx(mx+2*P4,my+2*P4,scr,16,8);
-    for(let i=0;i<6;i++){const up=((i+Math.floor(t))%10)>4;const h=1+((i*7+ix)%4);opx(mx+3*P4+i*2.2*P4,my+8*P4-h*P4,up?c.dark:'#993C1D',1,h);}
+    // real equity sparkline on the desk monitor
+    const eh=(typeof HIST!=='undefined'&&HIST[c.key])?HIST[c.key].slice(-16):[];
+    if(eh.length>1){
+      let lo=Math.min(...eh),hi=Math.max(...eh); if(hi===lo)hi=lo+1;
+      octx.strokeStyle=c.col;octx.lineWidth=1.5;octx.beginPath();
+      eh.forEach((v,i)=>{
+        const px=mx+3*P4+(i/(eh.length-1))*(13*P4);
+        const py=my+9*P4-((v-lo)/(hi-lo))*(6*P4);
+        i?octx.lineTo(px,py):octx.moveTo(px,py);
+      });
+      octx.stroke();
+    }else{
+      octx.font='7px ui-monospace,monospace';octx.fillStyle='#3a3a42';
+      octx.fillText('—',mx+7*P4,my+6*P4);
+    }
     if(Math.floor(t*2)%2===0)opx(mx+3*P4,my+3*P4,'#5DCAA5',1,1);
     opx(mx+8*P4,my+13*P4,'#1c1c24',4,3);
     const cx=bx+36;
@@ -620,13 +630,13 @@ document.getElementById('pausebtn').onclick=function(){paused=!paused;this.textC
 
 function updateBrainStats(){
   const c=C[sel];
-  document.getElementById('b-neurons').textContent=NEURON_N[sel].toLocaleString('en-US');
-  document.getElementById('b-spikes').textContent=Math.round(40+Math.abs(c.pnl)*6+Math.random()*30);
-  document.getElementById('b-mem').textContent=Math.round(4+Math.abs(c.pnl)*0.7);
-  const secs=Math.floor(brainT);
+  document.getElementById('b-neurons').textContent=(C[sel] && C[sel].neurons)?C[sel].neurons.toLocaleString('en-US'):'—';
+  document.getElementById('b-spikes').textContent=(c.spikes ?? 0).toLocaleString('en-US');
+  document.getElementById('b-mem').textContent=c.trades ?? 0;
+  const secs=Math.floor(C[sel] && C[sel].btime ? C[sel].btime : brainT);
   const hh=String(Math.floor(secs/3600)).padStart(2,'0'),mm=String(Math.floor(secs%3600/60)).padStart(2,'0'),ss=String(secs%60).padStart(2,'0');
   document.getElementById('b-time').textContent=hh+':'+mm+':'+ss;
-  const drive=c.side==='LONG'?0.34+c.pnl*0.01:c.side==='SHORT'?-0.44:0.04;
+  const drive = (typeof c.drive === 'number') ? c.drive : 0;
   const st=document.getElementById('b-state');
   st.textContent=c.side==='FLAT'?'HOLD':c.side;
   st.style.color=c.side==='LONG'?'var(--green)':c.side==='SHORT'?'var(--red)':'var(--mid)';
@@ -641,11 +651,36 @@ function updateBrainStats(){
   document.getElementById('exe').textContent=['ELEGANS','CIONA','PLATYNEREIS'][sel]+'.EXE';
 }
 function drawRace(){
-  const svg=document.getElementById('race-svg');
-  const lines=[{c:'#9FE1CB',p:'0,90 60,80 120,70 180,55 240,58 300,42 360,44 420,34'},{c:'#5DCAA5',p:'0,90 60,88 120,84 180,86 240,80 300,84 360,82 420,82'},{c:'#E24B4A',p:'0,90 60,100 120,112 180,108 240,124 300,120 360,132 420,128'}];
-  let s=`<rect x="0" y="0" width="420" height="150" fill="transparent"/><line x1="0" y1="80" x2="420" y2="80" stroke="#26262b" stroke-dasharray="3 3"/><text x="4" y="76" fill="#55555c" font-size="9" font-family="monospace">$100</text>`;
-  lines.forEach(l=>{s+=`<polyline points="${l.p}" fill="none" stroke="${l.c}" stroke-width="2"/>`;const pts=l.p.split(' ').pop().split(',');s+=`<circle cx="${pts[0]}" cy="${pts[1]}" r="3" fill="${l.c}"/>`;});
-  svg.innerHTML=s;
+  const svg=document.getElementById('race-svg'); if(!svg) return;
+  const W=420,H=150,BASE=10000;
+  const series=C.map(c=>({col:c.sw, data:HIST[c.key]||[]}));
+  const n=Math.max(...series.map(x=>x.data.length),0);
+
+  let out=`<rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/>`
+        + `<line x1="0" y1="80" x2="${W}" y2="80" stroke="#26262b" stroke-dasharray="3 3"/>`
+        + `<text x="4" y="76" fill="#55555c" font-size="9" font-family="monospace">$10,000</text>`;
+
+  if(n < 2){
+    out += `<text x="${W/2}" y="${H/2+16}" fill="#55555c" font-size="10"
+             font-family="monospace" text-anchor="middle">collecting live equity…</text>`;
+    svg.innerHTML=out; return;
+  }
+
+  // shared scale across organisms so the lines are comparable
+  let lo=BASE, hi=BASE;
+  series.forEach(x=>x.data.forEach(v=>{lo=Math.min(lo,v);hi=Math.max(hi,v);}));
+  const pad=Math.max(1,(hi-lo)*0.12); lo-=pad; hi+=pad;
+  const yOf=v=>H-10-((v-lo)/(hi-lo))*(H-30);
+  const xOf=i=>(i/(n-1))*W;
+
+  series.forEach(x=>{
+    if(x.data.length<2) return;
+    const pts=x.data.map((v,i)=>`${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
+    out+=`<polyline points="${pts}" fill="none" stroke="${x.col}" stroke-width="2"/>`;
+    const last=x.data[x.data.length-1];
+    out+=`<circle cx="${xOf(x.data.length-1).toFixed(1)}" cy="${yOf(last).toFixed(1)}" r="3" fill="${x.col}"/>`;
+  });
+  svg.innerHTML=out;
 }
 function drawLB(){
   const sorted=[...C].sort((a,b)=>b.eq-a.eq),el=document.getElementById('lb');el.innerHTML='';
@@ -707,22 +742,9 @@ function drawGates(){
 const TL_HOURS=12;
 let TRADES=[];
 function seedTrades(){
+  // Filled from the backend ledger in pull(), one lane per organism. No
+  // invented fills: an empty timeline means nothing has traded yet.
   TRADES=[];
-  const now=Date.now();
-  C.forEach((c,lane)=>{
-    let t=now-TL_HOURS*3600e3+Math.random()*40*60e3;
-    while(t<now-20*60e3){
-      const hold=(25+Math.random()*150)*60e3;
-      const close=Math.min(now,t+hold);
-      const sym=SYMS[Math.floor(Math.random()*SYMS.length)];
-      const side=Math.random()>0.45?'LONG':'SHORT';
-      const pnl=Math.round((Math.random()-0.46)*900);
-      const rotated=Math.random()<0.22;
-      TRADES.push({lane,org:c.name,col:c.sw,sym,side,open:t,close,pnl,rotated});
-      t=close+(10+Math.random()*70)*60e3;
-    }
-  });
-  TRADES.sort((a,b)=>a.open-b.open);
 }
 function drawTimeline(){
   const track=document.getElementById('tltrack'); if(!track) return;
@@ -775,19 +797,39 @@ function drawTimeline(){
   }).join('');
 }
 
-function drawLog(){
-  document.getElementById('ledger-log').innerHTML=`
-   <div><span class="k">14:02:11</span> · platynereis · readout 0.71 → <span class="green">LONG 3.1 @ 41.13</span></div>
-   <div><span class="k">13:58:40</span> · ciona · readout −0.44 → <span class="red">SHORT +0.8</span></div>
-   <div><span class="k">13:55:02</span> · elegans · readout 0.33 → <span class="green">LONG 1.2 @ 36.60</span></div>`;
+function drawLog(entries){
+  const el=document.getElementById('ledger-log'); if(!el) return;
+  if(!entries || !entries.length){
+    el.innerHTML='<div><span class="k">no decisions recorded yet</span></div>';
+    return;
+  }
+  el.innerHTML = entries.slice(-6).reverse().map(e=>{
+    const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',
+      {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const cls=e.side==='LONG'?'green':e.side==='SHORT'?'red':'';
+    const gate=e.stopped_at ? ' · halted '+e.stopped_at : '';
+    return '<div><span class="k">'+t+'</span> · '+e.organism
+         + ' · readout '+(e.drive||0).toFixed(2)+' → <span class="'+cls+'">'
+         + (e.side||'FLAT')+'</span>'+gate+'</div>';
+  }).join('');
 }
 const tabs=document.getElementById('tabs');
 C.forEach((c,i)=>{const b=document.createElement('div');b.className='tab'+(i===0?' on':'');b.innerHTML=c.name+'<small>'+c.nn+'</small>';b.onclick=()=>{sel=i;buildCloud();updateBrainStats();[...tabs.children].forEach((x,j)=>x.className='tab'+(j===i?' on':''));};tabs.appendChild(b);});
 function loop(){t+=0.016;if(!paused){autoRot+=0.0035;brainT+=0.016;}drawOffice();drawBrain();requestAnimationFrame(loop);}
-buildCloud();updateBrainStats();loop();drawRace();drawLB();drawLog();drawGates();seedTrades();drawTimeline();
+buildCloud();updateBrainStats();loop();drawRace();drawLB();drawGates();seedTrades();drawTimeline();
 window.addEventListener('resize',drawTimeline);
 // ---------- LIVE DATA ----------
 const API = 'https://api.microbio.lol';
+
+// Real equity history, accumulated from live API samples. Nothing is
+// back-filled or invented: the curves start flat and grow as the page
+// observes the backend. Kept in memory only.
+const HIST = {elegans:[], ciona:[], platynereis:[]};
+const HIST_MAX = 720;          // ~1h at a 5s poll
+function pushHist(key, eq){
+  const h = HIST[key]; if(!h) return;
+  h.push(eq); if(h.length > HIST_MAX) h.shift();
+}
 
 async function pull(){
   try{
@@ -813,18 +855,86 @@ async function pull(){
       c.real  = live.real_connectome;
       c.pipe  = live.pipeline;
       c.drive = (live.brain||{}).drive ?? 0;
+      c.spikes = (live.brain||{}).spikes ?? 0;
+      c.btime  = (live.brain||{}).brain_time ?? 0;
+      c.trades = live.trades ?? 0;
+      c.neurons = live.neurons ?? 0;
+      pushHist(c.key, c.eq);
     });
 
 
 
-    const log = document.getElementById('ledger-log');
-    if(log && (s.ledger||[]).length){
-      log.innerHTML = s.ledger.slice(-4).reverse().map(e=>{
-        const t = new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-        const side = e.side==='LONG'?'green':e.side==='SHORT'?'red':'';
-        return '<div><span class="k">'+t+'</span> · '+e.organism+' · readout '+(e.drive||0).toFixed(2)+' → <span class="'+side+'">'+e.side+'</span></div>';
-      }).join('');
+    // hero metrics, all from the backend
+    const totN=(s.creatures||[]).reduce((a,x)=>a+(x.neurons||0),0);
+    const totT=(s.creatures||[]).reduce((a,x)=>a+(x.trades||0),0);
+    const lead=(s.creatures||[]).slice().sort((a,b)=>(b.equity||0)-(a.equity||0))[0];
+    const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+    set('m-neurons', totN ? totN.toLocaleString('en-US') : '—');
+    set('m-trades', totT);
+    set('m-leader', lead ? lead.name.split(' ')[0].toUpperCase() : '—');
+    set('m-cap', (s.creatures||[]).length + ' × $10k');
+
+    drawLog(s.ledger||[]);
+
+    // closed trades table, real fills only
+    const tb=document.getElementById('closed-body');
+    if(tb){
+      const closed=(s.ledger||[]).filter(e=>{
+        const a=(e.result||{}).action; return a==='close'||a==='flip'||a==='rotate';
+      }).slice(-8).reverse();
+      tb.innerHTML = closed.length ? closed.map(e=>{
+        const r=e.result||{};
+        const pnl=r.closed_pnl ?? r.pnl ?? 0;
+        const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        const cls=pnl>=0?'green':'red';
+        return '<tr><td>'+t+'</td><td><b>'+e.organism+'</b></td><td>'+(r.symbol||'—')
+             +'</td><td>'+(e.price? e.price.toFixed(3):'—')+'</td><td>—</td><td class="'+cls+'">'
+             +(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl)).toLocaleString('en-US')+'</td></tr>';
+      }).join('') : '<tr><td colspan="6" style="color:var(--dim)">no closed trades yet</td></tr>';
     }
+
+    // replay scene: real position + this organism's own ledger rows
+    if(typeof RORG !== 'undefined'){
+      RORG.forEach(o=>{
+        const live = byKey[o.key];
+        if(!live) return;
+        const p = live.position||{};
+        o.side = p.side||'FLAT';
+        o.sym  = p.symbol||'—';
+        o.pnl  = p.pnl ?? 0;
+        o.neurons = live.neurons ?? o.neurons;
+        const mine = (s.ledger||[]).filter(e=>e.organism===o.key);
+        o.trades = mine.slice(-10).reverse().map(e=>({
+          ts: (e.ts||0)*1000,
+          sym: (e.result&&e.result.symbol) || e.symbol || p.symbol || '—',
+          side: e.side,
+          size: (e.result&&e.result.notional) ? +(e.result.notional/1000).toFixed(1) : 0,
+          lev: p.leverage ?? 1,
+          pnl: (e.result&&e.result.closed_pnl) ?? (e.result&&e.result.pnl) ?? 0,
+          open: e.action==='open'||e.action==='flip'||e.action==='rotate',
+        }));
+      });
+    }
+
+    // timeline lanes, one per organism, from the same ledger
+    TRADES = [];
+    C.forEach((c,lane)=>{
+      (s.ledger||[]).filter(e=>e.organism===c.key).slice(-40).forEach(e=>{
+        const res=e.result||{};
+        if(!(e.action==='open'||e.action==='flip'||e.action==='rotate'||e.action==='close')) return;
+        TRADES.push({
+          lane, org:c.name, col:c.sw,
+          sym: res.symbol || c.sym || '—',
+          side: e.side,
+          open: (e.ts||0)*1000,
+          close: (e.ts||0)*1000 + 60e3,
+          pnl: res.closed_pnl ?? res.pnl ?? 0,
+          rotated: e.action==='rotate',
+        });
+      });
+    });
+    TRADES.sort((a,b)=>a.open-b.open);
+    drawTimeline();
 
     drawLB(); updateBrainStats(); drawGates();
   }catch(err){
@@ -834,38 +944,42 @@ async function pull(){
 
 pull();
 setInterval(pull, 5000);
-setInterval(()=>{if(Math.random()<0.5){seedTrades();drawTimeline();}},9000);
+
 
 const rcv=document.getElementById('rcv'),RX=rcv.getContext('2d');
 RX.imageSmoothingEnabled=false;
 const RW=rcv.width,RH=rcv.height;
 
 const RSYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT','TIA','INJ'];
-function mkTrades(n,seed){
-  const out=[];let ts=Date.now()-n*17*60e3;
-  for(let i=0;i<n;i++){
-    const sym=RSYMS[(seed*5+i*7)%RSYMS.length];
-    const side=((seed+i)%10)>4?'LONG':'SHORT';
-    const open=!!(i>=n-2);  // most recent two are still open
-    const pnl=open?Math.round((Math.random()-0.4)*700):Math.round((Math.random()-0.47)*900);
-    out.push({ts,sym,side,size:+(0.4+((seed*3+i*11)%40)/2).toFixed(1),
-              lev:1+((seed+i)%5),pnl,open});
-    ts+=(9+((i*13)%22))*60e3;
-  }
-  return out.reverse();
+function mkTrades(){
+  // No invented rows. The blotter fills from the backend ledger, per organism,
+  // which is why three organisms no longer show three copies of the same
+  // random list.
+  return [];
 }
 const RORG=[
- {key:'elegans',title:'C. ELEGANS',neurons:302,sym:'SOL',side:'LONG',pnl:641,
-  neon:'#5DCAA5',neon2:'#1D9E75',city:'#12323a',accent:'#9FE1CB',trades:mkTrades(9,1)},
- {key:'ciona',title:'CIONA',neurons:177,sym:'BTC',side:'SHORT',pnl:-1890,
-  neon:'#F0997B',neon2:'#D85A30',city:'#3a1c22',accent:'#FFC2A8',trades:mkTrades(9,4)},
- {key:'platynereis',title:'PLATYNEREIS',neurons:966,sym:'HYPE',side:'LONG',pnl:1430,
-  neon:'#AFA9EC',neon2:'#7F77DD',city:'#241f44',accent:'#CFCAF6',trades:mkTrades(9,8)},
+ {key:'elegans',title:'C. ELEGANS',neurons:302,sym:'—',side:'FLAT',pnl:0,
+  neon:'#5DCAA5',neon2:'#1D9E75',city:'#12323a',accent:'#9FE1CB',trades:mkTrades()},
+ {key:'ciona',title:'CIONA',neurons:177,sym:'—',side:'FLAT',pnl:0,
+  neon:'#F0997B',neon2:'#D85A30',city:'#3a1c22',accent:'#FFC2A8',trades:mkTrades()},
+ {key:'platynereis',title:'PLATYNEREIS',neurons:966,sym:'—',side:'FLAT',pnl:0,
+  neon:'#AFA9EC',neon2:'#7F77DD',city:'#241f44',accent:'#CFCAF6',trades:mkTrades()},
 ];
 let rsel=0,rt=0;
 let rraster=[],rspikes=685900;
 
-function initRaster(){rraster=[];for(let r=0;r<96;r++){const row=[];for(let c=0;c<64;c++)row.push(Math.random()<0.12?1:0);rraster.push(row);}}
+// Raster pattern is derived deterministically from the organism's real
+// cumulative spike count, so it changes only when the backend reports new
+// activity. It is a visualisation of a real number, not noise.
+function initRaster(){
+  rraster=[];
+  const seed=(typeof C!=='undefined'&&C[rsel])?(C[rsel].spikes||0):0;
+  for(let r=0;r<96;r++){
+    const row=[];
+    for(let c=0;c<64;c++) row.push(((r*31+c*17+seed)%97)<12?1:0);
+    rraster.push(row);
+  }
+}
 initRaster();
 
 // ---------- background: neon city ----------
@@ -906,39 +1020,64 @@ function city(o){
 }
 
 // ---------- monitor wall ----------
-function candles(x,y,w,h,seed,up,o){
+function equityLine(x,y,w,h,o){
+  // Was a procedurally generated candle chart, i.e. decoration pretending to
+  // be market data. Now it is this organism's real equity, or nothing.
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
-  const n=Math.floor(w/7);
-  for(let i=0;i<n;i++){
-    const s=(seed*13+i*29)%17;
-    const green=((seed+i)%10)>4;
-    const ch=4+(s%Math.max(4,Math.floor(h*0.55)));
-    const cy=y+h-ch-((s*3)%Math.max(3,Math.floor(h*0.3)));
-    RX.fillStyle=green?'#1D9E75':'#993C1D';
-    RX.fillRect(x+2+i*7,cy,4,ch);
-    RX.fillRect(x+3+i*7,cy-3,1,ch+6);
+  const d=(typeof HIST!=='undefined' && HIST[o.key]) ? HIST[o.key] : [];
+  if(d.length<2){
+    RX.font='8px ui-monospace,monospace';RX.fillStyle='#55555c';
+    RX.fillText('waiting for live data',x+8,y+h/2);
+    return;
   }
-  // moving cursor line
-  const cx=x+((rt*40+seed*30)%w);
-  RX.fillStyle=o.neon+'66';RX.fillRect(cx,y,1,h);
+  let lo=Math.min(...d), hi=Math.max(...d); if(hi===lo){hi=lo+1;}
+  RX.strokeStyle=o.neon;RX.lineWidth=2;RX.beginPath();
+  d.forEach((v,i)=>{
+    const px=x+6+(i/(d.length-1))*(w-12);
+    const py=y+h-8-((v-lo)/(hi-lo))*(h-18);
+    i?RX.lineTo(px,py):RX.moveTo(px,py);
+  });
+  RX.stroke();
+  RX.strokeStyle='#26262b';RX.lineWidth=1;
+  const base=y+h-8-((10000-lo)/(hi-lo))*(h-18);
+  if(base>y && base<y+h){RX.setLineDash([3,3]);RX.beginPath();RX.moveTo(x+6,base);RX.lineTo(x+w-6,base);RX.stroke();RX.setLineDash([]);}
 }
-function orderbook(x,y,w,h){
+function equityPanel(x,y,w,h,o){
+  // Real equity history for this organism. Flat line until data arrives.
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
-  for(let i=0;i<Math.floor(h/5);i++){
-    const bid=i>Math.floor(h/10);
-    const len=4+((i*37+Math.floor(rt*3))%(w-8));
-    RX.fillStyle=bid?'rgba(29,158,117,.55)':'rgba(153,60,29,.55)';
-    RX.fillRect(x+2,y+2+i*5,len,3);
-  }
+  const d=(typeof HIST!=='undefined' && HIST[o.key]) ? HIST[o.key] : [];
+  RX.font='7px ui-monospace,monospace';RX.fillStyle='#55555c';
+  RX.fillText('EQUITY',x+4,y+9);
+  if(d.length<2){ RX.fillText('collecting…',x+4,y+22); return; }
+  let lo=Math.min(...d), hi=Math.max(...d); if(hi===lo){hi=lo+1;}
+  RX.strokeStyle=o.neon;RX.lineWidth=1.5;RX.beginPath();
+  d.forEach((v,i)=>{
+    const px=x+4+(i/(d.length-1))*(w-8);
+    const py=y+h-6-((v-lo)/(hi-lo))*(h-20);
+    i?RX.lineTo(px,py):RX.moveTo(px,py);
+  });
+  RX.stroke();
+  RX.fillStyle=o.accent;
+  RX.fillText('$'+Math.round(d[d.length-1]).toLocaleString('en-US'),x+w-52,y+9);
 }
-function heat(x,y,w,h,o){
+function gatePanel(x,y,w,h,o){
+  // Real gate depth for this organism: how far its last decision got.
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
-  for(let r=0;r<Math.floor(h/6);r++)for(let c=0;c<Math.floor(w/6);c++){
-    const v=(Math.sin(r*0.7+c*0.5+rt*1.5)+1)/2;
-    if(v<0.45)continue;
-    RX.fillStyle=v>0.8?o.accent:o.neon2;
-    RX.globalAlpha=v*0.8;RX.fillRect(x+c*6,y+r*6,5,5);RX.globalAlpha=1;
+  RX.font='7px ui-monospace,monospace';RX.fillStyle='#55555c';
+  RX.fillText('GATES',x+4,y+9);
+  const live=(typeof C!=='undefined')?C.find(c=>c.key===o.key):null;
+  let depth=null;
+  if(live){
+    if(live.pipe && typeof live.pipe.depth==='number') depth=live.pipe.depth;
+    else if(live.real===false) depth=0;
   }
+  if(depth===null){ RX.fillText('awaiting backend',x+4,y+24); return; }
+  const cw=(w-10)/8;
+  for(let i=0;i<8;i++){
+    RX.fillStyle = i<depth ? o.neon2 : (i===depth ? '#993C1D' : '#1a1a24');
+    RX.fillRect(x+5+i*cw, y+16, cw-2, h-26);
+  }
+  RX.fillStyle='#8a8a92';RX.fillText(depth+'/8',x+w-24,y+9);
 }
 function blotter(x,y,w,h,o){
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
@@ -949,6 +1088,11 @@ function blotter(x,y,w,h,o){
   const pl='P&L';RX.fillText(pl,x+w-6-RX.measureText(pl).width,y+9);
   RX.fillStyle='#1a2230';RX.fillRect(x+3,y+12,w-6,1);
 
+  if(!o.trades.length){
+    RX.font='8px ui-monospace,monospace';RX.fillStyle='#55555c';
+    RX.fillText('no fills yet',x+6,y+26);
+    return;
+  }
   const rows=Math.min(o.trades.length,Math.floor((h-18)/11));
   for(let i=0;i<rows;i++){
     const tr=o.trades[i];
@@ -979,7 +1123,7 @@ function monitors(o){
   // main big screen
   RX.fillStyle='#0c1018';RX.fillRect(mx,my,250,140);
   RX.strokeStyle=o.neon2;RX.lineWidth=1;RX.strokeRect(mx+.5,my+.5,250,140);
-  candles(mx+6,my+24,238,110,rsel+1,true,o);
+  equityLine(mx+6,my+24,238,110,o);
   RX.fillStyle=o.accent;RX.font='9px ui-monospace,monospace';
   RX.fillText(o.sym+'-PERP',mx+8,my+15);
   RX.fillStyle=o.side==='LONG'?'#5DCAA5':'#E24B4A';
@@ -987,10 +1131,10 @@ function monitors(o){
   // right stack
   RX.fillStyle='#0c1018';RX.fillRect(mx+260,my,160,66);
   RX.strokeStyle=o.neon2;RX.strokeRect(mx+260.5,my+.5,160,66);
-  orderbook(mx+264,my+4,152,58);
+  equityPanel(mx+264,my+4,152,58,o);
   RX.fillStyle='#0c1018';RX.fillRect(mx+260,my+74,160,66);
   RX.strokeStyle=o.neon2;RX.strokeRect(mx+260.5,my+74.5,160,66);
-  heat(mx+264,my+78,152,58,o);
+  gatePanel(mx+264,my+78,152,58,o);
   // lower wide strip = TRADE BLOTTER
   RX.fillStyle='#0c1018';RX.fillRect(mx,my+150,420,130);
   RX.strokeStyle=o.neon2;RX.strokeRect(mx+.5,my+150.5,420,130);
@@ -1094,12 +1238,13 @@ function hud(o){
   RX.fillText((0.03+Math.abs(Math.sin(rt))*0.02).toFixed(2)+' S',hx+hw-52,hy+17);
 
   // big rspikes number
-  rspikes+=Math.round((Math.random()-0.45)*9000);
-  rspikes=Math.max(120000,Math.min(1400000,rspikes));
+  // real cumulative spike count for this organism, straight from the backend
+  const liveSpk = (typeof C!=='undefined' && C[rsel]) ? (C[rsel].spikes||0) : 0;
+  if(liveSpk !== rspikes){ rspikes = liveSpk; initRaster(); }
   RX.font='30px ui-monospace,monospace';RX.fillStyle='#fff';
-  RX.fillText((rspikes/1000).toFixed(1)+'K',hx+14,hy+52);
+  RX.fillText(rspikes>=1000 ? (rspikes/1000).toFixed(1)+'K' : String(rspikes),hx+14,hy+52);
   RX.font='9px ui-monospace,monospace';RX.fillStyle='#8a8a92';
-  RX.fillText('SPIKES / S',hx+14,hy+66);
+  RX.fillText('SPIKES TOTAL',hx+14,hy+66);
 
   // segmented bar
   const bx=hx+150,bw=hw-166;
@@ -1160,26 +1305,7 @@ RORG.forEach((o,i)=>{
   b.onclick=()=>{rsel=i;initRaster();[...rtabs.children].forEach((x,j)=>x.className='tab'+(j===i?' on':''));};
   rtabs.appendChild(b);
 });
-setInterval(()=>{
-  RORG.forEach(o=>{
-    o.pnl+=Math.round((Math.random()-0.5)*120);
-    // open positions drift; closed ones are settled and never move
-    o.trades.forEach(tr=>{if(tr.open)tr.pnl+=Math.round((Math.random()-0.48)*70);});
-    // occasionally an organism closes a position and opens a new one
-    if(Math.random()<0.16){
-      const open=o.trades.filter(rt=>rt.open);
-      if(open.length){open[open.length-1].open=false;}
-      o.trades.unshift({
-        ts:Date.now(),
-        sym:RSYMS[Math.floor(Math.random()*RSYMS.length)],
-        side:Math.random()>0.45?'LONG':'SHORT',
-        size:+(0.4+Math.random()*20).toFixed(1),
-        lev:1+Math.floor(Math.random()*5),
-        pnl:0,open:true});
-      if(o.trades.length>12)o.trades.pop();
-    }
-  });
-},2000);
+
 
 
 
