@@ -94,6 +94,14 @@
   .fe .fp{text-align:right}
   /* trade timeline end */
   @media(max-width:860px){}
+  .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+  .wcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+  .wcard .worg{font-size:12px;color:var(--fg);letter-spacing:1px;margin-bottom:8px}
+  .wcard .waddr{font-size:10px;color:#cfcaf6;word-break:break-all;line-height:1.5;margin-bottom:10px}
+  .wcard a.wlink{display:block;font-size:11px;color:var(--mid);border:1px solid var(--line);border-radius:5px;padding:6px 9px;margin-top:5px}
+  .wcard a.wlink:hover{border-color:var(--purple);color:var(--fg)}
+  .wcard .wnote{font-size:11px;color:var(--dim)}
+  @media(max-width:720px){.wgrid{grid-template-columns:1fr}}
   /* stack list */
   .stack{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .sline{display:flex;gap:14px;padding:10px 14px;background:var(--panel);border-bottom:1px solid #1c1c20;font-size:12px;flex-wrap:wrap}
@@ -172,7 +180,7 @@
 
 <nav><div class="in">
   <span class="logo">MICRO</span>
-  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span class="links"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#replay">REPLAY</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
   <span><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
@@ -341,6 +349,19 @@
       </a>
 
     </div>
+  </div>
+</section>
+
+<section id="wallets">
+  <div class="wrap">
+    <div class="kick">SECTION 08 · ON-CHAIN WALLETS</div>
+    <h2>Verify it yourself</h2>
+    <div class="shk">one wallet per organism · positions are public · do not trust this page</div>
+    <div class="lead">A site showing its own numbers proves nothing. Each organism trades from its own wallet, so every position and every fill is on chain. Open the links and check the trades against what this page claims.</div>
+    <div class="wgrid" id="wgrid">
+      <div class="wcard"><div class="wnote">waiting for backend</div></div>
+    </div>
+    <div class="honest" id="wnote" style="margin-top:14px"></div>
   </div>
 </section>
 
@@ -946,8 +967,36 @@ async function pull(){
   }
 }
 
+async function pullWallets(){
+  const grid=document.getElementById('wgrid'), note=document.getElementById('wnote');
+  if(!grid) return;
+  try{
+    const r=await fetch(API+'/api/wallets',{cache:'no-store'});
+    const w=await r.json();
+    if(!(w.wallets||[]).length){
+      grid.innerHTML='<div class="wcard"><div class="wnote">No live wallets configured yet — '
+        +'the organisms are still trading on a simulated balance against real prices.</div></div>';
+      note.innerHTML='<b>Nothing to verify yet.</b><br>Once wallets are funded, their addresses appear here and every fill becomes checkable on chain.';
+      return;
+    }
+    grid.innerHTML=w.wallets.map(x=>{
+      const dash = x.hyperdash
+        ? '<a class="wlink" target="_blank" href="'+x.hyperdash+'">HyperDash →</a>'
+        : '<div class="wnote" style="margin-top:5px">HyperDash indexes mainnet only</div>';
+      return '<div class="wcard"><div class="worg">'+x.organism.toUpperCase()+'</div>'
+        +'<div class="waddr">'+x.address+'</div>'
+        +'<a class="wlink" target="_blank" href="'+x.explorer+'">Explorer →</a>'+dash+'</div>';
+    }).join('');
+    note.innerHTML='<b>Network: '+w.network+'.</b><br>'+w.note;
+  }catch(e){
+    grid.innerHTML='<div class="wcard"><div class="wnote">backend unreachable</div></div>';
+  }
+}
+
 pull();
+pullWallets();
 setInterval(pull, 5000);
+setInterval(pullWallets, 60000);
 
 
 const rcv=document.getElementById('rcv'),RX=rcv.getContext('2d');
