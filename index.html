@@ -482,6 +482,19 @@
 </div></div></footer>
 
 <script>
+// Declared first: drawing functions reference HIST on the very first frame,
+// and a `const` further down would still be in its temporal dead zone there —
+// typeof does not protect against that, it throws.
+// Real equity history, accumulated from live API samples. Nothing is
+// back-filled or invented: the curves start flat and grow as the page
+// observes the backend. Kept in memory only.
+const HIST = {elegans:[], ciona:[], platynereis:[]};
+const HIST_MAX = 720;          // ~1h at a 5s poll
+function pushHist(key, eq){
+  const h = HIST[key]; if(!h) return;
+  h.push(eq); if(h.length > HIST_MAX) h.shift();
+}
+
 const P4=4,P6=6;
 const SYMS=['BTC','ETH','SOL','HYPE','DOGE','ARB','AVAX','SUI','LINK','APT'];
 // Starting state is deliberately empty. Nothing here is invented: until the
@@ -513,7 +526,7 @@ function drawOffice(){
     opx(mx,my,'#1c1c24',20,13);
     const scr=c.side==='LONG'?'#0f2a20':c.side==='SHORT'?'#2a0f12':'#141417';opx(mx+2*P4,my+2*P4,scr,16,8);
     // real equity sparkline on the desk monitor
-    const eh=(typeof HIST!=='undefined'&&HIST[c.key])?HIST[c.key].slice(-16):[];
+    const eh=HIST[c.key]?HIST[c.key].slice(-16):[];
     if(eh.length>1){
       let lo=Math.min(...eh),hi=Math.max(...eh); if(hi===lo)hi=lo+1;
       octx.strokeStyle=c.col;octx.lineWidth=1.5;octx.beginPath();
@@ -821,15 +834,6 @@ window.addEventListener('resize',drawTimeline);
 // ---------- LIVE DATA ----------
 const API = 'https://api.microbio.lol';
 
-// Real equity history, accumulated from live API samples. Nothing is
-// back-filled or invented: the curves start flat and grow as the page
-// observes the backend. Kept in memory only.
-const HIST = {elegans:[], ciona:[], platynereis:[]};
-const HIST_MAX = 720;          // ~1h at a 5s poll
-function pushHist(key, eq){
-  const h = HIST[key]; if(!h) return;
-  h.push(eq); if(h.length > HIST_MAX) h.shift();
-}
 
 async function pull(){
   try{
@@ -1024,7 +1028,7 @@ function equityLine(x,y,w,h,o){
   // Was a procedurally generated candle chart, i.e. decoration pretending to
   // be market data. Now it is this organism's real equity, or nothing.
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
-  const d=(typeof HIST!=='undefined' && HIST[o.key]) ? HIST[o.key] : [];
+  const d=HIST[o.key]||[];
   if(d.length<2){
     RX.font='8px ui-monospace,monospace';RX.fillStyle='#55555c';
     RX.fillText('waiting for live data',x+8,y+h/2);
@@ -1045,7 +1049,7 @@ function equityLine(x,y,w,h,o){
 function equityPanel(x,y,w,h,o){
   // Real equity history for this organism. Flat line until data arrives.
   RX.fillStyle='#060a12';RX.fillRect(x,y,w,h);
-  const d=(typeof HIST!=='undefined' && HIST[o.key]) ? HIST[o.key] : [];
+  const d=HIST[o.key]||[];
   RX.font='7px ui-monospace,monospace';RX.fillStyle='#55555c';
   RX.fillText('EQUITY',x+4,y+9);
   if(d.length<2){ RX.fillText('collecting…',x+4,y+22); return; }
