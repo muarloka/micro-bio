@@ -382,7 +382,7 @@
           <div class="dbody" style="padding-top:0">
             <div class="statrow">
               <div class="stat"><div class="sl">STARTING</div><div class="sv">$1,000</div></div>
-              <div class="stat"><div class="sl">EQUITY</div><div class="sv" id="dk-eq">—</div></div>
+              <div class="stat"><div class="sl">EQUITY</div><div class="sv" id="dk-eq">—</div><div class="sl" id="dk-eqsrc" style="margin-top:4px">—</div></div>
               <div class="stat"><div class="sl">TOTAL P&L</div><div class="sv" id="dk-pnl">—</div><div class="sl" id="dk-upnl" style="margin-top:4px">—</div></div>
               <div class="stat"><div class="sl">TRADES</div><div class="sv" id="dk-tr">—</div></div>
             </div>
@@ -1449,6 +1449,8 @@ function dkUpdate(state){
   set('dk-name', c.name);
   set('dk-sym', (c.sym||'—') + ' · ' + (c.side||'FLAT'));
   set('dk-eq', '$'+fmtMoney(c.eq));
+  const srcEl=document.getElementById('dk-eqsrc');
+  if(srcEl) srcEl.textContent = c.eqsrc==='exchange' ? 'from exchange' : 'paper book';
   // "P&L" means total return on the account, which is what anyone reading
   // the panel expects. The open position's unrealised PnL is a separate,
   // much smaller number and gets its own line.
@@ -1555,6 +1557,7 @@ async function pull(){
       c.spikes = (live.brain||{}).spikes ?? 0;
       c.btime  = (live.brain||{}).brain_time ?? 0;
       c.trades = live.trades ?? 0;
+      c.eqsrc = live.equity_source || 'paper';
       c.neurons = live.neurons ?? 0;
       c.plast = (live.brain||{}).plasticity || {};
       c.state = (live.brain||{}).state || {};
