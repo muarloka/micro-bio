@@ -383,7 +383,7 @@
             <div class="statrow">
               <div class="stat"><div class="sl">STARTING</div><div class="sv">$1,000</div></div>
               <div class="stat"><div class="sl">EQUITY</div><div class="sv" id="dk-eq">—</div></div>
-              <div class="stat"><div class="sl">P&L</div><div class="sv" id="dk-pnl">—</div></div>
+              <div class="stat"><div class="sl">TOTAL P&L</div><div class="sv" id="dk-pnl">—</div><div class="sl" id="dk-upnl" style="margin-top:4px">—</div></div>
               <div class="stat"><div class="sl">TRADES</div><div class="sv" id="dk-tr">—</div></div>
             </div>
           </div>
@@ -803,11 +803,12 @@ function drawOffice(){
       octx.fillText('waiting',cx0+12,cy0+74);
     }
 
-    const pt=c.side==='FLAT'?'$0':(c.pnl>=0?'+$':'−$')+Math.abs(Math.round(c.pnl)).toLocaleString('en-US');
-    octx.font='26px ui-monospace,monospace';octx.fillStyle=c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
+    const tot=(c.eq ?? 1000)-1000;
+    const pt=fmtSigned(tot);
+    octx.font='26px ui-monospace,monospace';octx.fillStyle=tot>0?'#5DCAA5':tot<0?'#E24B4A':'#8a8a92';
     octx.fillText(pt,cx0+w-12-octx.measureText(pt).width,cy0+42);
     octx.font='11px ui-monospace,monospace';octx.fillStyle='#55555c';
-    const eq='$'+Math.round(c.eq).toLocaleString('en-US');
+    const eq='$'+fmtMoney(c.eq);
     octx.fillText(eq,cx0+w-12-octx.measureText(eq).width,cy0+12);
   });
 }
@@ -922,7 +923,7 @@ function drawRace(){
 function drawLB(){
   const sorted=[...C].sort((a,b)=>b.eq-a.eq),el=document.getElementById('lb');el.innerHTML='';
   sorted.forEach((c,i)=>{const d=c.eq-1000,dc=d>0?'green':d<0?'red':'';const r=document.createElement('div');r.className='lbrow'+(i===0?' first':'');
-    r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${d>=0?'+':'−'}$${Math.abs(Math.round(d)).toLocaleString('en-US')}</span><span class="eq" style="color:var(--fg)">$${c.eq.toFixed(2)}</span>`;
+    r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${fmtSigned(d)}</span><span class="eq" style="color:var(--fg)">$${c.eq.toFixed(2)}</span>`;
     el.appendChild(r);});
 }
 
@@ -1192,7 +1193,23 @@ document.getElementById('sound-btn')?.addEventListener('click', function(){
 // price history the page has observed. Nothing is generated for looks.
 let DK = 0;                       // selected organism index
 const PX_HIST = {};               // symbol -> observed prices
-const ACC = '#C9F227';            // brand accent from the logo
+const ACC = '#C9F227';
+
+// Money formatting. Rounding to whole dollars turned every real PnL into
+// "+$0": positions are $200 notional, so a genuine move shows up in cents.
+// Small numbers keep two decimals, large ones stay readable.
+function fmtMoney(v){
+  const n = Math.abs(Number(v)||0);
+  if(n === 0) return '0';
+  if(n < 10)   return n.toFixed(2);
+  if(n < 1000) return n.toFixed(1);
+  return Math.round(n).toLocaleString('en-US');
+}
+function fmtSigned(v){
+  const n = Number(v)||0;
+  return (n >= 0 ? '+$' : '−$') + fmtMoney(n);
+}
+            // brand accent from the logo
 
 function dkPushPx(sym, px){
   if(!sym || !px) return;
@@ -1431,9 +1448,19 @@ function dkUpdate(state){
 
   set('dk-name', c.name);
   set('dk-sym', (c.sym||'—') + ' · ' + (c.side||'FLAT'));
-  set('dk-eq', '$'+Math.round(c.eq).toLocaleString('en-US'));
-  const pnlCol = c.pnl>0?'#5DCAA5':c.pnl<0?'#E24B4A':'#8a8a92';
-  set('dk-pnl', (c.pnl>=0?'+$':'−$')+Math.abs(Math.round(c.pnl)).toLocaleString('en-US'), pnlCol);
+  set('dk-eq', '$'+fmtMoney(c.eq));
+  // "P&L" means total return on the account, which is what anyone reading
+  // the panel expects. The open position's unrealised PnL is a separate,
+  // much smaller number and gets its own line.
+  const total = (c.eq ?? 1000) - 1000;
+  const pnlCol = total>0?'#5DCAA5':total<0?'#E24B4A':'#8a8a92';
+  set('dk-pnl', fmtSigned(total), pnlCol);
+  const up = c.pnl ?? 0;
+  const upEl = document.getElementById('dk-upnl');
+  if(upEl){
+    upEl.textContent = c.side==='FLAT' ? 'no open position' : 'open: '+fmtSigned(up);
+    upEl.style.color = c.side==='FLAT' ? '' : (up>0?'#5DCAA5':up<0?'#E24B4A':'');
+  }
   set('dk-tr', c.trades ?? 0);
   set('dk-n', (c.neurons||0).toLocaleString('en-US'));
   set('dk-spk', (c.spikes||0).toLocaleString('en-US'));
