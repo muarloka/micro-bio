@@ -1361,20 +1361,66 @@ function dkDrawChart(){
     cX.font='10px ui-monospace,monospace'; cX.fillStyle='#3a3a42';
     cX.fillText('collecting live prices…',14,H/2); return;
   }
-  let lo=Math.min(...h),hi=Math.max(...h); if(hi===lo)hi=lo+1;
-  cX.strokeStyle='#15151c';
-  for(let i=1;i<4;i++){cX.beginPath();cX.moveTo(0,H*i/4);cX.lineTo(W,H*i/4);cX.stroke();}
-  cX.strokeStyle=c.col; cX.lineWidth=2; cX.beginPath();
-  h.forEach((v,i)=>{
-    const X=(i/(h.length-1))*W, Y=H-8-((v-lo)/(hi-lo))*(H-20);
-    i?cX.lineTo(X,Y):cX.moveTo(X,Y);
-  });
+
+  const lastV=h[h.length-1], firstV=h[0];
+  let lo=Math.min(...h), hi=Math.max(...h);
+
+  // A one-dollar range on a $2,500 asset is a flat line. Pad the window to a
+  // minimum width so the line sits in the middle of the panel instead of being
+  // pinned to an edge, and so tiny noise is not stretched to look like a trend.
+  const MIN_SPAN = Math.max(lastV*0.0012, 1e-9);
+  if(hi-lo < MIN_SPAN){
+    const mid=(hi+lo)/2;
+    lo=mid-MIN_SPAN/2; hi=mid+MIN_SPAN/2;
+  }else{
+    const pad=(hi-lo)*0.18; lo-=pad; hi+=pad;
+  }
+
+  const PADT=18, PADB=16;
+  const yOf=v=>H-PADB-((v-lo)/(hi-lo))*(H-PADT-PADB);
+
+  // grid
+  cX.strokeStyle='#13131a'; cX.lineWidth=1;
+  for(let i=1;i<4;i++){
+    const y=PADT+(H-PADT-PADB)*i/4;
+    cX.beginPath(); cX.moveTo(0,y); cX.lineTo(W,y); cX.stroke();
+  }
+
+  // opening level, so the move is readable at a glance
+  cX.strokeStyle='#262630'; cX.setLineDash([3,3]);
+  cX.beginPath(); cX.moveTo(0,yOf(firstV)); cX.lineTo(W,yOf(firstV)); cX.stroke();
+  cX.setLineDash([]);
+
+  // fill under the line
+  const up = lastV >= firstV;
+  const col = up ? '#5DCAA5' : '#E24B4A';
+  cX.beginPath();
+  h.forEach((v,i)=>{ const X=(i/(h.length-1))*W; i?cX.lineTo(X,yOf(v)):cX.moveTo(X,yOf(v)); });
+  cX.lineTo(W,H); cX.lineTo(0,H); cX.closePath();
+  cX.fillStyle = up ? 'rgba(93,202,165,0.07)' : 'rgba(226,75,74,0.07)';
+  cX.fill();
+
+  // the line itself
+  cX.strokeStyle=col; cX.lineWidth=2; cX.beginPath();
+  h.forEach((v,i)=>{ const X=(i/(h.length-1))*W; i?cX.lineTo(X,yOf(v)):cX.moveTo(X,yOf(v)); });
   cX.stroke();
-  const last=h[h.length-1];
-  cX.fillStyle=c.col;
-  cX.beginPath(); cX.arc(W-2,H-8-((last-lo)/(hi-lo))*(H-20),3,0,6.28); cX.fill();
+
+  const lastY=yOf(lastV);
+  cX.fillStyle=col; cX.beginPath(); cX.arc(W-3,lastY,3.5,0,6.28); cX.fill();
+
+  // labels kept out of the line's way: high top-left, low bottom-left
   cX.font='9px ui-monospace,monospace'; cX.fillStyle='#55555c';
-  cX.fillText(hi.toFixed(2),6,14); cX.fillText(lo.toFixed(2),6,H-6);
+  cX.fillText(hi.toFixed(2), 6, 12);
+  cX.fillText(lo.toFixed(2), 6, H-5);
+
+  // change over the visible window, top-right
+  const dPct=((lastV-firstV)/firstV)*100;
+  const txt=(dPct>=0?'+':'')+dPct.toFixed(2)+'%';
+  cX.font='11px ui-monospace,monospace'; cX.fillStyle=col;
+  cX.fillText(txt, W-8-cX.measureText(txt).width, 13);
+
+  cX.font='9px ui-monospace,monospace'; cX.fillStyle='#3a3a42';
+  cX.fillText(h.length+' ticks', W-8-cX.measureText(h.length+' ticks').width, H-5);
 }
 
 // --- panels fed from the API ---
@@ -1678,7 +1724,7 @@ async function verify(){
 
     const dash = w.hyperdash
       ? '<a class="wlink" target="_blank" rel="noopener" href="'+w.hyperdash+'">HyperDash →</a>'
-      : '<div class="wnote" style="margin-top:5px">'+'HyperDash indexes mainnet only'+'</div>';
+      : '';   // no HyperDash link on testnet: the page simply omits it
 
     return '<div class="wcard"><div class="worg">'+w.organism.toUpperCase()+'</div>'
          + '<div class="waddr">'+w.address+'</div>'
