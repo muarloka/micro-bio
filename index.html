@@ -704,6 +704,18 @@
 </div></div></footer>
 
 <script>
+// One selection for the whole page. Section 02 and section 03 used to keep
+// separate indices, so the site could show the worm in one panel and the sea
+// squirt in another at the same time.
+function setOrganism(i){
+  sel = DK = i;
+  dkBuildField(); buildCloud();
+  document.querySelectorAll('#desktabs .tab').forEach((x,j)=>x.classList.toggle('on', j===i));
+  document.querySelectorAll('#tabs .tab').forEach((x,j)=>x.classList.toggle('on', j===i));
+  if(window.__lastState) dkUpdate(window.__lastState);
+  updateBrainStats(); dkDrawChart(); drawGates();
+}
+
 // `let` further down would still be in its temporal dead zone there.
 
 // Declared first: drawing functions reference HIST on the very first frame,
@@ -923,7 +935,7 @@ function drawRace(){
 function drawLB(){
   const sorted=[...C].sort((a,b)=>b.eq-a.eq),el=document.getElementById('lb');el.innerHTML='';
   sorted.forEach((c,i)=>{const d=c.eq-1000,dc=d>0?'green':d<0?'red':'';const r=document.createElement('div');r.className='lbrow'+(i===0?' first':'');
-    r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${fmtSigned(d)}</span><span class="eq" style="color:var(--fg)">$${c.eq.toFixed(2)}</span>`;
+    r.innerHTML=`<span class="rank">#${i+1}</span><span class="sw" style="background:${c.sw}"></span><span class="nm">${c.name} <span>· ${c.nn}</span></span><span class="${dc}">${fmtSigned(d)}</span><span class="eq" style="color:var(--fg)">$${fmtMoney(c.eq)}</span>`;
     el.appendChild(r);});
 }
 
@@ -1052,7 +1064,7 @@ function drawLog(entries){
   }).join('');
 }
 const tabs=document.getElementById('tabs');
-C.forEach((c,i)=>{const b=document.createElement('div');b.className='tab'+(i===0?' on':'');b.innerHTML=c.name+'<small>'+c.nn+'</small>';b.onclick=()=>{sel=i;buildCloud();updateBrainStats();[...tabs.children].forEach((x,j)=>x.className='tab'+(j===i?' on':''));};tabs.appendChild(b);});
+C.forEach((c,i)=>{const b=document.createElement('div');b.className='tab'+(i===0?' on':'');b.innerHTML=c.name+'<small>'+c.nn+'</small>';b.onclick=()=>setOrganism(i);tabs.appendChild(b);});
 function loop(){t+=0.016;if(!paused){autoRot+=0.0035;brainT+=0.016;}drawOffice();drawBrain();requestAnimationFrame(loop);}
 buildCloud();updateBrainStats();loop();drawRace();drawLB();drawGates();seedTrades();drawTimeline();
 window.addEventListener('resize',drawTimeline);
@@ -1191,7 +1203,7 @@ document.getElementById('sound-btn')?.addEventListener('click', function(){
 // ---------- TRADING DESK ----------
 // Every number on this dashboard comes from /api/state, /api/ledger and the
 // price history the page has observed. Nothing is generated for looks.
-let DK = 0;                       // selected organism index
+let DK = 0;                       // kept in step with `sel` by setOrganism
 const PX_HIST = {};               // symbol -> observed prices
 const ACC = '#C9F227';
 
@@ -1200,9 +1212,11 @@ const ACC = '#C9F227';
 // Small numbers keep two decimals, large ones stay readable.
 function fmtMoney(v){
   const n = Math.abs(Number(v)||0);
-  if(n === 0) return '0';
-  if(n < 10)   return n.toFixed(2);
-  if(n < 1000) return n.toFixed(1);
+  if(n === 0) return '0.00';
+  // Accounts are around $1,000 and positions around $200, so cents carry the
+  // whole story. One format everywhere: the leaderboard and the floor cards
+  // used to round differently and looked like they disagreed.
+  if(n < 100000) return n.toFixed(2);
   return Math.round(n).toLocaleString('en-US');
 }
 function fmtSigned(v){
@@ -1510,13 +1524,7 @@ function dkUpdate(state){
   const el=document.getElementById('desktabs'); if(!el) return;
   el.innerHTML=C.map((c,i)=>'<div class="tab'+(i===0?' on':'')+'" data-i="'+i+'">'
     +c.name+'<small>'+c.nn+'</small></div>').join('');
-  el.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
-    DK=+b.dataset.i; dkBuildField();
-    el.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
-    // repaint now instead of waiting up to 5s for the next poll
-    if(window.__lastState) dkUpdate(window.__lastState);
-    dkDrawChart();
-  });
+  el.querySelectorAll('.tab').forEach((b,i)=>b.onclick=()=>setOrganism(i));
 })();
 dkBuildField();
 
