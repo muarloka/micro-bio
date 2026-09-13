@@ -788,7 +788,14 @@ function drawOffice(){
     octx.strokeStyle='#26262b';octx.lineWidth=1;
     octx.beginPath();octx.moveTo(cx0+w/2,cy0+h);octx.lineTo(cx0+w/2,y-64);octx.stroke();
     octx.fillStyle='#111114';octx.fillRect(cx0,cy0,w,h);
-    const edge=c.side==='LONG'?'#1D9E75':c.side==='SHORT'?'#993C1D':'#26262b';
+    const tot=(c.eq ?? 1000)-1000;
+    // Colour means money, not direction. Red used to mean "short", which reads
+    // as "losing" to anyone who has ever looked at a trading screen. Direction
+    // is already spelled out by the ▲/▼ arrow next to the ticker.
+    const edge = c.side==='FLAT' ? '#26262b'
+               : tot > 0 ? '#1D9E75'
+               : tot < 0 ? '#993C1D'
+               : '#26262b';
     octx.strokeStyle=edge;octx.strokeRect(cx0+.5,cy0+.5,w,h);
     octx.fillStyle=edge;octx.fillRect(cx0,cy0,3,h);
 
@@ -815,7 +822,6 @@ function drawOffice(){
       octx.fillText('waiting',cx0+12,cy0+74);
     }
 
-    const tot=(c.eq ?? 1000)-1000;
     const pt=fmtSigned(tot);
     octx.font='26px ui-monospace,monospace';octx.fillStyle=tot>0?'#5DCAA5':tot<0?'#E24B4A':'#8a8a92';
     octx.fillText(pt,cx0+w-12-octx.measureText(pt).width,cy0+42);
