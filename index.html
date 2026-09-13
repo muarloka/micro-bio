@@ -293,7 +293,7 @@
 <nav><div class="in">
   <span class="logo">MICRO</span>
   <button id="burger" class="burger" aria-label="menu">☰</button>
-  <span class="links" id="navlinks"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
+  <span class="links" id="navlinks"><a href="#floor">FLOOR</a><a href="#organism">ORGANISM</a><a href="#desk">DESK</a><a href="#race">RACE</a><a href="#gates">GATES</a><a href="#timeline">TIMELINE</a><a href="#sources">SOURCES</a><a href="#verified-history">HISTORY</a><a href="#wallets">WALLETS</a><a href="#plugin">STACK</a><a href="#desci">SCIENCE</a><a href="#eco">BIO</a><a href="#token">$MICRO</a></span>
   <span><button id="sound-btn" class="sndbtn">◼ sound off</button><span class="dot"></span><span class="green">observed live</span> </span>
 </div></nav>
 
@@ -315,7 +315,7 @@
   <div class="wrap"><div class="metrics">
     <div class="metric"><div class="l">TOTAL NEURONS</div><div class="v" id="m-neurons">—</div></div>
     <div class="metric"><div class="l">DEMO ACCOUNT</div><div class="v" id="m-cap">—</div></div>
-    <div class="metric"><div class="l">TRADES</div><div class="v" id="m-trades">—</div></div>
+    <div class="metric"><div class="l">EXECUTED ORDERS</div><div class="v" id="m-trades">—</div></div>
     <div class="metric"><div class="l">LEADER</div><div class="v" id="m-leader">—</div></div>
   </div></div>
 </section>
@@ -488,14 +488,24 @@
   <div class="wrap">
     <div class="kick">SECTION 07 · DECISION LEDGER</div>
     <h2>Every call logged before the fill</h2>
-    <div class="shk">open log that cannot be faked after the fact</div>
+    <div class="shk">Decision log and independently verifiable exchange executions</div>
     <div class="ledger" id="ledger-log"></div>
     <table>
-      <thead><tr><th>CLOSED</th><th>ORGANISM</th><th>SIDE</th><th>ENTRY</th><th>EXIT</th><th>P&L</th></tr></thead>
-      <tbody id="closed-body"><tr><td colspan="6" style="color:var(--dim)">no closed trades yet</td></tr></tbody>
+      <thead><tr><th>UTC TIME</th><th>ORGANISM</th><th>MARKET / ACTION</th><th>FILL PRICE</th><th>CLASSIFICATION</th><th>REALIZED PNL</th></tr></thead>
+      <tbody id="closed-body"><tr><td colspan="6" style="color:var(--dim)">exchange history loading…</td></tr></tbody>
     </table>
   </div>
 </section>
+
+
+<section id="verified-history"><div class="wrap">
+<div class="kick">EXCHANGE RECORD · PERSISTENT HISTORY</div>
+<h2>Every retained fill, including technical closes</h2>
+<p class="lead">Legacy positions were scheduled for technical closure to repair execution accounting. These interventions are labeled separately from neural decisions. Equity includes their results; no balance reset is performed. Historical executions without verified decision attribution remain unclassified.</p>
+<p><a href="https://api.microbio.lol/history" target="_blank" rel="noopener">Open full trade history ↗</a> · <a href="https://api.microbio.lol/api/trades/export">Download retained fills (CSV)</a></p>
+<p id="verified-summary">Loading exchange statistics…</p>
+<iframe title="MICRO verified trade history" src="https://api.microbio.lol/history" loading="lazy" style="width:100%;height:850px;border:1px solid #334c3e;border-radius:8px"></iframe>
+</div></section>
 
 <section id="sources">
   <div class="wrap">
@@ -1470,7 +1480,7 @@ function dkUpdate(state){
   set('dk-sym', (c.sym||'—') + ' · ' + (c.side||'FLAT'));
   set('dk-eq', '$'+fmtMoney(c.eq));
   const srcEl=document.getElementById('dk-eqsrc');
-  if(srcEl) srcEl.textContent = c.eqsrc==='exchange' ? 'from exchange' : 'paper book';
+  if(srcEl) srcEl.textContent = c.eqsrc==='exchange' ? 'from exchange' : c.eqsrc==='paper' ? 'paper book' : 'exchange data unavailable or stale';
   // "P&L" means total return on the account, which is what anyone reading
   // the panel expects. The open position's unrealised PnL is a separate,
   // much smaller number and gets its own line.
@@ -1540,6 +1550,25 @@ dkBuildField();
   requestAnimationFrame(deskLoop);
 })();
 
+
+let historyRefreshAt=0;
+async function pullVerifiedHistory(){
+  if(Date.now()-historyRefreshAt<30000)return;
+  historyRefreshAt=Date.now();
+  try{
+    const [sr,fr]=await Promise.all([fetch(API+'/api/trades/summary',{cache:'no-store'}),fetch(API+'/api/trades?limit=8',{cache:'no-store'})]);
+    if(!sr.ok||!fr.ok)throw Error('history unavailable');
+    const summary=await sr.json(),fills=await fr.json();
+    const total=summary.organisms.reduce((n,r)=>n+r.executed_orders,0);
+    const metric=document.getElementById('m-trades');if(metric)metric.textContent=summary.sync.length?total:'—';
+    const txt=document.getElementById('verified-summary');
+    if(txt)txt.textContent=`${total} executed orders · ${summary.organisms.reduce((n,r)=>n+r.fills,0)} fills retained · ${summary.technical_actions.filter(r=>r.status==='closed_confirmed').length} confirmed technical closes. `+summary.pnl_note;
+    const body=document.getElementById('closed-body');body.replaceChildren();
+    for(const r of fills.entries){const tr=document.createElement('tr');for(const v of [new Date(r.ts).toISOString().replace('T',' '),r.organism,r.symbol+' '+r.direction,r.price,r.classification==='technical_close'?'TECHNICAL CLOSE':'Unclassified',Number(r.pnl).toFixed(4)]){const td=document.createElement('td');td.textContent=v;tr.appendChild(td)}body.appendChild(tr)}
+    if(!fills.entries.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='No exchange fills imported yet.';tr.appendChild(td);body.appendChild(tr)}
+  }catch(e){const txt=document.getElementById('verified-summary');if(txt)txt.textContent='Exchange history unavailable; previously shown data may be stale.';}
+}
+
 // ---------- LIVE DATA ----------
 const API = 'https://api.microbio.lol';
 
@@ -1587,28 +1616,13 @@ async function pull(){
     const lead=(s.creatures||[]).slice().sort((a,b)=>(b.equity||0)-(a.equity||0))[0];
     const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
     set('m-neurons', totN ? totN.toLocaleString('en-US') : '—');
-    set('m-trades', totT);
+    // Executed-order count comes from exchange history, not the paper ledger.
     set('m-leader', lead ? lead.name.split(' ')[0].toUpperCase() : '—');
     set('m-cap', (s.creatures||[]).length + ' × $1k');
 
     drawLog(s.ledger||[]);
 
-    // closed trades table, real fills only
-    const tb=document.getElementById('closed-body');
-    if(tb){
-      const closed=(s.ledger||[]).filter(e=>{
-        const a=(e.result||{}).action; return a==='close'||a==='flip'||a==='rotate';
-      }).slice(-8).reverse();
-      tb.innerHTML = closed.length ? closed.map(e=>{
-        const r=e.result||{};
-        const pnl=r.closed_pnl ?? r.pnl ?? 0;
-        const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-        const cls=pnl>=0?'green':'red';
-        return '<tr><td>'+t+'</td><td><b>'+e.organism+'</b></td><td>'+(r.symbol||'—')
-             +'</td><td>'+(e.price? e.price.toFixed(3):'—')+'</td><td>—</td><td class="'+cls+'">'
-             +(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl)).toLocaleString('en-US')+'</td></tr>';
-      }).join('') : '<tr><td colspan="6" style="color:var(--dim)">'+'no closed trades yet'+'</td></tr>';
-    }
+    pullVerifiedHistory();
 
     // replay scene: real position + this organism's own ledger rows
 
@@ -1639,7 +1653,8 @@ async function pull(){
     sbSet('sb-mode', s.mode || '—');
     const stEl=document.getElementById('sb-status');
     if(stEl){
-      stEl.textContent=(s.creatures||[]).some(c=>c.trades>0) ? 'trading' : 'waiting';
+      stEl.textContent=s.mode==='observe' ? 'observation · orders disabled' : s.mode||'unknown';
+      if((s.creatures||[]).some(c=>c.data_fresh===false)) stEl.textContent+=' · data stale';
       stEl.className='green'; stEl.style.color='';
     }
 
