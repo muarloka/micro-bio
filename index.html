@@ -202,7 +202,7 @@
   .intent{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:9px;color:var(--dim);letter-spacing:1px}
   .intentbar{flex:1;height:3px;background:#1a1a24;border-radius:2px;position:relative}
   .intentdot{position:absolute;top:-4px;width:11px;height:11px;border-radius:50%;background:#C9F227;box-shadow:0 0 8px #C9F227;transform:translateX(-50%)}
-  .dgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+  .dgrid3{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
   .ledrow{display:grid;grid-template-columns:52px 44px 58px 1fr auto;gap:8px;font-size:10px;padding:5px 0;border-bottom:1px solid #15151c;align-items:center}
   .ledrow:last-child{border-bottom:none}
   .ledrow .lt{color:var(--dim)}
@@ -415,16 +415,6 @@
       </div>
 
       <div class="dgrid3">
-
-        <div class="dpanel">
-          <div class="dhead"><span>LEDGER</span><span id="dk-ledcount">—</span></div>
-          <div class="dbody" style="padding:8px 12px">
-            <div class="ledrow" style="color:var(--dim);border-bottom:1px solid var(--line)">
-              <span>TIME</span><span>SIDE</span><span>SYM</span><span>SIZE</span><span>RESULT</span>
-            </div>
-            <div id="dk-ledger"><div class="empty">no fills yet</div></div>
-          </div>
-        </div>
 
         <div class="dpanel">
           <div class="dhead"><span>PRICE ACTION · LIVE</span><span id="dk-px">—</span></div>
@@ -1207,6 +1197,9 @@ const ACC = '#C9F227';            // brand accent from the logo
 function dkPushPx(sym, px){
   if(!sym || !px) return;
   const h = PX_HIST[sym] || (PX_HIST[sym] = []);
+  // seed with two points so the line has something to draw on the very first
+  // poll instead of sitting on "collecting" for ten seconds
+  if(!h.length) h.push(px);
   h.push(px); if(h.length > 240) h.shift();
 }
 
@@ -1418,30 +1411,6 @@ function dkUpdate(state){
   const mid=(PX_HIST[c.sym]||[]).slice(-1)[0];
   set('dk-px', mid ? (c.sym+' '+mid.toFixed(2)) : '—');
 
-  // ledger for this organism only
-  const led=document.getElementById('dk-ledger');
-  const mine=(state.ledger||[]).filter(e=>e.organism===c.key &&
-    ['open','flip','rotate','close'].includes((e.result||{}).action));
-  document.getElementById('dk-ledcount').textContent = mine.length ? mine.length+' '+'rows' : '—';
-  if(led){
-    led.innerHTML = mine.length ? mine.slice(-9).reverse().map(e=>{
-      const r=e.result||{};
-      const t=new Date((e.ts||0)*1000).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      const isOpen=['open','flip','rotate'].includes(r.action);
-      const pnl=r.closed_pnl ?? r.pnl;
-      const sideCol=e.side==='LONG'?'#5DCAA5':e.side==='SHORT'?'#E24B4A':'#8a8a92';
-      const res = pnl!=null
-        ? '<span style="color:'+(pnl>=0?'#5DCAA5':'#E24B4A')+'">'+(pnl>=0?'+$':'−$')+Math.abs(Math.round(pnl))+'</span>'
-        : '<span style="color:'+ACC+'">'+'OPEN'+'</span>';
-      return '<div class="ledrow'+(isOpen?' open':'')+'">'
-        +'<span class="lt">'+t+'</span>'
-        +'<span style="color:'+sideCol+'">'+(isOpen?'ENTER':'EXIT')+'</span>'
-        +'<span>'+(r.symbol||c.sym||'—')+'</span>'
-        +'<span style="color:#8a8a92">$'+Math.round(r.notional||0)+'</span>'
-        + res +'</div>';
-    }).join('') : '<div class="empty">'+'no fills yet'+'</div>';
-  }
-
   // decision stream, all organisms
   const stream=document.getElementById('dk-stream');
   if(stream){
@@ -1469,6 +1438,8 @@ function dkUpdate(state){
   el.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
     DK=+b.dataset.i; dkBuildField();
     el.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+    // repaint now instead of waiting up to 5s for the next poll
+    if(window.__lastState) dkUpdate(window.__lastState);
     dkDrawChart();
   });
 })();
@@ -1514,7 +1485,7 @@ async function pull(){
       c.neurons = live.neurons ?? 0;
       c.plast = (live.brain||{}).plasticity || {};
       c.state = (live.brain||{}).state || {};
-      dkPushPx(c.sym, (s.market&&s.market.mids) ? s.market.mids[c.sym] : null);
+
       pushHist(c.key, c.eq);
     });
 
@@ -1582,6 +1553,11 @@ async function pull(){
       stEl.className='green'; stEl.style.color='';
     }
 
+    // record every price we see, whoever is holding it
+    if(s.market && s.market.mids){
+      Object.keys(s.market.mids).forEach(sym=>dkPushPx(sym, s.market.mids[sym]));
+    }
+    window.__lastState = s;
     dkUpdate(s); dkDrawChart();
     drawLB(); updateBrainStats(); drawGates();
   }catch(err){
