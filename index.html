@@ -1,12 +1,13 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MICRO</title></head><body><script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MICRO</title></head><body><script src="page-updates.js?v=20260921"></script><script>
 (async function(){
-const response=await fetch('site-base.html');if(!response.ok)throw new Error('Page unavailable');
+const response=await fetch('assets/page-bundle.txt');if(!response.ok)throw new Error('Page unavailable');
 const source=await response.text();const match=source.match(/const pages=(.*?);const lang=/s);if(!match)throw new Error('Invalid page bundle');
 const pages=JSON.parse(match[1]);
 function normalize(v){v=(v||'').toLowerCase().split('-')[0];return ['en','zh','ko','pt','es','ru','uk','tr'].includes(v)?v:null;}
 let saved;try{saved=localStorage.getItem('micro-language');}catch(e){}
 const lang=normalize(new URLSearchParams(location.search).get('lang'))||normalize(saved)||'en';window.MICRO_LANG=lang;
 let markup=new TextDecoder().decode(Uint8Array.from(atob(pages[lang==='zh'?'zh':'en']),c=>c.charCodeAt(0)));
+markup=applyPageUpdates(markup,lang==='zh'?'zh':'en');
 markup=markup.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/g,(all,body)=>body.includes('const D={')?'':all);
 markup=markup.replace(/<iframe\b[\s\S]*?<\/iframe>/g,'<iframe title="Exchange history" loading="lazy" style="width:100%;height:850px;border:1px solid #29373a;border-radius:16px" src="history.html?lang='+lang+'"></iframe>');
 markup=markup.replace('<head>','<head><script src="language-loader.js"><\/script>');

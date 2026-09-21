@@ -148,33 +148,6 @@ Do not do this until you have run paper mode for at least two weeks.
 
 ---
 
-## Research pass (optional)
-
-`research/` calls a **BioAgents-compatible** research API using its documented
-public interface (`/api/chat`, `/api/deep-research`, JWT bearer auth) to turn
-each day's decisions into testable hypotheses about the underlying circuits.
-
-```bash
-export BIOAGENTS_API_URL=...   # BIOS endpoint, or your own instance
-export BIOAGENTS_SECRET=...    # openssl rand -hex 32
-python -m research.nightly
-```
-
-Results land in `data/hypotheses.jsonl` and are served at `/api/research`.
-
-Two things to be clear about:
-
-- `github.com/bio-xyz/BioAgents` was **archived on 15 June 2026** and is
-  read-only; the maintained product is BIOS. It also ships **no LICENSE file**,
-  which under default copyright means all rights reserved. We therefore call a
-  published HTTP API and **do not vendor, fork or redistribute their code**.
-- Without `BIOAGENTS_API_URL` the module is inert. The trading loop never
-  depends on it.
-
-The prompt explicitly asks the agent to say when the observed behaviour carries
-no biological meaning, rather than manufacture a story. If it keeps answering
-that way, that answer gets published too.
-
 ## X bot
 
 `social/` posts on events and replies to people who mentioned the account first.
