@@ -11,6 +11,7 @@ markup=markup.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/g,(all,body)=>body.in
 markup=markup.replace(/<iframe\b[\s\S]*?<\/iframe>/g,'<iframe title="Exchange history" loading="lazy" style="width:100%;height:850px;border:1px solid #29373a;border-radius:16px" src="history.html?lang='+lang+'"></iframe>');
 markup=markup.replace('<head>','<head><script src="language-loader.js"><\/script>');
 if(lang!=='zh')markup=markup.replace('<html lang="ru">','<html lang="en">');
+markup=markup.replace('</body>','<script src="organism-scenes.js"><\/script></body>');
 document.open();document.write(markup);document.close();
 })().catch(()=>{document.body.textContent='MICRO: please reload the page.'});
 </script></body></html>
